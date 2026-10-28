@@ -1,0 +1,639 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ----------------------------------------------------
+// 1. AUTH & ROLES
+// ----------------------------------------------------
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  EDITOR
+  SUPPORT
+}
+
+model User {
+  id                 String     @id @default(cuid())
+  email              String     @unique
+  passwordHash       String
+  name               String
+  role               Role       @default(EDITOR)
+  mustChangePassword Boolean    @default(false)
+  totpSecret         String?
+  totpEnabled        Boolean    @default(false)
+  sessions           Session[]
+  auditLogs          AuditLog[]
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+
+  @@index([email])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expires      DateTime
+  userAgent    String?
+  ipAddress    String?
+  createdAt    DateTime @default(now())
+
+  @@index([sessionToken])
+  @@index([userId])
+}
+
+// Append-only audit log: UPDATE and DELETE are revoked at the PostgreSQL database level
+model AuditLog {
+  id          String   @id @default(cuid())
+  userId      String?
+  userEmail   String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action      String   // e.g. EVENT_UPDATE, TICKET_PHASE_CREATE, CSV_EXPORT
+  resource    String   // e.g. Event, Subscriber, TicketPhase
+  resourceId  String?
+  payloadJson String?  // Sensitive PII (emails, phone numbers) must be masked before insertion
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@index([resource, resourceId])
+  @@index([createdAt])
+}
+
+// ----------------------------------------------------
+// 2. SYSTEM SETTINGS & FEATURE FLAGS
+// ----------------------------------------------------
+
+model SiteSetting {
+  id          String   @id @default(cuid())
+  key         String   @unique // e.g. "shop.enabled", "hustlesasa.url", "whatsapp.community_url"
+  value       String?
+  jsonValue   Json?
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([key])
+}
+
+// ----------------------------------------------------
+// 3. EVENTS & HYBRID TICKETING
+// ----------------------------------------------------
+
+enum TicketingMode {
+  EXTERNAL
+  NATIVE
+}
+
+enum EventStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model Event {
+  id                String         @id @default(cuid())
+  title             String
+  slug              String         @unique
+  tagline           String?
+  description       String
+  posterUrl         String?
+  posterBlur        String?
+  date              DateTime
+  doorsOpen         String?        // e.g. "18:00"
+  doorsClose        String?        // e.g. "06:00"
+  venueName         String
+  venueAddress      String?
+  venueCoordinates  String?        // e.g. "-1.3142,36.7820"
+  googleMapsUrl     String?
+  transportInfo     String?
+  agePolicy         String?        @default("Strictly 18+ with valid government ID")
+  refundPolicy      String?
+  ticketingMode     TicketingMode  @default(EXTERNAL)
+  externalTicketUrl String?        // Event-level HustleSasa link
+  status            EventStatus    @default(DRAFT)
+  ticketPhases      TicketPhase[]
+  lineup            EventArtist[]
+  albums            Album[]
+  mediaAssets       MediaAsset[]
+  clickEvents       ClickEvent[]
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  @@index([slug])
+  @@index([date])
+  @@index([status])
+}
+
+enum TicketPhaseStatus {
+  UPCOMING
+  ON_SALE
+  SOLD_OUT
+}
+
+model TicketPhase {
+  id          String            @id @default(cuid())
+  eventId     String
+  event       Event             @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  name        String            // e.g. "Early Bird", "Phase 1", "Final Release", "Gate"
+  priceKes    Int?              // Optional price, never hardcoded
+  status      TicketPhaseStatus @default(UPCOMING)
+  externalUrl String?           // Phase-specific external ticket URL
+  sortOrder   Int               @default(0)
+  salesStart  DateTime?
+  salesEnd    DateTime?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([eventId])
+  @@index([status])
+}
+
+model Artist {
+  id            String        @id @default(cuid())
+  name          String
+  slug          String        @unique
+  bio           String?
+  photoUrl      String?
+  photoBlur     String?
+  genres        String[]      // e.g. ["Afro-Tech", "Melodic House", "Amapiano"]
+  instagramUrl  String?
+  soundcloudUrl String?
+  spotifyUrl    String?
+  isFictional   Boolean       @default(true) // Explicit label for sample data
+  eventSlots    EventArtist[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([slug])
+}
+
+model EventArtist {
+  id           String    @id @default(cuid())
+  eventId      String
+  event        Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  artistId     String
+  artist       Artist    @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  stageName    String?   // e.g. "Main Stage", "The Forest"
+  setStartTime String?   // e.g. "22:00"
+  setEndTime   String?   // e.g. "00:00"
+  sortOrder    Int       @default(0)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@unique([eventId, artistId])
+  @@index([eventId])
+  @@index([artistId])
+}
+
+// Hybrid Ticketing click tracking
+model ClickEvent {
+  id          String   @id @default(cuid())
+  eventId     String
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  placement   String   // e.g. "hero", "phase_strip", "event_detail"
+  phaseName   String?  // e.g. "Early Bird"
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  targetUrl   String
+  userAgent   String?
+  ipHash      String?
+  createdAt   DateTime @default(now())
+
+  @@index([eventId])
+  @@index([placement])
+  @@index([createdAt])
+}
+
+// ----------------------------------------------------
+// 4. SUBSCRIBERS, WHATSAPP & AUDIENCE CRM
+// ----------------------------------------------------
+
+enum EmailStatus {
+  UNVERIFIED
+  ACTIVE
+  UNSUBSCRIBED
+  BOUNCED
+  COMPLAINED
+}
+
+model Subscriber {
+  id                String              @id @default(cuid())
+  email             String              @unique
+  firstName         String?
+  phoneE164         String?
+  emailStatus       EmailStatus         @default(UNVERIFIED)
+  whatsappOptIn     Boolean             @default(false)
+  interests         String[]            // e.g. ["upcoming-events", "merch", "after-movies"]
+  source            String?             // e.g. "homepage_footer", "waitlist_resonance"
+  verificationToken String?             @unique
+  tokenExpiresAt    DateTime?
+  verifiedAt        DateTime?
+  unsubscribedAt    DateTime?
+  consentLogs       ConsentLog[]
+  campaignsReceived CampaignRecipient[]
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+
+  @@index([email])
+  @@index([phoneE164])
+  @@index([emailStatus])
+}
+
+enum ConsentChannel {
+  EMAIL
+  WHATSAPP
+}
+
+model ConsentLog {
+  id                 String         @id @default(cuid())
+  subscriberId       String?
+  subscriber         Subscriber?    @relation(fields: [subscriberId], references: [id], onDelete: SetNull)
+  phoneE164          String?
+  channel            ConsentChannel
+  consentTextVersion String         // Version identifier of KDPA consent copy agreed to
+  ipHash             String?
+  userAgent          String?
+  sourcePage         String?
+  consentedAt        DateTime       @default(now())
+
+  @@index([subscriberId])
+  @@index([channel])
+}
+
+// ----------------------------------------------------
+// 5. CAMPAIGNS & NEWSLETTERS
+// ----------------------------------------------------
+
+enum CampaignStatus {
+  DRAFT
+  QUEUED
+  SENDING
+  SENT
+  FAILED
+}
+
+model Campaign {
+  id               String              @id @default(cuid())
+  title            String
+  subject          String
+  previewText      String?
+  contentHtml      String
+  segmentInterests String[]
+  status           CampaignStatus      @default(DRAFT)
+  sentAt           DateTime?
+  scheduledAt      DateTime?
+  totalRecipients  Int                 @default(0)
+  sentCount        Int                 @default(0)
+  failedCount      Int                 @default(0)
+  createdById      String?
+  recipients       CampaignRecipient[]
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+
+  @@index([status])
+}
+
+enum RecipientStatus {
+  QUEUED
+  SENT
+  FAILED
+  OPENED
+  CLICKED
+}
+
+model CampaignRecipient {
+  id           String          @id @default(cuid())
+  campaignId   String
+  campaign     Campaign        @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  subscriberId String
+  subscriber   Subscriber      @relation(fields: [subscriberId], references: [id], onDelete: Cascade)
+  status       RecipientStatus @default(QUEUED)
+  error        String?
+  sentAt       DateTime?
+  createdAt    DateTime        @default(now())
+
+  @@unique([campaignId, subscriberId])
+  @@index([campaignId])
+  @@index([subscriberId])
+}
+
+// ----------------------------------------------------
+// 6. GALLERY & MEDIA ASSETS
+// ----------------------------------------------------
+
+enum AlbumVisibility {
+  DRAFT
+  PUBLISHED
+}
+
+enum DownloadProtection {
+  DISABLED
+  DETERRENT
+}
+
+model Album {
+  id                 String             @id @default(cuid())
+  title              String
+  slug               String             @unique
+  eventId            String?
+  event              Event?             @relation(fields: [eventId], references: [id], onDelete: SetNull)
+  description        String?
+  coverUrl           String?
+  coverBlur          String?
+  visibility         AlbumVisibility    @default(DRAFT)
+  downloadProtection DownloadProtection @default(DETERRENT)
+  sortOrder          Int                @default(0)
+  media              MediaAsset[]
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  @@index([slug])
+  @@index([eventId])
+}
+
+enum MediaType {
+  PHOTO
+  VIDEO_UPLOAD
+  VIDEO_EMBED
+}
+
+enum MediaStatus {
+  UPLOADING
+  PROCESSING
+  READY
+  FAILED
+}
+
+model MediaAsset {
+  id                 String      @id @default(cuid())
+  albumId            String?
+  album              Album?      @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  eventId            String?
+  event              Event?      @relation(fields: [eventId], references: [id], onDelete: SetNull)
+  type               MediaType
+  status             MediaStatus @default(READY)
+  filename           String?
+  originalUrl        String
+  responsiveUrls     Json?       // { "thumb": "...", "medium": "...", "full": "...", "720p": "...", "1080p": "..." }
+  posterUrl          String?
+  blurHash           String?
+  width              Int?
+  height             Int?
+  durationSec        Int?
+  mimeType           String?
+  provider           String?     // e.g. "youtube", "vimeo", "instagram"
+  providerId         String?     // e.g. video ID from YouTube
+  caption            String?
+  photographerCredit String?
+  sortOrder          Int         @default(0)
+  errorMessage       String?
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+
+  @@index([albumId])
+  @@index([eventId])
+  @@index([type])
+  @@index([status])
+}
+
+// ----------------------------------------------------
+// 7. CONTACT MESSAGES, FAQS & PARTNERS
+// ----------------------------------------------------
+
+enum ContactTopic {
+  GENERAL
+  SPONSORSHIP
+  BOOKING
+  PRESS
+}
+
+model ContactMessage {
+  id        String       @id @default(cuid())
+  name      String
+  email     String
+  topic     ContactTopic @default(GENERAL)
+  message   String
+  isRead    Boolean      @default(false)
+  isReplied Boolean      @default(false)
+  repliedAt DateTime?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime     @default(now())
+
+  @@index([isRead])
+  @@index([topic])
+  @@index([createdAt])
+}
+
+enum FaqCategory {
+  TICKETING
+  VENUE
+  POLICIES
+  TRANSPORT
+  GENERAL
+}
+
+model FaqItem {
+  id          String      @id @default(cuid())
+  question    String
+  answer      String
+  category    FaqCategory @default(GENERAL)
+  sortOrder   Int         @default(0)
+  isPublished Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([category])
+  @@index([isPublished])
+}
+
+enum PartnerTier {
+  HEADLINE
+  OFFICIAL
+  MEDIA
+}
+
+model Partner {
+  id         String      @id @default(cuid())
+  name       String
+  logoUrl    String
+  websiteUrl String?
+  tier       PartnerTier @default(OFFICIAL)
+  sortOrder  Int         @default(0)
+  isActive   Boolean     @default(true)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  @@index([tier])
+  @@index([isActive])
+}
+
+// ----------------------------------------------------
+// 8. MERCH SHOP (FEATURE-FLAGGED)
+// ----------------------------------------------------
+
+model Product {
+  id           String           @id @default(cuid())
+  title        String
+  slug         String           @unique
+  description  String
+  basePriceKes Int
+  images       String[]
+  isActive     Boolean          @default(true)
+  variants     ProductVariant[]
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  @@index([slug])
+  @@index([isActive])
+}
+
+model ProductVariant {
+  id            String      @id @default(cuid())
+  productId     String
+  product       Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name          String      // e.g. "Large / Acid Black"
+  size          String?     // e.g. "L"
+  color         String?     // e.g. "Acid Black"
+  sku           String      @unique
+  priceKes      Int?        // Optional variant price override
+  stockQuantity Int         @default(0)
+  cartItems     CartItem[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([productId])
+  @@index([sku])
+}
+
+model Cart {
+  id         String     @id @default(cuid())
+  guestToken String     @unique
+  userId     String?
+  items      CartItem[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  @@index([guestToken])
+}
+
+model CartItem {
+  id        String         @id @default(cuid())
+  cartId    String
+  cart      Cart           @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  variantId String
+  variant   ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  quantity  Int            @default(1)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  @@unique([cartId, variantId])
+  @@index([cartId])
+}
+
+enum DeliveryMethod {
+  PICKUP
+  COURIER
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  FULFILLED
+  CANCELLED
+  REFUNDED
+}
+
+model Order {
+  id             String         @id @default(cuid())
+  orderNumber    String         @unique // e.g. "AFQ-2026-0001"
+  customerName   String
+  customerEmail  String
+  customerPhone  String
+  deliveryMethod DeliveryMethod @default(PICKUP)
+  shippingAddress String?
+  shippingCity   String?
+  deliveryFeeKes Int            @default(0)
+  subtotalKes    Int
+  totalKes       Int
+  status         OrderStatus    @default(PENDING)
+  trackingCode   String?
+  notes          String?
+  items          OrderItem[]
+  payments       Payment[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  @@index([orderNumber])
+  @@index([customerEmail])
+  @@index([status])
+}
+
+model OrderItem {
+  id           String   @id @default(cuid())
+  orderId      String
+  order        Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  variantId    String
+  title        String
+  variantName  String
+  unitPriceKes Int
+  quantity     Int
+  lineTotalKes Int
+  createdAt    DateTime @default(now())
+
+  @@index([orderId])
+}
+
+enum PaymentProviderType {
+  MOCK
+  PAYSTACK
+  MANUAL
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
+model Payment {
+  id                    String              @id @default(cuid())
+  orderId               String
+  order                 Order               @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  provider              PaymentProviderType @default(MOCK)
+  providerTransactionId String?
+  amountKes             Int
+  currency              String              @default("KES")
+  status                PaymentStatus       @default(PENDING)
+  rawWebhookPayload     Json?
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+
+  @@index([orderId])
+  @@index([providerTransactionId])
+  @@index([status])
+}
+
+// ----------------------------------------------------
+// 9. RATE LIMITING ENGINE (POSTGRES-BACKED)
+// ----------------------------------------------------
+
+model RateLimitEntry {
+  key       String   @id // e.g. "rate:contact:127.0.0.1", "rate:tickets:127.0.0.1"
+  points    Int      @default(0)
+  resetAt   DateTime
+  updatedAt DateTime @updatedAt
+
+  @@index([resetAt])
+}
+

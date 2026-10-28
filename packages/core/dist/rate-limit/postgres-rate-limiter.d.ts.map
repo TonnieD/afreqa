@@ -1,0 +1,1 @@
+{"version":3,"file":"postgres-rate-limiter.d.ts","sourceRoot":"","sources":["../../src/rate-limit/postgres-rate-limiter.ts"],"names":[],"mappings":"AAEA,MAAM,WAAW,eAAe;IAC9B,OAAO,EAAE,OAAO,CAAC;IACjB,SAAS,EAAE,MAAM,CAAC;IAClB,cAAc,EAAE,MAAM,CAAC;CACxB;AAED,wBAAsB,cAAc,CAClC,GAAG,EAAE,MAAM,EACX,SAAS,EAAE,MAAM,EACjB,aAAa,EAAE,MAAM,GACpB,OAAO,CAAC,eAAe,CAAC,CAuD1B"}

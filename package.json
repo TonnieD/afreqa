@@ -1,0 +1,26 @@
+{
+  "name": "afreqa-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@10.5.2",
+  "scripts": {
+    "dev": "pnpm --parallel --filter @afreqa/web --filter @afreqa/worker dev",
+    "build": "pnpm --filter @afreqa/core build && pnpm --filter @afreqa/worker build && pnpm --filter @afreqa/web build",
+    "lint": "pnpm --recursive run lint",
+    "typecheck": "pnpm --recursive run typecheck",
+    "test:unit": "vitest run",
+    "db:generate": "pnpm --filter @afreqa/core db:generate",
+    "db:migrate": "pnpm --filter @afreqa/core db:migrate",
+    "db:seed": "pnpm --filter @afreqa/core db:seed",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,json,md}\""
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "eslint": "^9.17.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.72.1",
+    "vitest": "^3.0.0"
+  }
+}

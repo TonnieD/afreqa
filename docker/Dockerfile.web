@@ -1,0 +1,64 @@
+# ---------------------------------------------------
+# Multi-stage Dockerfile for Next.js Web Application
+# ---------------------------------------------------
+
+FROM node:22-alpine AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+
+# 1. Dependencies Stage
+FROM base AS deps
+WORKDIR /app
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
+COPY packages/core/package.json ./packages/core/
+COPY apps/web/package.json ./apps/web/
+COPY worker/package.json ./worker/
+RUN pnpm install --frozen-lockfile
+
+# 2. Builder Stage
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/packages/core/node_modules ./packages/core/node_modules
+COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
+COPY . .
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV SKIP_ENV_VALIDATION=1
+ENV BUILD_STANDALONE=true
+
+# Generate Prisma Client & Build Core Package
+RUN pnpm --filter @afreqa/core db:generate
+RUN pnpm --filter @afreqa/core build
+
+# Build Next.js Web App
+RUN pnpm --filter @afreqa/web build
+
+# 3. Production Runner Stage
+FROM node:22-alpine AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
+
+# Non-root security user
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+# Create uploads directory and grant permissions
+RUN mkdir -p /app/uploads && chown -R nextjs:nodejs /app/uploads
+
+# Copy public & standalone outputs from builder
+COPY --from=builder /app/apps/web/public ./apps/web/public
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
+
+USER nextjs
+
+EXPOSE 3000
+
+CMD ["node", "apps/web/server.js"]

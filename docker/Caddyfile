@@ -1,0 +1,38 @@
+{
+    # Global options
+    admin off
+    auto_https off # Handled automatically when a production domain is specified
+}
+
+:80 {
+    # 1. High capacity for large Tus video after-movie uploads (up to 4.5 GB)
+    request_body {
+        max_size 4500MB
+    }
+
+    # 2. Strict Security Headers
+    header {
+        X-Content-Type-Options nosniff
+        X-Frame-Options SAMEORIGIN
+        Referrer-Policy strict-origin-when-cross-origin
+        Permissions-Policy "camera=(), microphone=(), geolocation=()"
+        -Server
+    }
+
+    # 3. Static Uploads Caching
+    @uploads path /uploads/*
+    handle @uploads {
+        header Cache-Control "public, max-age=31536000, immutable"
+        reverse_proxy web:3000
+    }
+
+    # 4. Proxy all application traffic to Next.js Web service
+    reverse_proxy web:3000 {
+        header_up X-Forwarded-Proto {scheme}
+        header_up X-Real-IP {remote_host}
+        transport http {
+            response_header_timeout 600s
+        }
+    }
+}
+

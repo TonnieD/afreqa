@@ -1,0 +1,48 @@
+services:
+  caddy:
+    image: caddy:2-alpine
+    container_name: afreqa-caddy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+      - uploads:/app/uploads:ro
+    depends_on:
+      - web
+
+  web:
+    restart: always
+    ports: !override [] # Only exposed through Caddy in production
+    environment:
+      NODE_ENV: production
+      DEMO_MODE: "false"
+
+  worker:
+    restart: always
+    environment:
+      NODE_ENV: production
+
+  # Optional Umami analytics service activated with: docker compose --profile analytics up
+  umami:
+    image: ghcr.io/umami-software/umami:postgresql-latest
+    container_name: afreqa-umami
+    restart: always
+    profiles: ["analytics"]
+    environment:
+      DATABASE_URL: postgresql://postgres:afreqa_dev_password@db:5432/afreqa_db
+      DATABASE_TYPE: postgresql
+      APP_SECRET: ${UMAMI_APP_SECRET:-umami-super-secure-production-secret-token}
+    ports:
+      - "3001:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  caddy_data:
+  caddy_config:
+

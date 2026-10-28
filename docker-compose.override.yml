@@ -1,0 +1,27 @@
+services:
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: afreqa-mailpit
+    restart: unless-stopped
+    ports:
+      - "1025:1025" # SMTP port
+      - "8025:8025" # Web UI port
+
+  web:
+    environment:
+      NODE_ENV: development
+      DEMO_MODE: "true"
+    volumes:
+      - ./uploads:/app/uploads
+      - ./apps/web/src:/app/apps/web/src
+      - ./apps/web/public:/app/apps/web/public
+      - ./packages/core/src:/app/packages/core/src
+
+  worker:
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ./uploads:/app/uploads
+      - ./worker/src:/app/worker/src
+      - ./packages/core/src:/app/packages/core/src
+

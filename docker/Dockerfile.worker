@@ -1,0 +1,55 @@
+# ---------------------------------------------------
+# Dockerfile for Afreqa Worker (pg-boss + ffmpeg + sharp)
+# ---------------------------------------------------
+
+FROM node:22-alpine AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+
+# Install ffmpeg, ffprobe, and vips in worker image ONLY
+RUN apk add --no-cache ffmpeg vips
+
+# 1. Dependencies Stage
+FROM base AS deps
+WORKDIR /app
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
+COPY packages/core/package.json ./packages/core/
+COPY apps/web/package.json ./apps/web/
+COPY worker/package.json ./worker/
+RUN pnpm install --frozen-lockfile
+
+# 2. Builder Stage
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/packages/core/node_modules ./packages/core/node_modules
+COPY --from=deps /app/worker/node_modules ./worker/node_modules
+COPY . .
+
+# Generate Prisma Client & Build Core & Worker
+RUN pnpm --filter @afreqa/core db:generate
+RUN pnpm --filter @afreqa/core build
+RUN pnpm --filter @afreqa/worker build
+
+# 3. Production Runner Stage
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+# Non-root security user
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 worker
+
+RUN mkdir -p /app/uploads && chown -R worker:nodejs /app/uploads
+
+COPY --from=builder --chown=worker:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=worker:nodejs /app/packages/core ./packages/core
+COPY --from=builder --chown=worker:nodejs /app/worker ./worker
+COPY --from=builder --chown=worker:nodejs /app/package.json ./package.json
+
+USER worker
+
+CMD ["node", "worker/dist/index.js"]
+

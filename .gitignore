@@ -1,0 +1,53 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Next.js
+.next
+out
+
+# Prisma
+packages/core/prisma/generated
+*.db
+*.db-journal
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+!.env.example
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# Docker & Storage
+uploads/*
+!uploads/.gitkeep
+pgdata/*
+
+# Seed Media (large raw videos/photos)
+seed-media/*
+!seed-media/.gitkeep
+
+# Testing & Coverage
+coverage
+playwright-report
+test-results
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
