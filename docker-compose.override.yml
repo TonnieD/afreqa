@@ -9,19 +9,14 @@ services:
 
   web:
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
       DEMO_MODE: "true"
     volumes:
       - ./uploads:/app/uploads
-      - ./apps/web/src:/app/apps/web/src
-      - ./apps/web/public:/app/apps/web/public
-      - ./packages/core/src:/app/packages/core/src
 
   worker:
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
     volumes:
       - ./uploads:/app/uploads
-      - ./worker/src:/app/worker/src
-      - ./packages/core/src:/app/packages/core/src
 

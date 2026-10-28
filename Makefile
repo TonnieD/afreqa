@@ -19,10 +19,10 @@ help:
 	@echo "  make clean       - Stop containers and remove build artifacts"
 
 dev:
-	docker-compose up --build
+	docker compose up --build
 
 dev-down:
-	docker-compose down
+	docker compose down
 
 build:
 	pnpm run build
