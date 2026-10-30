@@ -11,8 +11,8 @@ BEGIN
 END
 $$;
 
--- 2. Grant connection and schema usage
-GRANT CONNECT ON DATABASE afreqa_db TO afreqa_app;
+-- 2. Grant connection, database creation (for pg-boss queues), and schema usage
+GRANT CONNECT, CREATE ON DATABASE afreqa_db TO afreqa_app;
 GRANT USAGE, CREATE ON SCHEMA public TO afreqa_app;
 
 -- 3. Configure default table privileges for new tables created by owner/postgres

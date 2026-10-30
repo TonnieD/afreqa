@@ -29,22 +29,25 @@ services:
         condition: service_healthy
     environment:
       NODE_ENV: ${NODE_ENV:-development}
-      DATABASE_URL: ${DATABASE_URL:-postgresql://afreqa_app:afreqa_app_dev_password@db:5432/afreqa_db}
-      DATABASE_OWNER_URL: ${DATABASE_OWNER_URL:-postgresql://postgres:afreqa_dev_password@db:5432/afreqa_db}
+      DATABASE_URL: ${CONTAINER_DATABASE_URL:-postgresql://afreqa_app:afreqa_app_dev_password@db:5432/afreqa_db}
+      DATABASE_OWNER_URL: ${CONTAINER_DATABASE_OWNER_URL:-postgresql://postgres:afreqa_dev_password@db:5432/afreqa_db}
       STORAGE_UPLOAD_DIR: /app/uploads
       STORAGE_PUBLIC_URL_PREFIX: /uploads
-      SMTP_HOST: ${SMTP_HOST:-mailpit}
+      SMTP_HOST: ${CONTAINER_SMTP_HOST:-mailpit}
       SMTP_PORT: ${SMTP_PORT:-1025}
       SMTP_FROM: ${SMTP_FROM:-Afreqa Nairobi <hello@afreqa.com>}
       SEED_ADMIN_EMAIL: ${SEED_ADMIN_EMAIL:-admin@afreqa.local}
       SEED_ADMIN_PASSWORD: ${SEED_ADMIN_PASSWORD:-AfreqaAdmin2026!}
       DEMO_MODE: ${DEMO_MODE:-false}
+      SESSION_SECRET: ${SESSION_SECRET:-dev-session-secret-must-be-changed-in-production-min-32-chars!}
+      NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3001}
+      HUSTLESASA_STORE_URL: ${HUSTLESASA_STORE_URL:-https://afreqanairobi.hustlesasa.shop/}
     volumes:
       - uploads:/app/uploads
     ports:
-      - "3000:3000"
+      - "${WEB_PORT:-3001}:3000"
     healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/api/health | grep -q 'ok' || exit 1"]
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/api/health | grep -q 'ok' || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -60,13 +63,27 @@ services:
         condition: service_healthy
     environment:
       NODE_ENV: ${NODE_ENV:-development}
-      DATABASE_URL: ${DATABASE_URL:-postgresql://afreqa_app:afreqa_app_dev_password@db:5432/afreqa_db}
+      DATABASE_URL: ${CONTAINER_DATABASE_URL:-postgresql://afreqa_app:afreqa_app_dev_password@db:5432/afreqa_db}
       STORAGE_UPLOAD_DIR: /app/uploads
-      SMTP_HOST: ${SMTP_HOST:-mailpit}
+      SMTP_HOST: ${CONTAINER_SMTP_HOST:-mailpit}
       SMTP_PORT: ${SMTP_PORT:-1025}
       SMTP_FROM: ${SMTP_FROM:-Afreqa Nairobi <hello@afreqa.com>}
     volumes:
       - uploads:/app/uploads
+
+  umami:
+    image: ghcr.io/umami-software/umami:postgresql-latest
+    container_name: afreqa-umami
+    restart: unless-stopped
+    profiles: ["analytics"]
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:-afreqa_dev_password}@db:5432/${POSTGRES_DB:-afreqa_db}
+      APP_SECRET: ${UMAMI_APP_SECRET:-afreqa_umami_secret_2026}
+    ports:
+      - "${UMAMI_PORT:-3002}:3000"
 
 volumes:
   pgdata:

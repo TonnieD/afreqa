@@ -36,6 +36,10 @@ RUN pnpm --filter @afreqa/core build
 # Build Next.js Web App
 RUN pnpm --filter @afreqa/web build
 
+# Copy Prisma query engine into Next.js standalone package
+RUN mkdir -p apps/web/.next/standalone/apps/web/.prisma/client && \
+    find node_modules -name "libquery_engine-linux-musl-openssl-3.0.x.so.node" -exec cp {} apps/web/.next/standalone/apps/web/.prisma/client/ \; 2>/dev/null || true
+
 # 3. Production Runner Stage
 FROM node:22-alpine AS runner
 WORKDIR /app
@@ -45,6 +49,7 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
+ENV PRISMA_QUERY_ENGINE_LIBRARY=/app/apps/web/.prisma/client/libquery_engine-linux-musl-openssl-3.0.x.so.node
 
 # Non-root security user
 RUN addgroup --system --gid 1001 nodejs
@@ -53,10 +58,12 @@ RUN adduser --system --uid 1001 nextjs
 # Create uploads directory and grant permissions
 RUN mkdir -p /app/uploads && chown -R nextjs:nodejs /app/uploads
 
-# Copy public & standalone outputs from builder
+# Copy public, standalone, dependencies & prisma assets from builder
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/packages/core/prisma ./packages/core/prisma
 
 USER nextjs
 
