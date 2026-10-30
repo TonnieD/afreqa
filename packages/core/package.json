@@ -25,7 +25,7 @@
     "zod": "^3.24.1"
   },
   "optionalDependencies": {
-    "@img/sharp-win32-x64": "^0.33.5"
+    "@img/sharp-win32-x64": "^0.35.5"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",

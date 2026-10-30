@@ -86,8 +86,8 @@ importers:
         version: 5.9.3
     optionalDependencies:
       '@img/sharp-win32-x64':
-        specifier: ^0.33.5
-        version: 0.33.5
+        specifier: ^0.35.5
+        version: 0.35.5
 
   packages/core:
     dependencies:
@@ -136,8 +136,8 @@ importers:
         version: 5.9.3
     optionalDependencies:
       '@img/sharp-win32-x64':
-        specifier: ^0.33.5
-        version: 0.33.5
+        specifier: ^0.35.5
+        version: 0.35.5
 
   worker:
     dependencies:
@@ -483,6 +483,12 @@ packages:
   '@img/sharp-win32-x64@0.33.5':
     resolution: {integrity: sha512-MpY/o8/8kj+EcnxwvrP4aTJSWw/aZ7JIGR4aBeZkZw5B7/Jn+tY9/VNwtcoGmdT7GfggGIU4kygOMSbYnOrAbg==}
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
+    cpu: [x64]
+    os: [win32]
+
+  '@img/sharp-win32-x64@0.35.5':
+    resolution: {integrity: sha512-x76eH0vEiHlcMQu8Y8IenntaACtddpT6W0wmXtWrnKcnKI7ME5DdgqhAD6SEWOEl1v2zDvkZDhFA9KnURwpfqg==}
+    engines: {node: '>=20.9.0'}
     cpu: [x64]
     os: [win32]
 
@@ -2322,6 +2328,9 @@ snapshots:
     optional: true
 
   '@img/sharp-win32-x64@0.33.5':
+    optional: true
+
+  '@img/sharp-win32-x64@0.35.5':
     optional: true
 
   '@ioredis/commands@1.10.0':
