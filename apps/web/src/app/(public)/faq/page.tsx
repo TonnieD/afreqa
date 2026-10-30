@@ -120,27 +120,27 @@ export default function FAQPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
       {/* Header */}
       <div className="text-center space-y-4">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full glass-panel text-afreqa-teal text-xs font-mono font-bold uppercase tracking-widest">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/5 border border-white/10 text-amber-400 text-xs font-mono font-bold uppercase tracking-widest">
           <HelpCircle className="w-3.5 h-3.5" />
           <span>Knowledge Base</span>
         </div>
-        <h1 className="font-display font-black text-4xl sm:text-6xl text-chrome">
+        <h1 className="font-display font-black text-4xl sm:text-6xl text-white tracking-tight">
           FREQUENTLY ASKED QUESTIONS
         </h1>
-        <p className="text-sm sm:text-base text-afreqa-silver max-w-xl mx-auto">
+        <p className="text-sm sm:text-base text-zinc-300 max-w-xl mx-auto">
           Everything you need to know about tickets, gate admission protocols, venue transit, and festival guidelines.
         </p>
       </div>
 
       {/* Search Bar */}
       <div className="relative max-w-2xl mx-auto">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-afreqa-silver-mid" />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search questions (e.g. age limit, parking, tickets, refund)..."
-          className="w-full pl-12 pr-4 py-3.5 rounded-2xl glass-panel border border-afreqa-chrome-high/20 focus:border-afreqa-teal text-afreqa-chrome-high placeholder:text-afreqa-silver-mid text-sm focus:outline-none transition-all shadow-metallic"
+          className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-[#0f1117]/80 backdrop-blur-md border border-white/10 focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-all shadow-xl"
         />
       </div>
 
@@ -150,10 +150,10 @@ export default function FAQPage() {
           <button
             key={cat}
             onClick={() => setSelectedCategory(cat)}
-            className={`px-4 py-2 rounded-full text-xs font-mono font-semibold transition-all ${
+            className={`px-4 py-2 rounded-full text-xs font-mono transition-all ${
               selectedCategory === cat
-                ? "bg-afreqa-teal text-afreqa-shadow shadow-glow-teal font-bold"
-                : "glass-panel text-afreqa-silver hover:text-afreqa-chrome-high hover:border-afreqa-teal/30"
+                ? "bg-amber-500 text-black font-bold shadow-lg shadow-amber-500/10"
+                : "bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:border-white/20"
             }`}
           >
             {cat}
@@ -164,8 +164,8 @@ export default function FAQPage() {
       {/* FAQ Accordion List */}
       <div className="space-y-4">
         {filteredFAQs.length === 0 ? (
-          <div className="rounded-2xl glass-panel p-10 text-center border border-afreqa-chrome-high/10">
-            <p className="text-afreqa-silver text-sm">
+          <div className="rounded-2xl bg-[#0f1117]/80 p-10 text-center border border-white/10">
+            <p className="text-zinc-400 text-sm">
               No matching questions found for &ldquo;{searchQuery}&rdquo;.
             </p>
             <button
@@ -173,7 +173,7 @@ export default function FAQPage() {
                 setSearchQuery("");
                 setSelectedCategory("All");
               }}
-              className="mt-3 text-xs font-mono text-afreqa-teal hover:underline font-semibold"
+              className="mt-3 text-xs font-mono text-amber-400 hover:underline font-semibold"
             >
               Reset filter
             </button>
@@ -184,24 +184,24 @@ export default function FAQPage() {
             return (
               <div
                 key={item.id}
-                className="rounded-2xl glass-panel border border-afreqa-chrome-high/10 overflow-hidden transition-all duration-200"
+                className="rounded-2xl bg-[#0f1117]/80 backdrop-blur-md border border-white/10 overflow-hidden transition-all duration-200"
               >
                 <button
                   onClick={() => toggleItem(item.id)}
-                  className="w-full px-6 py-5 text-left flex items-center justify-between gap-4 hover:bg-afreqa-stage/20 transition-colors"
+                  className="w-full px-6 py-5 text-left flex items-center justify-between gap-4 hover:bg-white/5 transition-colors"
                   aria-expanded={isOpen}
                 >
                   <div className="space-y-1">
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-afreqa-teal font-semibold">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-semibold">
                       {item.category}
                     </span>
-                    <h3 className="font-display font-bold text-base sm:text-lg text-afreqa-chrome-high">
+                    <h3 className="font-display font-bold text-base sm:text-lg text-white">
                       {item.question}
                     </h3>
                   </div>
-                  <div className="p-1 rounded-full text-afreqa-silver">
+                  <div className="p-1 rounded-full text-zinc-400">
                     {isOpen ? (
-                      <ChevronUp className="w-5 h-5 text-afreqa-teal" />
+                      <ChevronUp className="w-5 h-5 text-amber-400" />
                     ) : (
                       <ChevronDown className="w-5 h-5" />
                     )}
@@ -209,7 +209,7 @@ export default function FAQPage() {
                 </button>
 
                 {isOpen && (
-                  <div className="px-6 pb-6 pt-1 text-xs sm:text-sm text-afreqa-silver leading-relaxed border-t border-afreqa-chrome-high/5 font-light">
+                  <div className="px-6 pb-6 pt-1 text-xs sm:text-sm text-zinc-300 leading-relaxed border-t border-white/5 font-normal">
                     {item.answer}
                   </div>
                 )}
@@ -220,14 +220,14 @@ export default function FAQPage() {
       </div>
 
       {/* Support Callout */}
-      <div className="rounded-2xl glass-panel p-6 border border-afreqa-chrome-high/10 text-center space-y-2">
-        <p className="text-xs text-afreqa-silver-mid font-mono">
+      <div className="rounded-2xl bg-[#0f1117]/80 backdrop-blur-md p-6 border border-white/10 text-center space-y-2">
+        <p className="text-xs text-zinc-400 font-mono">
           Have an unlisted question about accessibility, press credentials, or brand partnerships?
         </p>
         <div>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-1.5 text-xs font-mono text-afreqa-teal hover:text-afreqa-chrome-high font-semibold transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-mono text-amber-400 hover:text-white font-semibold transition-colors"
           >
             <span>Reach out to our operations team</span>
             <ArrowRight className="w-3.5 h-3.5" />

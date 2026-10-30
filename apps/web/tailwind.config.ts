@@ -13,31 +13,37 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         afreqa: {
-          midnight: "#162229", // Sampled deep sky canvas
-          shadow: "#0B0504",   // Sampled deepest night base
-          stage: "#24201D",    // Sampled stage dark neutral
-          bevel: "#261E1D",    // 3D bevel shadow
+          midnight: "#0F1117", // Deep night sky
+          shadow: "#070709",   // Deep obsidian black base
+          stage: "#15161E",    // Refined stage dark neutral
+          surface: "#1C1D26",  // Elevated card surface
+          bevel: "#22232E",    // Subtle bevel
           chrome: {
-            high: "#EDECEC",   // Specular chrome highlight
-            mid: "#ADADAC",    // Brushed silver
-            dark: "#5A5958",   // Dark metallic
+            high: "#FFFFFF",   // Pure specular highlight
+            mid: "#D4D4D8",    // Brushed titanium silver
+            dark: "#52525B",   // Dark metallic
           },
-          silver: "#B6B5B5",   // Equalizer soundwave bars
-          violet: "#7B2FF7",   // Electric festival neon glow
-          teal: "#16F4D0",     // Aurora pulse
-          gold: "#F5C542",     // Warm amber stage lighting
-          amber: "#372308",    // Deep stage amber
-          crimson: "#370609",  // Deep festival crimson
-          flare: "#F107A3",    // Magenta laser flare
+          silver: "#A1A1AA",   // Clean secondary neutral
+          // Stage lights & warm ember palette (from real concert photography)
+          gold: "#F59E0B",     // Warm stage amber / golden tungsten
+          amber: "#D97706",    // Deep stage ember
+          accent: "#E58A3C",   // Primary warm stage accent
+          blue: "#3B82F6",     // Subtle concert blue wash
+          crimson: "#991B1B",  // Deep stage crimson
+          // Gracefully remap legacy neon tokens to warm stage tones:
+          teal: "#E58A3C",     // Remapped from neon cyan to warm stage amber
+          violet: "#D97706",   // Remapped from neon violet to deep stage ember
+          flare: "#F59E0B",    // Remapped from neon pink to warm amber flare
         },
       },
       boxShadow: {
-        "glow-violet": "0 0 30px -5px rgba(123, 47, 247, 0.5)",
-        "glow-teal": "0 0 30px -5px rgba(22, 244, 208, 0.5)",
-        "glow-gold": "0 0 30px -5px rgba(245, 197, 66, 0.5)",
-        "glow-crimson": "0 0 30px -5px rgba(241, 7, 163, 0.5)",
-        "metallic": "0 8px 32px 0 rgba(0, 0, 0, 0.6), inset 0 1px 1px 0 rgba(255, 255, 255, 0.15)",
-        "metallic-hover": "0 12px 40px 0 rgba(22, 244, 208, 0.25), inset 0 1px 1px 0 rgba(255, 255, 255, 0.3)",
+        "glow-amber": "0 8px 30px -4px rgba(229, 138, 60, 0.25)",
+        "glow-teal": "0 8px 30px -4px rgba(229, 138, 60, 0.2)",
+        "glow-violet": "0 8px 30px -4px rgba(217, 119, 6, 0.2)",
+        "glow-gold": "0 8px 30px -4px rgba(245, 158, 11, 0.25)",
+        "glow-crimson": "0 8px 30px -4px rgba(153, 27, 27, 0.25)",
+        "metallic": "0 8px 32px 0 rgba(0, 0, 0, 0.6), inset 0 1px 1px 0 rgba(255, 255, 255, 0.08)",
+        "metallic-hover": "0 12px 40px 0 rgba(0, 0, 0, 0.7), inset 0 1px 1px 0 rgba(255, 255, 255, 0.15)",
       },
       fontFamily: {
         display: ["var(--font-display)", "sans-serif"],

@@ -7,16 +7,13 @@ import { Instagram, Youtube, MessageCircle, ArrowUpRight, Shield, Heart } from "
 
 export function Footer() {
   return (
-    <footer className="relative bg-afreqa-shadow border-t border-afreqa-chrome-high/10 pt-16 pb-12 overflow-hidden z-10">
-      {/* Background ambient glow */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-afreqa-violet/10 rounded-full blur-[150px] pointer-events-none" />
-
+    <footer className="relative bg-[#070709] border-t border-white/10 pt-16 pb-12 overflow-hidden z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-afreqa-chrome-high/10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-white/10">
           {/* Col 1: Brand Info */}
           <div className="md:col-span-1 space-y-4">
             <Link href="/" className="flex items-center gap-3">
-              <div className="relative w-10 h-10 rounded-full overflow-hidden border border-afreqa-chrome-high/30">
+              <div className="relative w-10 h-10 rounded-full overflow-hidden border border-white/20">
                 <Image
                   src="/brand/logo.jpg"
                   alt="Afreqa"
@@ -25,11 +22,11 @@ export function Footer() {
                   className="object-cover"
                 />
               </div>
-              <span className="font-display font-extrabold text-xl tracking-wider text-chrome">
+              <span className="font-display font-extrabold text-xl tracking-wider text-white">
                 AFREQA
               </span>
             </Link>
-            <p className="text-sm text-afreqa-silver leading-relaxed">
+            <p className="text-sm text-zinc-400 leading-relaxed">
               Kenya&apos;s home for electronic dance music. Uniting high-energy festival fantasy with Nairobi&apos;s underground soundwaves.
             </p>
             <div className="flex items-center gap-3 pt-2">
@@ -38,7 +35,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 title="Afreqa on Instagram [Placeholder]"
-                className="p-2.5 rounded-full glass-panel text-afreqa-silver hover:text-afreqa-teal hover:border-afreqa-teal/50 transition-all"
+                className="p-2.5 rounded-full glass-panel text-zinc-400 hover:text-white hover:border-white/25 transition-all"
                 aria-label="Afreqa Instagram"
               >
                 <Instagram className="w-4 h-4" />
@@ -48,7 +45,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 title="Afreqa on TikTok [Placeholder]"
-                className="p-2.5 rounded-full glass-panel text-afreqa-silver hover:text-afreqa-teal hover:border-afreqa-teal/50 transition-all font-bold text-xs"
+                className="p-2.5 rounded-full glass-panel text-zinc-400 hover:text-white hover:border-white/25 transition-all font-bold text-xs"
                 aria-label="Afreqa TikTok"
               >
                 TT
@@ -58,7 +55,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 title="Afreqa on YouTube [Placeholder]"
-                className="p-2.5 rounded-full glass-panel text-afreqa-silver hover:text-afreqa-teal hover:border-afreqa-teal/50 transition-all"
+                className="p-2.5 rounded-full glass-panel text-zinc-400 hover:text-white hover:border-white/25 transition-all"
                 aria-label="Afreqa YouTube"
               >
                 <Youtube className="w-4 h-4" />
@@ -68,7 +65,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 title="Join Afreqa WhatsApp Community [Placeholder]"
-                className="p-2.5 rounded-full glass-panel text-afreqa-teal hover:border-afreqa-teal/50 transition-all shadow-glow-teal"
+                className="p-2.5 rounded-full glass-panel text-emerald-400 hover:border-emerald-500/50 transition-all"
                 aria-label="Afreqa WhatsApp Community"
               >
                 <MessageCircle className="w-4 h-4" />
@@ -78,27 +75,27 @@ export function Footer() {
 
           {/* Col 2: Navigation */}
           <div>
-            <h4 className="font-mono text-xs uppercase tracking-widest text-afreqa-teal mb-4 font-semibold">
+            <h4 className="font-mono text-xs uppercase tracking-widest text-amber-400 mb-4 font-bold">
               Festival
             </h4>
             <ul className="space-y-2.5 text-sm">
               <li>
-                <Link href="/events" className="text-afreqa-silver hover:text-afreqa-chrome-high transition-colors">
+                <Link href="/events" className="text-zinc-400 hover:text-white transition-colors">
                   Upcoming Editions
                 </Link>
               </li>
               <li>
-                <Link href="/events#past" className="text-afreqa-silver hover:text-afreqa-chrome-high transition-colors">
+                <Link href="/events#past" className="text-zinc-400 hover:text-white transition-colors">
                   Past Archives
                 </Link>
               </li>
               <li>
-                <Link href="/gallery" className="text-afreqa-silver hover:text-afreqa-chrome-high transition-colors">
+                <Link href="/gallery" className="text-zinc-400 hover:text-white transition-colors">
                   Visual Gallery
                 </Link>
               </li>
               <li>
-                <Link href="/go/tickets/resonance" className="text-afreqa-teal hover:text-afreqa-chrome-high transition-colors inline-flex items-center gap-1">
+                <Link href="/go/tickets/resonance" className="text-amber-400 hover:text-white transition-colors inline-flex items-center gap-1 font-semibold">
                   <span>Get Tickets</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />
                 </Link>
@@ -108,22 +105,22 @@ export function Footer() {
 
           {/* Col 3: Information & Support */}
           <div>
-            <h4 className="font-mono text-xs uppercase tracking-widest text-afreqa-teal mb-4 font-semibold">
+            <h4 className="font-mono text-xs uppercase tracking-widest text-amber-400 mb-4 font-bold">
               Information
             </h4>
             <ul className="space-y-2.5 text-sm">
               <li>
-                <Link href="/about" className="text-afreqa-silver hover:text-afreqa-chrome-high transition-colors">
+                <Link href="/about" className="text-zinc-400 hover:text-white transition-colors">
                   Our Movement
                 </Link>
               </li>
               <li>
-                <Link href="/faq" className="text-afreqa-silver hover:text-afreqa-chrome-high transition-colors">
+                <Link href="/faq" className="text-zinc-400 hover:text-white transition-colors">
                   Gate Rules & FAQ
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-afreqa-silver hover:text-afreqa-chrome-high transition-colors">
+                <Link href="/contact" className="text-zinc-400 hover:text-white transition-colors">
                   Contact & Bookings
                 </Link>
               </li>
@@ -132,7 +129,7 @@ export function Footer() {
                   href="https://afreqanairobi.hustlesasa.shop/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-afreqa-silver hover:text-afreqa-chrome-high transition-colors inline-flex items-center gap-1"
+                  className="text-zinc-400 hover:text-white transition-colors inline-flex items-center gap-1"
                 >
                   <span>HustleSasa Store</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />
@@ -143,38 +140,38 @@ export function Footer() {
 
           {/* Col 4: Privacy & Compliance */}
           <div>
-            <h4 className="font-mono text-xs uppercase tracking-widest text-afreqa-teal mb-4 font-semibold">
+            <h4 className="font-mono text-xs uppercase tracking-widest text-amber-400 mb-4 font-bold">
               Legal & Privacy
             </h4>
             <ul className="space-y-2.5 text-sm">
               <li>
-                <Link href="/legal/privacy" className="text-afreqa-silver hover:text-afreqa-chrome-high transition-colors">
+                <Link href="/legal/privacy" className="text-zinc-400 hover:text-white transition-colors">
                   Privacy Policy (KDPA 2019)
                 </Link>
               </li>
               <li>
-                <Link href="/legal/terms" className="text-afreqa-silver hover:text-afreqa-chrome-high transition-colors">
+                <Link href="/legal/terms" className="text-zinc-400 hover:text-white transition-colors">
                   Terms of Admission
                 </Link>
               </li>
               <li>
-                <Link href="/legal/cookies" className="text-afreqa-silver hover:text-afreqa-chrome-high transition-colors">
+                <Link href="/legal/cookies" className="text-zinc-400 hover:text-white transition-colors">
                   Cookie Notice
                 </Link>
               </li>
               <li>
-                <Link href="/legal/data-request" className="text-afreqa-silver hover:text-afreqa-chrome-high transition-colors flex items-center gap-1.5">
-                  <Shield className="w-3.5 h-3.5 text-afreqa-teal" />
+                <Link href="/legal/data-request" className="text-zinc-400 hover:text-white transition-colors flex items-center gap-1.5">
+                  <Shield className="w-3.5 h-3.5 text-amber-400" />
                   <span>Data Subject Request</span>
                 </Link>
               </li>
               <li>
-                <Link href="/unsubscribe" className="text-afreqa-silver/60 hover:text-afreqa-chrome-high transition-colors">
+                <Link href="/unsubscribe" className="text-zinc-500 hover:text-white transition-colors">
                   Unsubscribe / Manage Data
                 </Link>
               </li>
               <li>
-                <a href="/api/whatsapp/vcard" download="afreqa.vcf" className="text-afreqa-teal/80 hover:text-afreqa-teal transition-colors">
+                <a href="/api/whatsapp/vcard" download="afreqa.vcf" className="text-amber-400/80 hover:text-amber-400 transition-colors">
                   Save Afreqa Contact (.vcf)
                 </a>
               </li>
@@ -183,11 +180,11 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-afreqa-silver-mid font-mono">
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500 font-mono">
           <p>© {new Date().getFullYear()} Afreqa Nairobi. All rights reserved.</p>
           <p className="flex items-center gap-1">
             <span>Engineered with passion for African Electronic Music</span>
-            <Heart className="w-3 h-3 text-afreqa-teal inline" />
+            <Heart className="w-3 h-3 text-amber-400 inline" />
           </p>
         </div>
       </div>

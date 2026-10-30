@@ -61,15 +61,15 @@ export default function ContactPage() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
       {/* Header */}
       <div className="text-center space-y-4 max-w-3xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full glass-panel text-afreqa-teal text-xs font-mono font-bold uppercase tracking-widest">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/5 border border-white/10 text-amber-400 text-xs font-mono font-bold uppercase tracking-widest">
           <Mail className="w-3.5 h-3.5" />
           <span>Direct Lines</span>
         </div>
-        <h1 className="font-display font-black text-4xl sm:text-6xl text-chrome">
+        <h1 className="font-display font-black text-4xl sm:text-6xl text-white tracking-tight">
           CONTACT & BOOKINGS
         </h1>
-        <p className="text-sm sm:text-base text-afreqa-silver">
-          Whether you are an electronic music producer, potential brand partner, press representative, or festival attendee, we welcome your frequency.
+        <p className="text-sm sm:text-base text-zinc-300">
+          Whether you are an electronic music producer, potential brand partner, press representative, or festival attendee, we welcome your inquiry.
         </p>
       </div>
 
@@ -77,14 +77,14 @@ export default function ContactPage() {
         {/* Left Column: Direct Communication Cards */}
         <div className="space-y-6 lg:col-span-1">
           {/* WhatsApp Direct Chat */}
-          <div className="rounded-3xl glass-panel p-6 sm:p-8 border border-afreqa-teal/30 space-y-4 shadow-glow-teal relative overflow-hidden">
-            <div className="w-10 h-10 rounded-xl bg-afreqa-teal/20 text-afreqa-teal flex items-center justify-center border border-afreqa-teal/30">
+          <div className="rounded-3xl bg-[#0f1117]/80 backdrop-blur-md p-6 sm:p-8 border border-emerald-500/30 space-y-4 shadow-xl relative overflow-hidden">
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
               <MessageCircle className="w-5 h-5" />
             </div>
-            <h3 className="font-display font-bold text-xl text-afreqa-chrome-high">
+            <h3 className="font-display font-bold text-xl text-white">
               Instant WhatsApp
             </h3>
-            <p className="text-xs sm:text-sm text-afreqa-silver leading-relaxed font-light">
+            <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed font-normal">
               Fastest response for urgent ticketing inquiries, VIP table reservations, or gate access questions.
             </p>
             <div className="pt-2">
@@ -92,7 +92,7 @@ export default function ContactPage() {
                 href={`https://wa.me/254700000000?text=${whatsappMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-afreqa-teal hover:bg-afreqa-teal/90 text-afreqa-shadow font-extrabold text-xs uppercase tracking-wider transition-all shadow-glow-teal"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs uppercase tracking-wider transition-colors shadow-lg shadow-emerald-950/40"
               >
                 <span>Chat with Operations</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />
@@ -101,33 +101,33 @@ export default function ContactPage() {
           </div>
 
           {/* Email Info */}
-          <div className="rounded-3xl glass-panel p-6 sm:p-8 border border-afreqa-chrome-high/10 space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-afreqa-violet/20 text-afreqa-violet flex items-center justify-center border border-afreqa-violet/30">
+          <div className="rounded-3xl bg-[#0f1117]/80 backdrop-blur-md p-6 sm:p-8 border border-white/10 space-y-3 shadow-lg">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20">
               <Mail className="w-5 h-5" />
             </div>
-            <h3 className="font-display font-bold text-lg text-afreqa-chrome-high">
+            <h3 className="font-display font-bold text-lg text-white">
               Official Email
             </h3>
-            <p className="text-xs text-afreqa-silver-mid font-mono">
-              General: hello@afreqa.com
+            <p className="text-xs text-zinc-400 font-mono">
+              General: <span className="text-white">hello@afreqa.com</span>
             </p>
-            <p className="text-xs text-afreqa-silver-mid font-mono">
-              Bookings: artists@afreqa.com
+            <p className="text-xs text-zinc-400 font-mono">
+              Bookings: <span className="text-white">artists@afreqa.com</span>
             </p>
-            <p className="text-xs text-afreqa-silver-mid font-mono">
-              Partners: sponsors@afreqa.com
+            <p className="text-xs text-zinc-400 font-mono">
+              Partners: <span className="text-white">sponsors@afreqa.com</span>
             </p>
           </div>
 
           {/* Location */}
-          <div className="rounded-3xl glass-panel p-6 sm:p-8 border border-afreqa-chrome-high/10 space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-afreqa-gold/20 text-afreqa-gold flex items-center justify-center border border-afreqa-gold/30">
+          <div className="rounded-3xl bg-[#0f1117]/80 backdrop-blur-md p-6 sm:p-8 border border-white/10 space-y-3 shadow-lg">
+            <div className="w-10 h-10 rounded-xl bg-white/10 text-zinc-300 flex items-center justify-center border border-white/15">
               <MapPin className="w-5 h-5" />
             </div>
-            <h3 className="font-display font-bold text-lg text-afreqa-chrome-high">
+            <h3 className="font-display font-bold text-lg text-white">
               Operations Base
             </h3>
-            <p className="text-xs text-afreqa-silver font-light leading-relaxed">
+            <p className="text-xs text-zinc-400 font-normal leading-relaxed">
               Afreqa Productions Ltd.<br />
               Kilimani / Karen, Nairobi, Kenya
             </p>
@@ -136,20 +136,20 @@ export default function ContactPage() {
 
         {/* Right Column: Interactive Contact Form */}
         <div className="lg:col-span-2">
-          <div className="rounded-3xl glass-panel p-8 sm:p-10 border border-afreqa-chrome-high/15 shadow-metallic">
-            <h2 className="font-display font-extrabold text-2xl text-afreqa-chrome-high mb-2">
-              Transmit a Message
+          <div className="rounded-3xl bg-[#0f1117]/80 backdrop-blur-md p-8 sm:p-10 border border-white/10 shadow-2xl">
+            <h2 className="font-display font-extrabold text-2xl text-white mb-2">
+              Send a Message
             </h2>
-            <p className="text-xs sm:text-sm text-afreqa-silver mb-8 font-light">
+            <p className="text-xs sm:text-sm text-zinc-400 mb-8 font-normal">
               Fill in your details below and our team will get in touch within 24 hours.
             </p>
 
             {success && (
-              <div className="mb-6 p-4 rounded-2xl bg-afreqa-teal/15 border border-afreqa-teal/40 flex items-start gap-3 text-afreqa-teal text-sm">
+              <div className="mb-6 p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/40 flex items-start gap-3 text-emerald-400 text-sm">
                 <CheckCircle2 className="w-5 h-5 flex-shrink-0 mt-0.5" />
                 <div>
-                  <p className="font-bold">Transmission Successful</p>
-                  <p className="text-xs mt-0.5 text-afreqa-silver">
+                  <p className="font-bold">Message Delivered</p>
+                  <p className="text-xs mt-0.5 text-zinc-300">
                     Thank you. Your message has been received by the Afreqa team.
                   </p>
                 </div>
@@ -181,7 +181,7 @@ export default function ContactPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {/* Name */}
                 <div className="space-y-2">
-                  <label className="text-xs font-mono uppercase tracking-wider text-afreqa-silver font-semibold">
+                  <label className="text-xs font-mono uppercase tracking-wider text-zinc-400 font-semibold">
                     Your Full Name *
                   </label>
                   <input
@@ -190,13 +190,13 @@ export default function ContactPage() {
                     placeholder="e.g. Amani Mwangi"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-afreqa-shadow/80 border border-afreqa-chrome-high/15 focus:border-afreqa-teal text-afreqa-chrome-high placeholder:text-afreqa-silver-mid/50 text-sm focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-colors"
                   />
                 </div>
 
                 {/* Email */}
                 <div className="space-y-2">
-                  <label className="text-xs font-mono uppercase tracking-wider text-afreqa-silver font-semibold">
+                  <label className="text-xs font-mono uppercase tracking-wider text-zinc-400 font-semibold">
                     Email Address *
                   </label>
                   <input
@@ -205,7 +205,7 @@ export default function ContactPage() {
                     placeholder="you@domain.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-afreqa-shadow/80 border border-afreqa-chrome-high/15 focus:border-afreqa-teal text-afreqa-chrome-high placeholder:text-afreqa-silver-mid/50 text-sm focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-colors"
                   />
                 </div>
               </div>
@@ -213,7 +213,7 @@ export default function ContactPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {/* Phone */}
                 <div className="space-y-2">
-                  <label className="text-xs font-mono uppercase tracking-wider text-afreqa-silver font-semibold">
+                  <label className="text-xs font-mono uppercase tracking-wider text-zinc-400 font-semibold">
                     Phone / WhatsApp (Optional)
                   </label>
                   <input
@@ -221,19 +221,19 @@ export default function ContactPage() {
                     placeholder="+254 7XX XXX XXX"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-afreqa-shadow/80 border border-afreqa-chrome-high/15 focus:border-afreqa-teal text-afreqa-chrome-high placeholder:text-afreqa-silver-mid/50 text-sm focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-colors"
                   />
                 </div>
 
                 {/* Topic / Subject */}
                 <div className="space-y-2">
-                  <label className="text-xs font-mono uppercase tracking-wider text-afreqa-silver font-semibold">
+                  <label className="text-xs font-mono uppercase tracking-wider text-zinc-400 font-semibold">
                     Inquiry Topic
                   </label>
                   <select
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-afreqa-shadow/80 border border-afreqa-chrome-high/15 focus:border-afreqa-teal text-afreqa-chrome-high text-sm focus:outline-none transition-colors cursor-pointer"
+                    className="w-full px-4 py-3 rounded-xl bg-[#141721] border border-white/10 focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 text-white text-sm focus:outline-none transition-colors cursor-pointer"
                   >
                     <option value="GENERAL">General Inquiries & Gate Info</option>
                     <option value="SPONSORSHIP">Sponsorship & Brand Activations</option>
@@ -246,7 +246,7 @@ export default function ContactPage() {
 
               {/* Message */}
               <div className="space-y-2">
-                <label className="text-xs font-mono uppercase tracking-wider text-afreqa-silver font-semibold">
+                <label className="text-xs font-mono uppercase tracking-wider text-zinc-400 font-semibold">
                   Message *
                 </label>
                 <textarea
@@ -255,7 +255,7 @@ export default function ContactPage() {
                   placeholder="Detail your inquiry, proposal, or question..."
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-afreqa-shadow/80 border border-afreqa-chrome-high/15 focus:border-afreqa-teal text-afreqa-chrome-high placeholder:text-afreqa-silver-mid/50 text-sm focus:outline-none transition-colors resize-none"
+                  className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-colors resize-none"
                 />
               </div>
 
@@ -264,10 +264,10 @@ export default function ContactPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-afreqa-teal to-afreqa-violet text-afreqa-shadow font-extrabold text-sm uppercase tracking-wider shadow-glow-teal hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-sm uppercase tracking-wider shadow-lg hover:shadow-amber-500/20 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Send className="w-4 h-4" />
-                  <span>{loading ? "Transmitting..." : "Send Transmission"}</span>
+                  <span>{loading ? "Sending..." : "Send Message"}</span>
                 </button>
               </div>
             </form>

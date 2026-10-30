@@ -64,11 +64,11 @@ export function CountdownTimer({ targetDate, eventTitle = "Next Gathering" }: Co
 
   if (timeLeft.isExpired) {
     return (
-      <div className="py-4 px-6 rounded-2xl glass-panel border-afreqa-teal/50 shadow-glow-teal text-center">
-        <p className="font-mono text-xs text-afreqa-teal uppercase tracking-widest font-semibold animate-pulse">
+      <div className="py-4 px-6 rounded-2xl glass-panel border-amber-500/40 text-center shadow-xl">
+        <p className="font-mono text-xs text-amber-400 uppercase tracking-widest font-semibold animate-pulse">
           Live Now
         </p>
-        <h3 className="font-display font-extrabold text-2xl text-chrome mt-1">
+        <h3 className="font-display font-extrabold text-2xl text-white mt-1">
           THE GATES ARE OPEN
         </h3>
       </div>
@@ -87,23 +87,23 @@ export function CountdownTimer({ targetDate, eventTitle = "Next Gathering" }: Co
       <div className="flex items-center gap-2 sm:gap-4">
         {units.map((unit, index) => (
           <div key={unit.label} className="flex items-center">
-            <div className="flex flex-col items-center p-3 sm:p-4 rounded-xl sm:rounded-2xl glass-panel border border-afreqa-chrome-high/15 min-w-[64px] sm:min-w-[84px] shadow-metallic hover:border-afreqa-teal/40 transition-colors">
-              <span className="font-display text-2xl sm:text-4xl font-black text-afreqa-chrome-high tracking-tight">
+            <div className="flex flex-col items-center p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-black/60 border border-white/10 backdrop-blur-md min-w-[64px] sm:min-w-[84px] shadow-2xl hover:border-white/25 transition-colors">
+              <span className="font-display text-2xl sm:text-4xl font-black text-white tracking-tight">
                 {String(unit.value).padStart(2, "0")}
               </span>
-              <span className="text-[9px] sm:text-[10px] font-mono tracking-widest text-afreqa-teal font-semibold mt-1">
+              <span className="text-[9px] sm:text-[10px] font-mono tracking-widest text-amber-400 font-bold mt-1">
                 {unit.label}
               </span>
             </div>
             {index < units.length - 1 && (
-              <span className="text-afreqa-silver-mid font-mono text-xl sm:text-2xl px-1 sm:px-2 animate-pulse">
+              <span className="text-zinc-600 font-mono text-xl sm:text-2xl px-1 sm:px-2">
                 :
               </span>
             )}
           </div>
         ))}
       </div>
-      <p className="mt-3 text-xs font-mono tracking-wider text-afreqa-silver-mid uppercase">
+      <p className="mt-3 text-xs font-mono tracking-wider text-zinc-400 uppercase">
         Countdown to {eventTitle}
       </p>
     </div>

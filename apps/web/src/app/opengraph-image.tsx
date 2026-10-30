@@ -76,9 +76,9 @@ export default async function Image() {
               gap: "8px",
               padding: "6px 16px",
               borderRadius: "999px",
-              backgroundColor: "rgba(22, 244, 208, 0.15)",
-              border: "1px solid rgba(22, 244, 208, 0.4)",
-              color: "#16F4D0",
+              backgroundColor: "rgba(245, 158, 11, 0.15)",
+              border: "1px solid rgba(245, 158, 11, 0.4)",
+              color: "#F59E0B",
               fontSize: "14px",
               fontWeight: 700,
               letterSpacing: "0.2em",
@@ -96,7 +96,7 @@ export default async function Image() {
               fontWeight: 900,
               letterSpacing: "0.08em",
               color: "#EDECEC",
-              textShadow: "0 0 35px rgba(22, 244, 208, 0.6)",
+              textShadow: "0 0 35px rgba(245, 158, 11, 0.4)",
               marginBottom: "12px",
             }}
           >
@@ -125,11 +125,11 @@ export default async function Image() {
               marginTop: "24px",
             }}
           >
-            <div style={{ width: "30px", height: "4px", backgroundColor: "#16F4D0", borderRadius: "2px" }} />
-            <div style={{ width: "60px", height: "4px", backgroundColor: "#7B2FF7", borderRadius: "2px" }} />
-            <div style={{ width: "90px", height: "4px", backgroundColor: "#16F4D0", borderRadius: "2px" }} />
-            <div style={{ width: "60px", height: "4px", backgroundColor: "#7B2FF7", borderRadius: "2px" }} />
-            <div style={{ width: "30px", height: "4px", backgroundColor: "#16F4D0", borderRadius: "2px" }} />
+            <div style={{ width: "30px", height: "4px", backgroundColor: "#F59E0B", borderRadius: "2px" }} />
+            <div style={{ width: "60px", height: "4px", backgroundColor: "#D97706", borderRadius: "2px" }} />
+            <div style={{ width: "90px", height: "4px", backgroundColor: "#F59E0B", borderRadius: "2px" }} />
+            <div style={{ width: "60px", height: "4px", backgroundColor: "#D97706", borderRadius: "2px" }} />
+            <div style={{ width: "30px", height: "4px", backgroundColor: "#F59E0B", borderRadius: "2px" }} />
           </div>
         </div>
       </div>

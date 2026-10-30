@@ -10,7 +10,7 @@ export default function PublicLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative min-h-screen flex flex-col bg-afreqa-shadow text-afreqa-chrome-high selection:bg-afreqa-teal selection:text-afreqa-shadow">
+    <div className="relative min-h-screen flex flex-col bg-afreqa-shadow text-afreqa-chrome-high selection:bg-amber-500 selection:text-black">
       <LaserBeams />
       {process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
         <Script

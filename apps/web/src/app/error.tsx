@@ -37,7 +37,7 @@ export default function ErrorBoundary({
         <div className="flex items-center justify-center gap-4 pt-4">
           <button
             onClick={() => reset()}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-afreqa-teal text-afreqa-shadow font-extrabold text-xs uppercase tracking-wider shadow-glow-teal hover:scale-105 transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs uppercase tracking-wider shadow-lg hover:shadow-amber-500/20 active:scale-95 transition-all"
           >
             <RefreshCw className="w-4 h-4" />
             <span>Retry Connection</span>
@@ -45,7 +45,7 @@ export default function ErrorBoundary({
 
           <Link
             href="/"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full glass-panel hover:border-afreqa-teal/50 text-afreqa-chrome-high text-xs font-mono font-semibold uppercase tracking-wider transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-mono font-semibold uppercase tracking-wider transition-all"
           >
             <Home className="w-4 h-4" />
             <span>Home</span>
