@@ -10,8 +10,9 @@ import { AudioWaveIndicator } from "./AudioWaveIndicator";
 
 const NAV_LINKS = [
   { label: "Events", href: "/events" },
-  { label: "Experience", href: "/#experience" },
   { label: "About", href: "/about" },
+  { label: "Vendors", href: "/vendors" },
+  { label: "Partners", href: "/partners" },
   { label: "Gallery", href: "/gallery" },
   { label: "FAQ", href: "/faq" },
   { label: "Contact", href: "/contact" },

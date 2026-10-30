@@ -106,7 +106,52 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* 4. CTA */}
+      {/* 4. WORK WITH AFREQA */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="rounded-3xl glass-panel p-8 border border-white/10 space-y-4 hover:border-amber-400/30 transition-all shadow-xl">
+          <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 uppercase tracking-widest">
+            Merchant Portal
+          </span>
+          <h3 className="font-display font-black text-2xl text-white">
+            Vend at Afreqa
+          </h3>
+          <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+            Sell food, streetwear, festival fashion, or rave accessories to thousands of dancers in our illuminated Market Village.
+          </p>
+          <div className="pt-2">
+            <Link
+              href="/vendors"
+              className="inline-flex items-center gap-1.5 text-xs font-mono text-amber-400 hover:text-white font-bold transition-colors"
+            >
+              <span>Explore Vendor Opportunities</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        </div>
+
+        <div className="rounded-3xl glass-panel p-8 border border-white/10 space-y-4 hover:border-amber-400/30 transition-all shadow-xl">
+          <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 uppercase tracking-widest">
+            Commercial Alliances
+          </span>
+          <h3 className="font-display font-black text-2xl text-white">
+            Partner With Us
+          </h3>
+          <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+            Mainstage takeovers, experiential brand lounges, pouring rights, and VIP corporate table hospitality.
+          </p>
+          <div className="pt-2">
+            <Link
+              href="/partners"
+              className="inline-flex items-center gap-1.5 text-xs font-mono text-amber-400 hover:text-white font-bold transition-colors"
+            >
+              <span>View Brand Partnerships</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* 5. CTA */}
       <div className="rounded-3xl glass-panel p-8 sm:p-12 text-center space-y-4 border border-white/10 shadow-2xl">
         <h3 className="font-display font-extrabold text-2xl text-white">
           Ready to experience the frequency?

@@ -19,18 +19,24 @@ import { CountdownTimer } from "@/components/festival/CountdownTimer";
 import { TicketPhaseStrip } from "@/components/festival/TicketPhaseStrip";
 import { SubscribeSection } from "@/components/festival/SubscribeSection";
 
-// Fallback seed data in case database is freshly booting
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+// Official Event Seed Data matching Alloy Bar & Lounge Halloween XP
 const FALLBACK_EVENT = {
-  id: "evt-resonance-001",
-  title: "Afreqa: Resonance",
-  slug: "resonance",
-  tagline: "Where African Electronic Frequencies Meet Festival Fantasy",
-  date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-  venueName: "The Carnivore Grounds / Waterfront Karen",
+  id: "evt-halloween-alloy-001",
+  title: "Afreqa Nairobi: A Tomorrowland Halloween XP",
+  slug: "halloween-alloy",
+  tagline: "A Tomorrowland Halloween Experience • Alloy Bar & Lounge",
+  date: "2026-10-24T19:00:00+03:00",
+  venueName: "Alloy Bar & Lounge",
   venueAddress: "Nairobi, Kenya",
-  doorsOpen: "18:00 EAT",
+  doorsOpen: "19:00 EAT (7PM – 5AM)",
   description:
-    "Step into Nairobi's premier electronic music sanctuary. Twelve hours of transcendent sound, futuristic stage architecture, and euphoric rhythms uniting Africa's brightest electronic pioneers.",
+    "Afreqa presents A Tomorrowland Halloween XP at Alloy Bar & Lounge. High-energy electronic dance music, mind-altering production, and monumental B2B sets. Dress Code: Halloween Creative Costumes. VIP & Tables: 0702 665 665.",
+  posterUrl: "/images/afreqa-halloween-alloy.jpg",
+  dressCode: "Halloween Creative Costumes",
+  vipContact: "0702 665 665",
 };
 
 interface PhaseItem {
@@ -45,66 +51,65 @@ interface PhaseItem {
 const FALLBACK_PHASES: PhaseItem[] = [
   {
     id: "p1",
-    name: "Early Bird",
-    price: 1500,
+    name: "Rave Pass",
+    price: 1000,
     currency: "KES",
-    status: "SOLD_OUT",
-    description: "Limited inaugural allocation",
+    status: "ON_SALE",
+    description: "Standard Rave Admission • 7PM till 5AM",
   },
   {
     id: "p2",
-    name: "Phase 1 General",
-    price: 2000,
+    name: "Advance Ticket",
+    price: 1500,
     currency: "KES",
     status: "ON_SALE",
-    description: "Full event admission + festival access",
+    description: "Guaranteed entry • Fast-track turnstile access",
   },
   {
     id: "p3",
-    name: "VIP Stage Deck",
-    price: 3500,
+    name: "VIP Table Package",
+    price: 15000,
     currency: "KES",
     status: "ON_SALE",
-    description: "Elevated stage deck, express queue & private bar",
-  },
-  {
-    id: "p4",
-    name: "Gate Release",
-    price: 4000,
-    currency: "KES",
-    status: "UPCOMING",
-    description: "Available only if capacity permits",
+    description: "Dedicated table service & premium bottle • Call 0702 665 665",
   },
 ];
 
-const FICTIONAL_DJS = [
+const POSTER_LINEUP = [
   {
-    name: "DJ Nova Rift",
-    genre: "Afro-Tech & Melodic Techno",
+    name: "Coco Kahi B2B Mike Muema",
+    genre: "Headline B2B • Afro-Tech & Melodic Techno",
     time: "02:00 – 04:00",
-    image: "/brand/logo.jpg",
-    bio: "Pioneering hypnotic polyrhythms fused with heavy analog synthesizer basslines.",
+    image: "/images/afreqa-halloween-alloy.jpg",
+    bio: "Powerhouse B2B sonic journey fusing heavy percussive basslines with transcendent synthesis.",
   },
   {
-    name: "Kazi Pulse",
-    genre: "Deep Melodic House",
-    time: "00:00 – 02:00",
-    image: "/brand/logo.jpg",
-    bio: "Atmospheric, euphoric chord progressions that lift midnight festival crowds.",
+    name: "Nayäkaze",
+    genre: "Electronic / Melodic House",
+    time: "00:30 – 02:00",
+    image: "/images/afreqa-halloween-alloy.jpg",
+    bio: "Atmospheric, euphoric chord progressions engineering midnight dancefloor transcendence.",
   },
   {
-    name: "Zuri Bass",
-    genre: "Amapiano / EDM Fusion",
-    time: "22:00 – 00:00",
-    image: "/brand/logo.jpg",
-    bio: "High-octane log-drums woven with mainstage festival energy.",
+    name: "Shock B2B Ryte",
+    genre: "High-Energy B2B Rave Set",
+    time: "23:00 – 00:30",
+    image: "/images/afreqa-halloween-alloy.jpg",
+    bio: "Relentless energy, driving drops, and seamless B2B rhythm switches.",
   },
   {
-    name: "Solar Soundwave",
-    genre: "Progressive & Tribal House",
-    time: "20:00 – 22:00",
-    image: "/brand/logo.jpg",
-    bio: "Warm sunset grooves transitioning Nairobi into the dark electronic realm.",
+    name: "Z4V3 B2B Alex Gvng Gvng",
+    genre: "Amapiano / EDM Mainstage Fusion",
+    time: "21:30 – 23:00",
+    image: "/images/afreqa-halloween-alloy.jpg",
+    bio: "Sub-bass polyrhythms and heavy club energy to ignite the Halloween rave.",
+  },
+  {
+    name: "The Arkitekt & DJ Myth",
+    genre: "Official Support & Warmup Frequencies",
+    time: "19:00 – 21:30",
+    image: "/images/afreqa-halloween-alloy.jpg",
+    bio: "Setting the night into motion from 7PM as dancers step into Alloy Bar & Lounge.",
   },
 ];
 
@@ -113,8 +118,14 @@ export default async function HomePage() {
   let phases = FALLBACK_PHASES;
 
   try {
-    const dbEvent = await db.event.findFirst({
-      where: { status: "PUBLISHED" },
+    const now = new Date();
+
+    // 1. Try to find the next upcoming published event
+    let dbEvent = await db.event.findFirst({
+      where: {
+        status: "PUBLISHED",
+        date: { gte: now },
+      },
       orderBy: { date: "asc" },
       include: {
         ticketPhases: {
@@ -122,6 +133,31 @@ export default async function HomePage() {
         },
       },
     });
+
+    // 2. If no future published event, find the newest published event
+    if (!dbEvent) {
+      dbEvent = await db.event.findFirst({
+        where: { status: "PUBLISHED" },
+        orderBy: { createdAt: "desc" },
+        include: {
+          ticketPhases: {
+            orderBy: { sortOrder: "asc" },
+          },
+        },
+      });
+    }
+
+    // 3. Fallback: if user added an event with any status (e.g. Draft), display it so their work reflects
+    if (!dbEvent) {
+      dbEvent = await db.event.findFirst({
+        orderBy: { createdAt: "desc" },
+        include: {
+          ticketPhases: {
+            orderBy: { sortOrder: "asc" },
+          },
+        },
+      });
+    }
 
     if (dbEvent) {
       event = {
@@ -134,9 +170,12 @@ export default async function HomePage() {
         venueAddress: dbEvent.venueAddress || FALLBACK_EVENT.venueAddress,
         doorsOpen: dbEvent.doorsOpen || FALLBACK_EVENT.doorsOpen,
         description: dbEvent.description || FALLBACK_EVENT.description,
+        posterUrl: dbEvent.posterUrl || FALLBACK_EVENT.posterUrl,
+        dressCode: FALLBACK_EVENT.dressCode,
+        vipContact: FALLBACK_EVENT.vipContact,
       };
 
-      if (dbEvent.ticketPhases.length > 0) {
+      if (dbEvent.ticketPhases && dbEvent.ticketPhases.length > 0) {
         phases = dbEvent.ticketPhases.map((tp) => ({
           id: tp.id,
           name: tp.name,
@@ -296,53 +335,80 @@ export default async function HomePage() {
 
           {/* Lineup Spotlight Grid */}
           <div className="pt-8 border-t border-white/10">
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
               <div>
                 <h3 className="font-display font-extrabold text-2xl text-white">
-                  Sonic Architects
+                  Official Festival Lineup
                 </h3>
-                <p className="text-xs font-mono text-zinc-500 mt-0.5">
-                  [Sample Showcase Lineup • Real Afreqa Artists Announced Soon]
+                <p className="text-xs font-mono text-amber-400 mt-0.5">
+                  Alloy Bar & Lounge • Sat 24th Oct • 7PM Till 5AM • Dress Code: Halloween Creative Costumes
                 </p>
               </div>
               <Link
                 href={`/events/${event.slug}`}
                 className="text-xs font-mono text-amber-400 hover:text-white flex items-center gap-1 transition-colors"
               >
-                <span>Full Schedule</span>
+                <span>Full Event Details</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {FICTIONAL_DJS.map((dj) => (
-                <div
-                  key={dj.name}
-                  className="rounded-2xl glass-panel p-5 border border-white/10 hover:border-amber-500/40 transition-all duration-300 group hover:-translate-y-1.5"
-                >
-                  <div className="relative w-full aspect-square rounded-xl overflow-hidden mb-4 border border-white/10 bg-black/40">
-                    <Image
-                      src={dj.image}
-                      alt={dj.name}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 25vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-500 filter brightness-90 group-hover:brightness-100"
-                    />
-                    <div className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-black/80 backdrop-blur-md text-amber-400 border border-amber-500/30">
-                      {dj.time}
-                    </div>
+            {/* Poster + Lineup Grid Layout */}
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+              {/* Event Poster Card */}
+              <div className="lg:col-span-1 rounded-2xl bg-black/60 border border-white/10 p-3 shadow-xl space-y-3">
+                <div className="relative aspect-[3/4] w-full rounded-xl overflow-hidden border border-white/10">
+                  <Image
+                    src="/images/afreqa-halloween-alloy.jpg"
+                    alt="Afreqa A Tomorrowland Halloween XP Poster"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 25vw"
+                    className="object-cover"
+                  />
+                  <div className="absolute top-2 left-2 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-black/80 backdrop-blur-md text-amber-400 border border-amber-400/40">
+                    OFFICIAL POSTER
                   </div>
-                  <h4 className="font-display font-bold text-lg text-white group-hover:text-amber-400 transition-colors">
-                    {dj.name}
-                  </h4>
-                  <p className="text-xs font-mono text-amber-400/90 mt-0.5">
-                    {dj.genre}
-                  </p>
-                  <p className="text-xs text-zinc-400 mt-2 line-clamp-2 leading-relaxed">
-                    {dj.bio}
-                  </p>
                 </div>
-              ))}
+                <div className="p-1 space-y-1 text-center">
+                  <p className="text-[11px] font-mono text-zinc-400">
+                    VIP & Table Bookings
+                  </p>
+                  <a
+                    href="tel:0702665665"
+                    className="inline-block text-xs font-mono font-bold text-amber-400 hover:underline"
+                  >
+                    📞 0702 665 665
+                  </a>
+                </div>
+              </div>
+
+              {/* Lineup Cards */}
+              <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {POSTER_LINEUP.map((dj) => (
+                  <div
+                    key={dj.name}
+                    className="rounded-2xl glass-panel p-5 border border-white/10 hover:border-amber-500/40 transition-all duration-300 group hover:-translate-y-1"
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-black/70 text-amber-400 border border-amber-400/30">
+                        {dj.time}
+                      </span>
+                      <span className="text-[10px] font-mono text-zinc-500">
+                        Alloy Mainstage
+                      </span>
+                    </div>
+                    <h4 className="font-display font-bold text-lg text-white group-hover:text-amber-400 transition-colors">
+                      {dj.name}
+                    </h4>
+                    <p className="text-xs font-mono text-amber-400/90 mt-0.5">
+                      {dj.genre}
+                    </p>
+                    <p className="text-xs text-zinc-400 mt-2 line-clamp-2 leading-relaxed">
+                      {dj.bio}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

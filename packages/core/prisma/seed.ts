@@ -72,35 +72,70 @@ async function main() {
   }
   console.log(`✅ Seeded Site Settings (shop.enabled = ${demoMode ? "true (DEMO_MODE)" : "false"})`);
 
-  // 3. Fictional Sample Artists
+  // 3. Official Artists from Poster
   const sampleArtists = [
     {
-      name: "DJ Nova Rift",
-      slug: "nova-rift",
-      bio: "Fictional Nairobi underground maestro weaving hypnotic Afro-tech rhythms with futuristic analog synth leads.",
+      name: "Coco Kahi",
+      slug: "coco-kahi",
+      bio: "High-energy selector driving heavy melodic techno and afro-electronic rhythms.",
       genres: ["Afro-Tech", "Melodic Techno"],
-      isFictional: true,
+      isFictional: false,
     },
     {
-      name: "Kazi Pulse",
-      slug: "kazi-pulse",
-      bio: "Fictional sound designer crafting deep, emotive electronic anthems infused with traditional East African percussion.",
+      name: "Mike Muema",
+      slug: "mike-muema",
+      bio: "Nairobi club maestro crafting transcendent basslines and seamless B2B energy.",
+      genres: ["Techno", "Afro-House"],
+      isFictional: false,
+    },
+    {
+      name: "Nayäkaze",
+      slug: "nayakaze",
+      bio: "Atmospheric, emotive electronic anthems infused with deep percussive grooves.",
       genres: ["Deep Melodic", "Progressive House"],
-      isFictional: true,
+      isFictional: false,
     },
     {
-      name: "Zuri Bass",
-      slug: "zuri-bass",
-      bio: "Fictional high-octane selector blending high-energy Amapiano log-drums with thunderous festival big-room drops.",
-      genres: ["Amapiano", "Festival EDM"],
-      isFictional: true,
+      name: "Shock",
+      slug: "shock",
+      bio: "Driving drops, fast-tempo rave cuts, and relentless dancefloor energy.",
+      genres: ["EDM", "Club Rave"],
+      isFictional: false,
     },
     {
-      name: "Solar Soundwave",
-      slug: "solar-soundwave",
-      bio: "Fictional sunrise specialist known for euphoric melodic builds and uplifting peak-time synth progressions.",
-      genres: ["Progressive House", "Trance"],
-      isFictional: true,
+      name: "Ryte",
+      slug: "ryte",
+      bio: "Precision electronic mixing and electrifying mainstage drops.",
+      genres: ["Dance", "Electronic"],
+      isFictional: false,
+    },
+    {
+      name: "Z4V3",
+      slug: "z4v3",
+      bio: "Polyrhythmic sub-bass fused with modern dance floor anthems.",
+      genres: ["Amapiano / EDM Fusion"],
+      isFictional: false,
+    },
+    {
+      name: "Alex Gvng Gvng",
+      slug: "alex-gvng-gvng",
+      bio: "High-octane party starter known for explosive festival energy.",
+      genres: ["Mainstage", "Electronic"],
+      isFictional: false,
+    },
+    {
+      name: "The Arkitekt",
+      slug: "the-arkitekt",
+      bio: "Sonic architect crafting deep opening atmospheres.",
+      genres: ["Support", "Deep House"],
+      isFictional: false,
+    },
+    {
+      name: "DJ Myth",
+      slug: "dj-myth",
+      bio: "Warmup maestro transitioning the early evening into nocturnal rave territory.",
+      genres: ["Support", "Tech House"],
+      isFictional: false,
     },
   ];
 
@@ -108,68 +143,74 @@ async function main() {
   for (const a of sampleArtists) {
     const artist = await prisma.artist.upsert({
       where: { slug: a.slug },
-      update: {},
+      update: { bio: a.bio, genres: a.genres },
       create: a,
     });
     createdArtists.push(artist);
   }
-  console.log(`✅ Seeded ${createdArtists.length} Fictional Sample DJs`);
+  console.log(`✅ Seeded ${createdArtists.length} Official Lineup Artists`);
 
-  // 4. Sample Event: "Afreqa: Resonance"
-  const eventDate = new Date();
-  eventDate.setDate(eventDate.getDate() + 30); // 30 days into future
+  // 4. Official Event: Afreqa Nairobi: A Tomorrowland Halloween XP
+  const eventDate = new Date("2026-10-24T19:00:00+03:00");
 
   const sampleEvent = await prisma.event.upsert({
-    where: { slug: "resonance-2026" },
-    update: {},
-    create: {
-      title: "Afreqa: Resonance [Sample Demo Event]",
-      slug: "resonance-2026",
-      tagline: "Kenya's Hub for Electronic Dance Music — The Electric Solstice",
+    where: { slug: "halloween-alloy" },
+    update: {
+      title: "Afreqa Nairobi: A Tomorrowland Halloween XP",
+      tagline: "A Tomorrowland Halloween Experience • Alloy Bar & Lounge",
       description:
-        "Step through the gates into an electric festival fantasy. Towering stages, chrome lasers, and earth-shaking soundscapes meet under the Nairobi night sky for an unforgettable celebration of electronic dance music.",
+        "Afreqa presents A Tomorrowland Halloween XP at Alloy Bar & Lounge. High-energy electronic dance music, mind-altering production, and monumental B2B sets. Dress Code: Halloween Creative Costumes. VIP & Table Reservations: 0702 665 665.",
+      posterUrl: "/images/afreqa-halloween-alloy.jpg",
       date: eventDate,
-      doorsOpen: "18:00",
-      doorsClose: "06:00",
-      venueName: "The Carnivore Grounds",
-      venueAddress: "Lang'ata Road, Nairobi, Kenya",
-      venueCoordinates: "-1.3262,36.8021",
-      googleMapsUrl: "https://maps.google.com/?q=The+Carnivore+Grounds+Nairobi",
-      transportInfo: "Ample secure on-site parking. Designated Uber and Bolt pick-up/drop-off zone at Gate B.",
+      doorsOpen: "19:00",
+      doorsClose: "05:00",
+      venueName: "Alloy Bar & Lounge",
+      venueAddress: "Nairobi, Kenya",
+      status: EventStatus.PUBLISHED,
+    },
+    create: {
+      title: "Afreqa Nairobi: A Tomorrowland Halloween XP",
+      slug: "halloween-alloy",
+      tagline: "A Tomorrowland Halloween Experience • Alloy Bar & Lounge",
+      description:
+        "Afreqa presents A Tomorrowland Halloween XP at Alloy Bar & Lounge. High-energy electronic dance music, mind-altering production, and monumental B2B sets. Dress Code: Halloween Creative Costumes. VIP & Table Reservations: 0702 665 665.",
+      posterUrl: "/images/afreqa-halloween-alloy.jpg",
+      date: eventDate,
+      doorsOpen: "19:00",
+      doorsClose: "05:00",
+      venueName: "Alloy Bar & Lounge",
+      venueAddress: "Nairobi, Kenya",
+      venueCoordinates: "-1.2921,36.8219",
+      googleMapsUrl: "https://maps.google.com/?q=Alloy+Bar+and+Lounge+Nairobi",
+      transportInfo: "Ample secure parking on-site. Designated Uber/Bolt drop-off portal at main entry.",
       agePolicy: "Strictly 18+ with original National ID or valid passport required at gate.",
       refundPolicy: "Refer to HustleSasa ticket terms: all sales are final unless the event is cancelled.",
       status: EventStatus.PUBLISHED,
       ticketPhases: {
         create: [
           {
-            name: "Early Bird",
-            priceKes: 1500,
-            status: TicketPhaseStatus.SOLD_OUT,
+            name: "Rave Pass",
+            priceKes: 1000,
+            status: TicketPhaseStatus.ON_SALE,
             sortOrder: 1,
           },
           {
-            name: "Phase 1",
-            priceKes: 2000,
+            name: "Advance Ticket",
+            priceKes: 1500,
             status: TicketPhaseStatus.ON_SALE,
             sortOrder: 2,
           },
           {
-            name: "Final Release",
-            priceKes: 2500,
-            status: TicketPhaseStatus.UPCOMING,
+            name: "VIP Table Package",
+            priceKes: 15000,
+            status: TicketPhaseStatus.ON_SALE,
             sortOrder: 3,
-          },
-          {
-            name: "Gate / VIP",
-            priceKes: 3500,
-            status: TicketPhaseStatus.UPCOMING,
-            sortOrder: 4,
           },
         ],
       },
     },
   });
-  console.log(`✅ Seeded Sample Event: ${sampleEvent.title} with 4 Ticket Phases`);
+  console.log(`✅ Seeded Official Event: ${sampleEvent.title} with 3 Ticket Phases`);
 
   // Connect lineup to event
   for (let i = 0; i < createdArtists.length; i++) {

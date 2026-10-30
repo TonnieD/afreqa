@@ -16,6 +16,9 @@ import { db } from "@afreqa/core";
 import { CountdownTimer } from "@/components/festival/CountdownTimer";
 import { TicketPhaseStrip } from "@/components/festival/TicketPhaseStrip";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 interface EventDetailPageProps {
   params: Promise<{ slug: string }>;
 }
@@ -94,73 +97,84 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
     // DB error fallback
   }
 
-  // Showcase fallback data if event slug matches resonance or DB is not seeded
-  if (!event && (slug === "resonance" || slug === "evt-resonance-001")) {
+  // Showcase fallback data if event slug matches or DB is not seeded
+  if (!event && (slug === "resonance" || slug === "halloween-alloy" || slug === "evt-resonance-001" || slug === "evt-halloween-alloy-001")) {
     event = {
-      id: "evt-resonance-001",
-      title: "Afreqa: Resonance",
-      slug: "resonance",
-      tagline: "Where African Electronic Frequencies Meet Festival Fantasy",
-      date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-      venueName: "The Carnivore Grounds / Waterfront Karen",
+      id: "evt-halloween-alloy-001",
+      title: "Afreqa Nairobi: A Tomorrowland Halloween XP",
+      slug: slug,
+      tagline: "A Tomorrowland Halloween Experience • Alloy Bar & Lounge",
+      date: new Date("2026-10-24T19:00:00+03:00"),
+      venueName: "Alloy Bar & Lounge",
       venueAddress: "Nairobi, Kenya",
-      doorsOpen: "18:00 EAT",
+      doorsOpen: "19:00 EAT (7PM – 5AM)",
       agePolicy: "Strict 18+ Government ID Required",
       description:
-        "Afreqa returns with our flagship outdoor festival experience: Resonance. Over twelve continuous hours, experience cutting-edge stage production, mind-altering laser architecture, and hypnotic electronic soundwaves from Nairobi and beyond.",
+        "Afreqa presents A Tomorrowland Halloween XP at Alloy Bar & Lounge. High-energy electronic dance music, mind-altering production, and monumental B2B sets. Dress Code: Halloween Creative Costumes. VIP & Tables: 0702 665 665.",
       ticketPhases: [
-        { id: "p1", name: "Early Bird", priceKes: 1500, status: "SOLD_OUT" },
-        { id: "p2", name: "Phase 1", priceKes: 2000, status: "ON_SALE" },
-        { id: "p3", name: "VIP Deck", priceKes: 3500, status: "ON_SALE" },
-        { id: "p4", name: "Gate Release", priceKes: 4000, status: "UPCOMING" },
+        { id: "p1", name: "Rave Pass", priceKes: 1000, status: "ON_SALE" },
+        { id: "p2", name: "Advance Ticket", priceKes: 1500, status: "ON_SALE" },
+        { id: "p3", name: "VIP Table Package", priceKes: 15000, status: "ON_SALE" },
       ],
       lineup: [
         {
           id: "l1",
-          stageName: "Main Stage",
+          stageName: "Alloy Mainstage",
           setStartTime: "02:00",
           setEndTime: "04:00",
           artist: {
-            name: "DJ Nova Rift",
+            name: "Coco Kahi B2B Mike Muema",
             genres: ["Afro-Tech", "Melodic Techno"],
-            bio: "Hypnotic synth lines woven with heavy polyrhythms.",
-            photoUrl: "/brand/logo.jpg",
+            bio: "Headline B2B set weaving hypnotic synthesizer progressions with heavy club kicks.",
+            photoUrl: "/images/afreqa-halloween-alloy.jpg",
           },
         },
         {
           id: "l2",
-          stageName: "Main Stage",
-          setStartTime: "00:00",
+          stageName: "Alloy Mainstage",
+          setStartTime: "00:30",
           setEndTime: "02:00",
           artist: {
-            name: "Kazi Pulse",
+            name: "Nayäkaze",
             genres: ["Deep Melodic House"],
-            bio: "Atmospheric, euphoric chord progressions for midnight transcendence.",
-            photoUrl: "/brand/logo.jpg",
+            bio: "Euphoric chord progressions engineered for midnight transcendence.",
+            photoUrl: "/images/afreqa-halloween-alloy.jpg",
           },
         },
         {
           id: "l3",
-          stageName: "Main Stage",
-          setStartTime: "22:00",
-          setEndTime: "00:00",
+          stageName: "Alloy Mainstage",
+          setStartTime: "23:00",
+          setEndTime: "00:30",
           artist: {
-            name: "Zuri Bass",
-            genres: ["Amapiano / EDM Fusion"],
-            bio: "Heavy log-drums fused with high-octane mainstage kicks.",
-            photoUrl: "/brand/logo.jpg",
+            name: "Shock B2B Ryte",
+            genres: ["High-Octane Dance"],
+            bio: "Fast-tempo rave cuts and driving drops under the laser canopy.",
+            photoUrl: "/images/afreqa-halloween-alloy.jpg",
           },
         },
         {
           id: "l4",
-          stageName: "Main Stage",
-          setStartTime: "20:00",
-          setEndTime: "22:00",
+          stageName: "Alloy Mainstage",
+          setStartTime: "21:30",
+          setEndTime: "23:00",
           artist: {
-            name: "Solar Soundwave",
-            genres: ["Progressive Tribal House"],
-            bio: "Sunset beats bridging daylight into nocturnal festival ritual.",
-            photoUrl: "/brand/logo.jpg",
+            name: "Z4V3 B2B Alex Gvng Gvng",
+            genres: ["Amapiano / EDM Fusion"],
+            bio: "Heavy log-drum polyrhythms fused with mainstage festival energy.",
+            photoUrl: "/images/afreqa-halloween-alloy.jpg",
+          },
+        },
+        {
+          id: "l5",
+          stageName: "Alloy Mainstage",
+          setStartTime: "19:00",
+          setEndTime: "21:30",
+          artist: {
+            name: "The Arkitekt & DJ Myth",
+            genres: ["Support & Warmup Frequencies"],
+            bio: "Setting the night into motion from 7PM as doors open.",
+            photoUrl: "/images/afreqa-halloween-alloy.jpg",
           },
         },
       ],
@@ -171,13 +185,24 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
     notFound();
   }
 
-  const phaseStripData = (event.ticketPhases || []).map((tp) => ({
-    id: tp.id,
-    name: tp.name,
-    price: tp.priceKes,
-    currency: "KES",
-    status: tp.status as "ON_SALE" | "SOLD_OUT" | "UPCOMING",
-  }));
+  const phaseStripData =
+    event.ticketPhases && event.ticketPhases.length > 0
+      ? event.ticketPhases.map((tp) => ({
+          id: tp.id,
+          name: tp.name,
+          price: tp.priceKes,
+          currency: "KES",
+          status: tp.status as "ON_SALE" | "SOLD_OUT" | "UPCOMING",
+        }))
+      : [
+          {
+            id: "p-def",
+            name: "General Admission",
+            price: 2000,
+            currency: "KES",
+            status: "ON_SALE" as const,
+          },
+        ];
 
   const mapSearchUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
     `${event.venueName}, ${event.venueAddress || "Nairobi, Kenya"}`

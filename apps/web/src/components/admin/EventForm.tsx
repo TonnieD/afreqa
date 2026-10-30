@@ -60,7 +60,7 @@ export function EventForm({ initialData }: { initialData?: EventData }) {
     initialData?.externalTicketUrl || "https://afreqanairobi.hustlesasa.shop/"
   );
   const [status, setStatus] = useState<"DRAFT" | "PUBLISHED" | "ARCHIVED">(
-    initialData?.status || "DRAFT"
+    initialData?.status || "PUBLISHED"
   );
 
   const [phases, setPhases] = useState<TicketPhaseInput[]>(
@@ -505,7 +505,7 @@ export function EventForm({ initialData }: { initialData?: EventData }) {
         <button
           type="submit"
           disabled={submitting}
-          className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-afreqa-teal text-afreqa-shadow font-extrabold text-xs uppercase tracking-widest shadow-glow-teal hover:opacity-90 transition disabled:opacity-50"
+          className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs uppercase tracking-widest shadow-lg hover:shadow-amber-500/20 active:scale-95 transition-all disabled:opacity-50"
         >
           <Save className="w-4 h-4" />
           <span>{submitting ? "Saving Edition..." : isEditing ? "Update Event" : "Publish Event"}</span>

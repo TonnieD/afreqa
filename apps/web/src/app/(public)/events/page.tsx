@@ -4,6 +4,9 @@ import Image from "next/image";
 import { Calendar, MapPin, Ticket, ArrowUpRight, Clock, Sparkles } from "lucide-react";
 import { db } from "@afreqa/core";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata = {
   title: "Events & Editions",
   description: "Browse upcoming and past electronic music festival editions by Afreqa in Nairobi, Kenya.",
@@ -42,22 +45,22 @@ export default async function EventsPage() {
     // If DB is offline, fall back to mock
   }
 
-  // If no DB events, provide realistic showcase data
+  // If no DB events, provide realistic showcase data matching official poster
   if (events.length === 0) {
     events = [
       {
         id: "evt-01",
-        title: "Afreqa: Resonance",
-        slug: "resonance",
-        tagline: "Where African Electronic Frequencies Meet Festival Fantasy",
-        date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-        venueName: "The Carnivore Grounds / Waterfront Karen",
+        title: "Afreqa Nairobi: A Tomorrowland Halloween XP",
+        slug: "halloween-alloy",
+        tagline: "A Tomorrowland Halloween Experience • Alloy Bar & Lounge",
+        date: new Date("2026-10-24T19:00:00+03:00"),
+        venueName: "Alloy Bar & Lounge",
         venueAddress: "Nairobi, Kenya",
         status: "PUBLISHED",
         ticketPhases: [
-          { id: "p1", name: "Early Bird", priceKes: 1500, status: "SOLD_OUT" },
-          { id: "p2", name: "Phase 1", priceKes: 2000, status: "ON_SALE" },
-          { id: "p3", name: "VIP Deck", priceKes: 3500, status: "ON_SALE" },
+          { id: "p1", name: "Rave Pass", priceKes: 1000, status: "ON_SALE" },
+          { id: "p2", name: "Advance Ticket", priceKes: 1500, status: "ON_SALE" },
+          { id: "p3", name: "VIP Table Package", priceKes: 15000, status: "ON_SALE" },
         ],
       },
       {

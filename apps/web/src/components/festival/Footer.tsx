@@ -103,12 +103,22 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Col 3: Information & Support */}
+          {/* Col 3: Collaborate & Connect */}
           <div>
             <h4 className="font-mono text-xs uppercase tracking-widest text-amber-400 mb-4 font-bold">
-              Information
+              Collaborate
             </h4>
             <ul className="space-y-2.5 text-sm">
+              <li>
+                <Link href="/vendors" className="text-zinc-400 hover:text-white transition-colors">
+                  Vendors & Stalls
+                </Link>
+              </li>
+              <li>
+                <Link href="/partners" className="text-zinc-400 hover:text-white transition-colors">
+                  Brand Partnerships
+                </Link>
+              </li>
               <li>
                 <Link href="/about" className="text-zinc-400 hover:text-white transition-colors">
                   Our Movement
@@ -123,17 +133,6 @@ export function Footer() {
                 <Link href="/contact" className="text-zinc-400 hover:text-white transition-colors">
                   Contact & Bookings
                 </Link>
-              </li>
-              <li>
-                <a
-                  href="https://afreqanairobi.hustlesasa.shop/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-zinc-400 hover:text-white transition-colors inline-flex items-center gap-1"
-                >
-                  <span>HustleSasa Store</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </a>
               </li>
             </ul>
           </div>

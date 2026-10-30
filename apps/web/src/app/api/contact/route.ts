@@ -5,7 +5,7 @@ const ContactPayloadSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters").max(100),
   email: z.string().email("Please provide a valid email address"),
   phone: z.string().optional().nullable(),
-  subject: z.enum(["GENERAL", "SPONSORSHIP", "BOOKING", "MEDIA", "OTHER"]).default("GENERAL"),
+  subject: z.enum(["GENERAL", "SPONSORSHIP", "BOOKING", "MEDIA", "VENDOR", "OTHER"]).default("GENERAL"),
   message: z.string().min(10, "Message must be at least 10 characters").max(2000),
   website_url: z.string().max(0, "Bot detected").optional(),
 });
@@ -58,9 +58,14 @@ export async function POST(req: NextRequest) {
 
     // Map subject string to ContactTopic enum
     let topic: "GENERAL" | "SPONSORSHIP" | "BOOKING" | "PRESS" = "GENERAL";
+    let vendorPrefix = "";
     if (subject === "SPONSORSHIP") topic = "SPONSORSHIP";
     else if (subject === "BOOKING") topic = "BOOKING";
     else if (subject === "MEDIA") topic = "PRESS";
+    else if (subject === "VENDOR") {
+      topic = "GENERAL";
+      vendorPrefix = "[VENDOR APPLICATION]\n";
+    }
 
     // 4. Save to Database
     await db.contactMessage.create({
@@ -68,7 +73,7 @@ export async function POST(req: NextRequest) {
         name,
         email,
         topic,
-        message: `${phoneTag}${message}`,
+        message: `${vendorPrefix}${phoneTag}${message}`,
         ipAddress: ip,
         userAgent: req.headers.get("user-agent"),
       },

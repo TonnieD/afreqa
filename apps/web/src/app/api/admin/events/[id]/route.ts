@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { getSessionUser } from "@/lib/auth";
 import { db, recordAuditLog, hasPermission } from "@afreqa/core";
 
@@ -109,6 +110,16 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
       payload: { title: updated.title, status: updated.status },
     });
 
+    try {
+      revalidatePath("/");
+      revalidatePath("/events");
+      if (updated.slug) {
+        revalidatePath(`/events/${updated.slug}`);
+      }
+    } catch {
+      // safe fallback
+    }
+
     return NextResponse.json(updated);
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : "Failed to update event";
@@ -137,6 +148,16 @@ export async function DELETE(req: NextRequest, { params }: RouteParams) {
       resourceId: id,
       payload: { title: event.title },
     });
+
+    try {
+      revalidatePath("/");
+      revalidatePath("/events");
+      if (event.slug) {
+        revalidatePath(`/events/${event.slug}`);
+      }
+    } catch {
+      // safe fallback
+    }
 
     return NextResponse.json({ success: true });
   } catch (err: unknown) {

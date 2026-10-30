@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { getSessionUser } from "@/lib/auth";
 import { db, recordAuditLog, hasPermission } from "@afreqa/core";
 
@@ -46,6 +47,7 @@ export async function POST(req: NextRequest) {
       refundPolicy,
       externalTicketUrl,
       status,
+      ticketPhases,
     } = body;
 
     if (!title || !slug || !date || !venueName) {
@@ -55,10 +57,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const cleanedSlug = slug.toLowerCase().trim();
+
     const event = await db.event.create({
       data: {
         title,
-        slug: slug.toLowerCase().trim(),
+        slug: cleanedSlug,
         tagline,
         description: description || "",
         posterUrl,
@@ -73,7 +77,21 @@ export async function POST(req: NextRequest) {
         agePolicy: agePolicy || "Strictly 18+ with valid government ID",
         refundPolicy,
         externalTicketUrl,
-        status: status || "DRAFT",
+        status: (status as "DRAFT" | "PUBLISHED" | "ARCHIVED") || "PUBLISHED",
+        ticketPhases: Array.isArray(ticketPhases) && ticketPhases.length > 0
+          ? {
+              create: ticketPhases.map((tp: { name: string; priceKes?: number | string | null; status?: string; externalUrl?: string | null }, idx: number) => ({
+                name: tp.name,
+                priceKes: tp.priceKes !== undefined && tp.priceKes !== null && tp.priceKes !== "" ? Number(tp.priceKes) : null,
+                status: (tp.status as "UPCOMING" | "ON_SALE" | "SOLD_OUT") || "UPCOMING",
+                externalUrl: tp.externalUrl || null,
+                sortOrder: idx,
+              })),
+            }
+          : undefined,
+      },
+      include: {
+        ticketPhases: true,
       },
     });
 
@@ -85,6 +103,15 @@ export async function POST(req: NextRequest) {
       resourceId: event.id,
       payload: { title: event.title, slug: event.slug, status: event.status },
     });
+
+    // Invalidate client-side page caches immediately
+    try {
+      revalidatePath("/");
+      revalidatePath("/events");
+      revalidatePath(`/events/${event.slug}`);
+    } catch {
+      // safe fallback in dev/test
+    }
 
     return NextResponse.json(event, { status: 201 });
   } catch (err: unknown) {
