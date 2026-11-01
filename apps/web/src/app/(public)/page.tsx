@@ -18,25 +18,26 @@ import { db } from "@afreqa/core";
 import { CountdownTimer } from "@/components/festival/CountdownTimer";
 import { TicketPhaseStrip } from "@/components/festival/TicketPhaseStrip";
 import { SubscribeSection } from "@/components/festival/SubscribeSection";
+import { SpotifySection } from "@/components/festival/SpotifySection";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-// Official Event Seed Data matching Alloy Bar & Lounge Halloween XP
+// Official Event Seed Data matching Tomorrowland New Year's Eve Festival
 const FALLBACK_EVENT = {
-  id: "evt-halloween-alloy-001",
-  title: "Afreqa Nairobi: A Tomorrowland Halloween XP",
-  slug: "halloween-alloy",
-  tagline: "A Tomorrowland Halloween Experience • Alloy Bar & Lounge",
-  date: "2026-10-24T19:00:00+03:00",
-  venueName: "Alloy Bar & Lounge",
-  venueAddress: "Nairobi, Kenya",
-  doorsOpen: "19:00 EAT (7PM – 5AM)",
+  id: "evt-nye-2026-001",
+  title: "Nairobi's Ultimate Tomorrowland New Year's Eve Festival",
+  slug: "tomorrowland-nye",
+  tagline: "Nairobi's Ultimate Tomorrowland New Year's Eve Festival • The Grand 2026 Countdown",
+  date: "2026-12-31T18:00:00+03:00",
+  venueName: "Parklands Road, Westlands",
+  venueAddress: "Westlands, Nairobi, Kenya",
+  doorsOpen: "18:00 EAT (6PM – 6AM)",
   description:
-    "Afreqa presents A Tomorrowland Halloween XP at Alloy Bar & Lounge. High-energy electronic dance music, mind-altering production, and monumental B2B sets. Dress Code: Halloween Creative Costumes. VIP & Tables: 0702 665 665.",
-  posterUrl: "/images/afreqa-halloween-alloy.jpg",
-  dressCode: "Halloween Creative Costumes",
-  vipContact: "0702 665 665",
+    "Afreqa presents Nairobi's Ultimate Tomorrowland New Year's Eve Festival. Step into the monumental 2026 midnight countdown with high-velocity electronic dance music, massive stage architecture, and Nairobi's finest soundsystem. Tickets live on HustleSasa.",
+  posterUrl: "/images/afreqa-nye-banner.jpg",
+  dressCode: "Festival Chic & Futuristic Glam",
+  vipContact: "+254 743 836 164",
 };
 
 interface PhaseItem {
@@ -51,27 +52,35 @@ interface PhaseItem {
 const FALLBACK_PHASES: PhaseItem[] = [
   {
     id: "p1",
-    name: "Rave Pass",
-    price: 1000,
+    name: "Early Bird Rave Pass",
+    price: 1500,
     currency: "KES",
     status: "ON_SALE",
-    description: "Standard Rave Admission • 7PM till 5AM",
+    description: "Standard NYE Festival Admission • 6PM till 6AM",
   },
   {
     id: "p2",
     name: "Advance Ticket",
-    price: 1500,
+    price: 2500,
     currency: "KES",
     status: "ON_SALE",
-    description: "Guaranteed entry • Fast-track turnstile access",
+    description: "Guaranteed NYE entry • Fast-track turnstile access",
   },
   {
     id: "p3",
-    name: "VIP Table Package",
-    price: 15000,
+    name: "VIP Festival Pass",
+    price: 5000,
     currency: "KES",
     status: "ON_SALE",
-    description: "Dedicated table service & premium bottle • Call 0702 665 665",
+    description: "Elevated stage platform • Private bar & premium amenities",
+  },
+  {
+    id: "p4",
+    name: "VIP Table Package",
+    price: 25000,
+    currency: "KES",
+    status: "ON_SALE",
+    description: "Dedicated bottle service, lounge seating & priority parking",
   },
 ];
 
@@ -341,7 +350,7 @@ export default async function HomePage() {
                   Official Festival Lineup
                 </h3>
                 <p className="text-xs font-mono text-amber-400 mt-0.5">
-                  Alloy Bar & Lounge • Sat 24th Oct • 7PM Till 5AM • Dress Code: Halloween Creative Costumes
+                  {event.venueName} • {new Date(event.date).toLocaleDateString("en-KE", { weekday: "short", day: "numeric", month: "short", year: "numeric" })} • Doors: {event.doorsOpen}
                 </p>
               </div>
               <Link
@@ -359,8 +368,8 @@ export default async function HomePage() {
               <div className="lg:col-span-1 rounded-2xl bg-black/60 border border-white/10 p-3 shadow-xl space-y-3">
                 <div className="relative aspect-[3/4] w-full rounded-xl overflow-hidden border border-white/10">
                   <Image
-                    src="/images/afreqa-halloween-alloy.jpg"
-                    alt="Afreqa A Tomorrowland Halloween XP Poster"
+                    src={event.posterUrl || "/images/afreqa-halloween-alloy.jpg"}
+                    alt={`${event.title} Official Poster Artwork`}
                     fill
                     sizes="(max-width: 1024px) 100vw, 25vw"
                     className="object-cover"
@@ -369,15 +378,26 @@ export default async function HomePage() {
                     OFFICIAL POSTER
                   </div>
                 </div>
-                <div className="p-1 space-y-1 text-center">
-                  <p className="text-[11px] font-mono text-zinc-400">
-                    VIP & Table Bookings
-                  </p>
+                <div className="p-1 space-y-2 text-center">
+                  <div>
+                    <p className="text-[11px] font-mono text-zinc-400">
+                      VIP & Table Bookings
+                    </p>
+                    <a
+                      href={`tel:${event.vipContact?.replace(/[^0-9+]/g, "") || "0743836164"}`}
+                      className="inline-block text-xs font-mono font-bold text-amber-400 hover:underline"
+                    >
+                      📞 {event.vipContact || "+254 743 836 164"}
+                    </a>
+                  </div>
                   <a
-                    href="tel:0702665665"
-                    className="inline-block text-xs font-mono font-bold text-amber-400 hover:underline"
+                    href="https://drive.google.com/drive/folders/1EKHSU4PsGTeNACb7GM6ST-mGbslRuiKA"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-400 text-xs font-mono font-bold transition-all"
                   >
-                    📞 0702 665 665
+                    <span>📸 Night Photos (Google Drive)</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
                   </a>
                 </div>
               </div>
@@ -483,7 +503,10 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 4. AUDIENCE CAPTURE & INNER CIRCLE */}
+      {/* 4. CURATED SPOTIFY PLAYLISTS */}
+      <SpotifySection />
+
+      {/* 5. AUDIENCE CAPTURE & INNER CIRCLE */}
       <SubscribeSection />
 
       {/* 5. WHATSAPP & COMMUNITY CALLOUT (CHEAPEST FIRST) */}
@@ -503,13 +526,13 @@ export default async function HomePage() {
           </div>
 
           <a
-            href="https://chat.whatsapp.com/sample-afreqa-community"
+            href="https://whatsapp.com/channel/0029VbAYtdlCcW4lOTonkS0h"
             target="_blank"
             rel="noopener noreferrer"
             className="flex-shrink-0 flex items-center gap-2.5 px-7 py-4 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-sm uppercase tracking-wider transition-all shadow-xl hover:scale-105 active:scale-95"
           >
             <MessageCircle className="w-4 h-4 text-black" />
-            <span>Join WhatsApp Community</span>
+            <span>Join WhatsApp Channel</span>
             <ArrowUpRight className="w-4 h-4 text-black" />
           </a>
         </div>

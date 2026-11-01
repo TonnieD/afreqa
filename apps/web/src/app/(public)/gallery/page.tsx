@@ -12,6 +12,16 @@ export const metadata = {
 
 const SAMPLE_ALBUMS = [
   {
+    id: "alb-halloween-01",
+    title: "A Tomorrowland Halloween XP (Alloy Bar & Lounge)",
+    slug: "halloween-alloy",
+    description: "Official night photos: high-octane rave crowd, creative Halloween costumes, and midnight B2B sets under the Alloy lights.",
+    coverUrl: "/images/afreqa-halloween-alloy.jpg",
+    photoCount: 156,
+    videoCount: 2,
+    year: "2026",
+  },
+  {
     id: "alb-resonance-01",
     title: "Afreqa: Resonance (Launch Edition)",
     slug: "resonance-2026",
@@ -137,8 +147,15 @@ export default async function GalleryPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-                <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-black/70 border border-white/20 text-white text-[10px] font-mono">
-                  {album.year}
+                <div className="absolute top-3 right-3 flex items-center gap-2">
+                  {album.slug === "halloween-alloy" && (
+                    <span className="px-2 py-0.5 rounded-full bg-amber-500/25 border border-amber-500/40 text-amber-300 text-[10px] font-mono font-bold backdrop-blur-md">
+                      Drive Vault
+                    </span>
+                  )}
+                  <span className="px-2.5 py-1 rounded-full bg-black/70 border border-white/20 text-white text-[10px] font-mono backdrop-blur-md">
+                    {album.year}
+                  </span>
                 </div>
 
                 <div className="absolute bottom-3 left-3 flex items-center gap-2 text-[11px] font-mono text-zinc-300">

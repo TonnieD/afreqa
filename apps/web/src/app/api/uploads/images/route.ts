@@ -45,6 +45,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       success: true,
       asset: result,
+      originalUrl: result.originalUrl,
+      responsiveUrls: result.responsiveUrls,
+      blurDataUrl: result.blurDataUrl,
+      width: result.width,
+      height: result.height,
     });
   } catch (err) {
     logger.error("Failed to process uploaded image", err);

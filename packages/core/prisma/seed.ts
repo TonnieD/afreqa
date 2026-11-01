@@ -234,6 +234,78 @@ async function main() {
     });
   }
 
+  // 5. Official Upcoming Event: Nairobi's Ultimate Tomorrowland New Year's Eve Festival
+  const nyeDate = new Date("2026-12-31T18:00:00+03:00");
+  const nyeEvent = await prisma.event.upsert({
+    where: { slug: "tomorrowland-nye" },
+    update: {
+      title: "Nairobi's Ultimate Tomorrowland New Year's Eve Festival",
+      tagline: "Nairobi's Ultimate Tomorrowland New Year's Eve Festival • The Grand 2026 Countdown",
+      description:
+        "Afreqa presents Nairobi's Ultimate Tomorrowland New Year's Eve Festival. Step into the monumental 2026 midnight countdown with high-velocity electronic dance music, massive stage architecture, and Nairobi's finest soundsystem. Official tickets live on HustleSasa.",
+      posterUrl: "/images/afreqa-nye-banner.jpg",
+      date: nyeDate,
+      doorsOpen: "18:00",
+      doorsClose: "06:00",
+      venueName: "Parklands Road, Westlands",
+      venueAddress: "Westlands, Nairobi, Kenya",
+      externalTicketUrl: "https://afreqamusicfestival.hustlesasa.shop/",
+      status: EventStatus.PUBLISHED,
+    },
+    create: {
+      title: "Nairobi's Ultimate Tomorrowland New Year's Eve Festival",
+      slug: "tomorrowland-nye",
+      tagline: "Nairobi's Ultimate Tomorrowland New Year's Eve Festival • The Grand 2026 Countdown",
+      description:
+        "Afreqa presents Nairobi's Ultimate Tomorrowland New Year's Eve Festival. Step into the monumental 2026 midnight countdown with high-velocity electronic dance music, massive stage architecture, and Nairobi's finest soundsystem. Official tickets live on HustleSasa.",
+      posterUrl: "/images/afreqa-nye-banner.jpg",
+      date: nyeDate,
+      doorsOpen: "18:00",
+      doorsClose: "06:00",
+      venueName: "Parklands Road, Westlands",
+      venueAddress: "Westlands, Nairobi, Kenya",
+      externalTicketUrl: "https://afreqamusicfestival.hustlesasa.shop/",
+      googleMapsUrl: "https://maps.google.com/?q=Parklands+Road+Westlands+Nairobi",
+      transportInfo: "Dedicated drop-off zone on Parklands Road. Secure parking available on-site.",
+      agePolicy: "Strictly 18+ with original National ID or valid passport required at gate.",
+      refundPolicy: "Refer to HustleSasa ticket terms: all sales are final unless the event is cancelled.",
+      status: EventStatus.PUBLISHED,
+      ticketPhases: {
+        create: [
+          {
+            name: "Early Bird Rave Pass",
+            priceKes: 1500,
+            status: TicketPhaseStatus.ON_SALE,
+            sortOrder: 1,
+            externalUrl: "https://afreqamusicfestival.hustlesasa.shop/",
+          },
+          {
+            name: "Advance Ticket",
+            priceKes: 2500,
+            status: TicketPhaseStatus.ON_SALE,
+            sortOrder: 2,
+            externalUrl: "https://afreqamusicfestival.hustlesasa.shop/",
+          },
+          {
+            name: "VIP Festival Pass",
+            priceKes: 5000,
+            status: TicketPhaseStatus.ON_SALE,
+            sortOrder: 3,
+            externalUrl: "https://afreqamusicfestival.hustlesasa.shop/",
+          },
+          {
+            name: "VIP Table Package",
+            priceKes: 25000,
+            status: TicketPhaseStatus.ON_SALE,
+            sortOrder: 4,
+            externalUrl: "https://afreqamusicfestival.hustlesasa.shop/",
+          },
+        ],
+      },
+    },
+  });
+  console.log(`✅ Seeded NYE Event: ${nyeEvent.title}`);
+
   // 5. Sample FAQs
   const faqs = [
     {

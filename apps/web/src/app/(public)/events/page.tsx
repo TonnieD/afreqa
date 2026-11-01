@@ -17,6 +17,7 @@ interface EventItem {
   title: string;
   slug: string;
   tagline?: string | null;
+  posterUrl?: string | null;
   date: Date | string;
   venueName: string;
   venueAddress?: string | null;
@@ -45,22 +46,40 @@ export default async function EventsPage() {
     // If DB is offline, fall back to mock
   }
 
-  // If no DB events, provide realistic showcase data matching official poster
+  // If no DB events, provide realistic showcase data matching official festival editions
   if (events.length === 0) {
     events = [
+      {
+        id: "evt-nye-2026",
+        title: "Nairobi's Ultimate Tomorrowland New Year's Eve Festival",
+        slug: "tomorrowland-nye",
+        tagline: "Nairobi's Ultimate Tomorrowland New Year's Eve Festival • The Grand 2026 Countdown",
+        posterUrl: "/images/afreqa-nye-banner.jpg",
+        date: new Date("2026-12-31T18:00:00+03:00"),
+        venueName: "Parklands Road, Westlands",
+        venueAddress: "Westlands, Nairobi, Kenya",
+        status: "PUBLISHED",
+        ticketPhases: [
+          { id: "p1", name: "Early Bird Rave Pass", priceKes: 1500, status: "ON_SALE" },
+          { id: "p2", name: "Advance Ticket", priceKes: 2500, status: "ON_SALE" },
+          { id: "p3", name: "VIP Festival Pass", priceKes: 5000, status: "ON_SALE" },
+          { id: "p4", name: "VIP Table Package", priceKes: 25000, status: "ON_SALE" },
+        ],
+      },
       {
         id: "evt-01",
         title: "Afreqa Nairobi: A Tomorrowland Halloween XP",
         slug: "halloween-alloy",
         tagline: "A Tomorrowland Halloween Experience • Alloy Bar & Lounge",
+        posterUrl: "/images/afreqa-halloween-alloy.jpg",
         date: new Date("2026-10-24T19:00:00+03:00"),
         venueName: "Alloy Bar & Lounge",
         venueAddress: "Nairobi, Kenya",
-        status: "PUBLISHED",
+        status: "ARCHIVED",
         ticketPhases: [
-          { id: "p1", name: "Rave Pass", priceKes: 1000, status: "ON_SALE" },
-          { id: "p2", name: "Advance Ticket", priceKes: 1500, status: "ON_SALE" },
-          { id: "p3", name: "VIP Table Package", priceKes: 15000, status: "ON_SALE" },
+          { id: "p1", name: "Rave Pass", priceKes: 1000, status: "SOLD_OUT" },
+          { id: "p2", name: "Advance Ticket", priceKes: 1500, status: "SOLD_OUT" },
+          { id: "p3", name: "VIP Table Package", priceKes: 15000, status: "SOLD_OUT" },
         ],
       },
       {
@@ -120,7 +139,7 @@ export default async function EventsPage() {
                 <div>
                   <div className="relative w-full h-48 sm:h-56 rounded-2xl overflow-hidden mb-6 border border-white/10">
                     <Image
-                      src="/images/afreqa-live-crowd.jpg"
+                      src={evt.posterUrl || "/images/afreqa-live-crowd.jpg"}
                       alt={evt.title}
                       fill
                       sizes="(max-width: 768px) 100vw, 50vw"
@@ -189,7 +208,7 @@ export default async function EventsPage() {
             >
               <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-4 border border-white/10">
                 <Image
-                  src="/images/afreqa-live-crowd.jpg"
+                  src={evt.posterUrl || "/images/afreqa-live-crowd.jpg"}
                   alt={evt.title}
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"

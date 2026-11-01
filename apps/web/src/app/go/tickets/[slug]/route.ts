@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db, checkRateLimit } from "@afreqa/core";
 import crypto from "crypto";
 
-const DEFAULT_TICKETS_URL = "https://afreqanairobi.hustlesasa.shop/";
+const DEFAULT_TICKETS_URL = "https://afreqamusicfestival.hustlesasa.shop/";
 
 export async function GET(
   req: NextRequest,

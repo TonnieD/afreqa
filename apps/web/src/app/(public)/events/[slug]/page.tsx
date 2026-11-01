@@ -51,6 +51,7 @@ interface EventDetail {
   title: string;
   slug: string;
   tagline?: string | null;
+  posterUrl?: string | null;
   date: Date | string;
   venueName: string;
   venueAddress?: string | null;
@@ -98,12 +99,74 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
   }
 
   // Showcase fallback data if event slug matches or DB is not seeded
+  if (!event && (slug === "tomorrowland-nye" || slug === "nye-festival" || slug === "evt-nye-2026" || slug === "nye-2026")) {
+    event = {
+      id: "evt-nye-2026",
+      title: "Nairobi's Ultimate Tomorrowland New Year's Eve Festival",
+      slug: slug,
+      tagline: "Nairobi's Ultimate Tomorrowland New Year's Eve Festival • The Grand 2026 Countdown",
+      posterUrl: "/images/afreqa-nye-banner.jpg",
+      date: new Date("2026-12-31T18:00:00+03:00"),
+      venueName: "Parklands Road, Westlands",
+      venueAddress: "Westlands, Nairobi, Kenya",
+      doorsOpen: "18:00 EAT (6PM – 6AM)",
+      agePolicy: "Strict 18+ Government ID Required",
+      description:
+        "Afreqa presents Nairobi's Ultimate Tomorrowland New Year's Eve Festival. Step into the monumental 2026 midnight countdown with high-velocity electronic dance music, massive stage architecture, and Nairobi's finest soundsystem. Official tickets live on HustleSasa.",
+      ticketPhases: [
+        { id: "p1", name: "Early Bird Rave Pass", priceKes: 1500, status: "ON_SALE" },
+        { id: "p2", name: "Advance Ticket", priceKes: 2500, status: "ON_SALE" },
+        { id: "p3", name: "VIP Festival Pass", priceKes: 5000, status: "ON_SALE" },
+        { id: "p4", name: "VIP Table Package", priceKes: 25000, status: "ON_SALE" },
+      ],
+      lineup: [
+        {
+          id: "nye-l1",
+          stageName: "Tomorrowland Mainstage",
+          setStartTime: "23:30",
+          setEndTime: "02:00",
+          artist: {
+            name: "Afreqa Soundsystem (Grand NYE Countdown)",
+            genres: ["Big Room", "Progressive EDM", "Hardstyle"],
+            bio: "The official midnight transition set with synchronized pyrotechnics, laser displays, and anthems.",
+            photoUrl: "/images/afreqa-nye-banner.jpg",
+          },
+        },
+        {
+          id: "nye-l2",
+          stageName: "Tomorrowland Mainstage",
+          setStartTime: "21:30",
+          setEndTime: "23:30",
+          artist: {
+            name: "Special Guest Headliner",
+            genres: ["Hard Techno", "Afro-Tech"],
+            bio: "Peak-hour high-tempo techno and progressive African basslines.",
+            photoUrl: "/images/afreqa-nye-banner.jpg",
+          },
+        },
+        {
+          id: "nye-l3",
+          stageName: "Sound Garden Stage",
+          setStartTime: "19:00",
+          setEndTime: "21:30",
+          artist: {
+            name: "Nairobi Raves Collective",
+            genres: ["Uptempo", "Amapiano EDM Fusion"],
+            bio: "Setting the frequency as dancers enter the festival grounds.",
+            photoUrl: "/images/afreqa-nye-banner.jpg",
+          },
+        },
+      ],
+    };
+  }
+
   if (!event && (slug === "resonance" || slug === "halloween-alloy" || slug === "evt-resonance-001" || slug === "evt-halloween-alloy-001")) {
     event = {
       id: "evt-halloween-alloy-001",
       title: "Afreqa Nairobi: A Tomorrowland Halloween XP",
       slug: slug,
       tagline: "A Tomorrowland Halloween Experience • Alloy Bar & Lounge",
+      posterUrl: "/images/afreqa-halloween-alloy.jpg",
       date: new Date("2026-10-24T19:00:00+03:00"),
       venueName: "Alloy Bar & Lounge",
       venueAddress: "Nairobi, Kenya",
@@ -212,17 +275,17 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
       {/* 1. HERO HEADER */}
       <div className="rounded-3xl bg-[#0f1117]/90 backdrop-blur-md p-6 sm:p-12 relative overflow-hidden border border-white/10 shadow-2xl">
-        {/* Background crowd image */}
+        {/* Background crowd / event cover image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/images/afreqa-live-crowd.jpg"
+            src={event.posterUrl || "/images/afreqa-live-crowd.jpg"}
             alt={event.title}
             fill
             priority
             sizes="100vw"
-            className="object-cover object-center opacity-25 filter brightness-75 contrast-125"
+            className="object-cover object-center opacity-30 filter brightness-75 contrast-125"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0f1117] via-[#0f1117]/80 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0f1117] via-[#0f1117]/85 to-[#0f1117]/60" />
         </div>
 
         {/* Warm Stage Embers */}
@@ -296,7 +359,48 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
         </div>
       </div>
 
-      {/* 2. TICKET PHASES */}
+      {/* 2. OFFICIAL POSTER ARTWORK SHOWCASE */}
+      {event.posterUrl && (
+        <section className="rounded-3xl bg-[#0f1117]/80 backdrop-blur-md border border-white/10 p-6 sm:p-8 shadow-xl">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+            <div className="md:col-span-4 lg:col-span-3">
+              <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden border border-white/15 shadow-2xl">
+                <Image
+                  src={event.posterUrl}
+                  alt={`${event.title} Official Artwork`}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </div>
+            <div className="md:col-span-8 lg:col-span-9 space-y-4">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-amber-400 font-bold px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20">
+                Official Edition Poster & Visual Identity
+              </span>
+              <h2 className="font-display font-extrabold text-2xl sm:text-3xl text-white">
+                {event.title}
+              </h2>
+              <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed max-w-2xl">
+                {event.description || "Official gathering artwork and festival identity. Prepare for high-octane stage production, immersive audio-visuals, and electronic energy."}
+              </p>
+              <div className="pt-2 flex flex-wrap items-center gap-3">
+                <a
+                  href={event.posterUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-mono text-amber-400 font-bold transition"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>View High-Res Poster</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* 3. TICKET PHASES */}
       <section className="space-y-6">
         <div className="flex items-center justify-between">
           <div>

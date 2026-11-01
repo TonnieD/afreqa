@@ -13,7 +13,7 @@ export const envSchema = z.object({
   SESSION_SECRET: z.string().min(16).default("dev-session-secret-key-at-least-32-chars!"),
   STORAGE_UPLOAD_DIR: z.string().default("./uploads"),
   STORAGE_PUBLIC_URL_PREFIX: z.string().default("/uploads"),
-  HUSTLESASA_STORE_URL: z.string().url().default("https://afreqanairobi.hustlesasa.shop/"),
+  HUSTLESASA_STORE_URL: z.string().url().default("https://afreqamusicfestival.hustlesasa.shop/"),
   SMTP_HOST: z.string().default("localhost"),
   SMTP_PORT: z.coerce.number().default(1025),
   SMTP_USER: z.string().optional(),

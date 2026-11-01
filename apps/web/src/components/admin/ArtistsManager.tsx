@@ -104,7 +104,18 @@ export function ArtistsManager({ initialArtists }: { initialArtists: ArtistItem[
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Upload failed");
 
-      setPosterUrl(data.responsiveUrls?.medium || data.originalUrl);
+      const uploadedUrl =
+        data.responsiveUrls?.full ||
+        data.responsiveUrls?.medium ||
+        data.originalUrl ||
+        data.asset?.responsiveUrls?.full ||
+        data.asset?.responsiveUrls?.medium ||
+        data.asset?.originalUrl;
+      if (uploadedUrl) {
+        setPosterUrl(uploadedUrl);
+      } else {
+        throw new Error("Server returned no image URL");
+      }
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Image upload failed");
     } finally {

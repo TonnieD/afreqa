@@ -111,7 +111,18 @@ export function EventForm({ initialData }: { initialData?: EventData }) {
         throw new Error(data.error || "Failed to upload image");
       }
 
-      setPosterUrl(data.responsiveUrls?.medium || data.originalUrl);
+      const uploadedUrl =
+        data.responsiveUrls?.full ||
+        data.responsiveUrls?.medium ||
+        data.originalUrl ||
+        data.asset?.responsiveUrls?.full ||
+        data.asset?.responsiveUrls?.medium ||
+        data.asset?.originalUrl;
+      if (uploadedUrl) {
+        setPosterUrl(uploadedUrl);
+      } else {
+        throw new Error("Server returned no image URL");
+      }
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Image upload failed");
     } finally {
@@ -291,23 +302,42 @@ export function EventForm({ initialData }: { initialData?: EventData }) {
               Upload a high-resolution poster (JPEG, PNG, or WebP). The server automatically strips EXIF GPS data and creates responsive, compressed derivatives.
             </p>
 
-            <label className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-afreqa-chrome-high text-xs font-mono font-bold cursor-pointer transition">
-              <Upload className="w-4 h-4 text-afreqa-teal" />
-              <span>{uploadingImage ? "Processing with sharp..." : "Choose Artwork"}</span>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                disabled={uploadingImage}
-                className="hidden"
-              />
-            </label>
+            <div className="flex flex-wrap items-center gap-3">
+              <label className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-afreqa-chrome-high text-xs font-mono font-bold cursor-pointer transition">
+                <Upload className="w-4 h-4 text-afreqa-teal" />
+                <span>{uploadingImage ? "Processing with sharp..." : "Upload Artwork File"}</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  disabled={uploadingImage}
+                  className="hidden"
+                />
+              </label>
 
-            {posterUrl && (
-              <p className="text-[11px] text-afreqa-teal font-mono truncate">
-                Active Art: {posterUrl}
-              </p>
-            )}
+              {posterUrl && (
+                <button
+                  type="button"
+                  onClick={() => setPosterUrl("")}
+                  className="px-3 py-2 text-xs font-mono text-rose-400 hover:text-rose-300 transition"
+                >
+                  Clear Poster
+                </button>
+              )}
+            </div>
+
+            <div className="pt-2">
+              <label className="block text-[11px] font-mono text-afreqa-silver-mid mb-1">
+                Or Paste Image / Poster URL
+              </label>
+              <input
+                type="text"
+                value={posterUrl}
+                onChange={(e) => setPosterUrl(e.target.value)}
+                placeholder="/images/afreqa-halloween-alloy.jpg or https://..."
+                className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/10 text-xs text-white font-mono focus:border-afreqa-teal outline-none"
+              />
+            </div>
           </div>
         </div>
       </div>
