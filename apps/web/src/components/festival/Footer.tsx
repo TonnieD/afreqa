@@ -27,7 +27,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-              <strong className="text-white">A Tomorrowland XP in Nairobi.</strong> Dedicated to uncompromising electronic music: Hardstyle & Uptempo, Progressive EDM, Big Room, Hard Techno, and Afro-Tech.
+              <strong className="text-white">A Tomorrowland XP in Nairobi.</strong> Dedicated to uncompromising electronic music: Progressive EDM (Tomorrowland anthems), Big Room, African Tech, Techno, Hardstyle, Drum &amp; Bass, and Dubstep.
             </p>
             <div className="pt-2">
               <div className="text-[11px] font-mono uppercase tracking-wider text-amber-400 font-bold mb-2">

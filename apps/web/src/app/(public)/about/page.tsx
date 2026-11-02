@@ -19,7 +19,7 @@ import {
 export const metadata = {
   title: "About AFREQA | Nairobi's Tomorrowland Experience & Rave Culture",
   description:
-    "Discover AFREQA Nairobi: A Tomorrowland XP. Kenya's premier festival movement playing high-velocity Hardstyle, Progressive EDM, Big Room, Hard Techno, and Afro-Tech. Learn about our 3 official social media channels, sonic manifesto, and rave ethos.",
+    "Discover AFREQA Nairobi: A Tomorrowland XP. Kenya's premier festival movement playing anthemic Progressive EDM, Big Room, African Tech, Techno, Hardstyle, Drum & Bass, and Dubstep. Learn about our 3 official social media channels, sonic manifesto, and rave ethos.",
 };
 
 const SOCIAL_PROFILES = [
@@ -69,23 +69,13 @@ const SOCIAL_PROFILES = [
 
 const SONIC_PILLARS = [
   {
-    title: "Hardstyle & Uptempo",
-    bpm: "150 – 200+ BPM",
-    flavor: "Distorted 909 kicks, raw reverse basslines, and euphoric festival screeches",
-    reference: "Creeds, Sub Zero Project, Rebelion, Warface",
-    description:
-      "Pure, unrelenting kinetic velocity. We do not slow down the tempo. Hardstyle and raw uptempo kicks drive our late-night festival hours, demanding full-body commitment from the crowd and engineering peak physical catharsis under the strobe lights.",
-    accent: "text-rose-400",
-    border: "border-rose-500/30",
-    bg: "bg-rose-500/10",
-  },
-  {
-    title: "Progressive EDM & Anthems",
+    title: "Progressive EDM & Tomorrowland Anthems",
     bpm: "128 – 132 BPM",
+    fanbase: "#1 Fanbase • Most Played",
     flavor: "Soaring melodic synth leads, emotional builds, and hands-in-the-air stadium drops",
-    reference: "Avicii, Martin Garrix, Alesso, Third Party, Swedish House Mafia",
+    reference: "Avicii, Martin Garrix, Alesso, Third Party, Swedish House Mafia, Matisse & Sadko",
     description:
-      "The euphoric emotional core of AFREQA. Drawing directly from the golden era of Tomorrowland mainstages, our selectors engineer massive sing-along crescendos that unite thousands of voices into one harmonic frequency under illuminated stage arches.",
+      "The #1 sound and largest fanbase of AFREQA. Drawing directly from the golden era of Tomorrowland mainstages, our selectors engineer massive sing-along crescendos that unite thousands of voices into one harmonic frequency under illuminated stage arches.",
     accent: "text-amber-400",
     border: "border-amber-500/30",
     bg: "bg-amber-500/10",
@@ -93,8 +83,9 @@ const SONIC_PILLARS = [
   {
     title: "Big Room & Stadium Electro",
     bpm: "128 – 130 BPM",
+    fanbase: "#2 Fanbase • Stadium Power",
     flavor: "Sub-bass brass drops, massive percussion claps, and thunderous drops",
-    reference: "Hardwell, Dimitri Vegas & Like Mike, Blasterjaxx, KSHMR",
+    reference: "Hardwell, Dimitri Vegas & Like Mike, Blasterjaxx, KSHMR, W&W",
     description:
       "Stadium-filling architectural electronic music designed for colossal sound rigs. Every drop is crafted to create earth-shaking synchronized jumps across the venue, matching the pyrotechnic bursts and synchronized cryogenic smoke sweeps.",
     accent: "text-amber-300",
@@ -102,26 +93,64 @@ const SONIC_PILLARS = [
     bg: "bg-amber-400/10",
   },
   {
-    title: "Hard Techno & Industrial Rave",
-    bpm: "140 – 155 BPM",
-    flavor: "Relentless rolling kicks, screeching 303 acid lines, and dark nocturnal bass",
-    reference: "Sara Landry, Nico Moreno, alignment with dark European warehouse sounds",
+    title: "African Tech",
+    bpm: "122 – 126 BPM",
+    fanbase: "#3 Fanbase • Organic African Pulse",
+    flavor: "Deep percussive polyrhythms, authentic African electronics, and driving B2B sets",
+    reference: "Coco Kahi, Mike Muema, Nayäkaze, Shock, Ryte, Z4V3",
     description:
-      "Nocturnal, hypnotic, and uncompromising. For ravers who crave the dark, industrial edge of electronic music, our hard techno segments turn the dancefloor into an unyielding sonic engine powered by pummeling drums and acid synthesis.",
+      "Nairobi's own organic electronic muscle. Deep polyrhythmic percussion, authentic African electronic rhythms, and driving B2B sets — strictly authentic, percussive electronic groove.",
+    accent: "text-emerald-400",
+    border: "border-emerald-500/30",
+    bg: "bg-emerald-500/10",
+  },
+  {
+    title: "Techno (Acid • Hard • Industrial)",
+    bpm: "140 – 155 BPM",
+    fanbase: "#4 Fanbase • Dark Warehouse Edge",
+    flavor: "Relentless rolling kicks, screeching 303 acid lines, and dark nocturnal bass",
+    reference: "Sara Landry, Nico Moreno, dark European warehouse sounds, 303 Acid Rave",
+    description:
+      "Nocturnal, hypnotic, and uncompromising. For ravers who crave the dark, industrial edge of electronic music, our techno segments turn the dancefloor into an unyielding sonic engine powered by pummeling drums and acid synthesis.",
     accent: "text-purple-400",
     border: "border-purple-500/30",
     bg: "bg-purple-500/10",
   },
   {
-    title: "Afro-Tech & Driving Melodic B2B",
-    bpm: "124 – 128 BPM",
-    flavor: "Deep percussive polyrhythms, tribal synthesis, and seamless B2B power sets",
-    reference: "Coco Kahi, Mike Muema, Nayäkaze, Shock, Ryte, Z4V3",
+    title: "Hardstyle & Everything Hardstyle",
+    bpm: "150 – 200+ BPM",
+    fanbase: "#5 Fanbase • Kinetic Velocity",
+    flavor: "Distorted 909 kicks, raw reverse basslines, uptempo, and jumpstyle bounce",
+    reference: "Creeds, Sub Zero Project, Rebelion, Warface, GPF, Sefa",
     description:
-      "Nairobi's own organic electronic muscle. Blending hypnotic African percussive rhythms with heavy tech-house basslines and high-tempo synthesis, executed as high-octane back-to-back sets where resident selectors challenge each other to build relentless momentum.",
-    accent: "text-emerald-400",
-    border: "border-emerald-500/30",
-    bg: "bg-emerald-500/10",
+      "Pure, unrelenting kinetic velocity. Hardstyle and everything that falls under it: rawstyle kicks, uptempo drives, bouncy jumpstyle, and reverse bass driving late-night festival hours for peak physical catharsis under strobe lights.",
+    accent: "text-rose-400",
+    border: "border-rose-500/30",
+    bg: "bg-rose-500/10",
+  },
+  {
+    title: "Drum & Bass (174 BPM Breaks)",
+    bpm: "174 BPM",
+    fanbase: "#6 Fanbase • Amen Energy",
+    flavor: "High-tempo rolling breakbeats, deep sub-bass rollers, and liquid to neurofunk",
+    reference: "Chase & Status, Sub Focus, Dimension, Andy C, Bou",
+    description:
+      "Rapid-fire syncopated rhythm. High-tempo rolling amen breakbeats and deep sub-bass rollers engineered for breathless momentum and breathless dancefloor stamina.",
+    accent: "text-cyan-400",
+    border: "border-cyan-500/30",
+    bg: "bg-cyan-500/10",
+  },
+  {
+    title: "Dubstep & Heavy Bass Weapons",
+    bpm: "140 – 150 BPM",
+    fanbase: "#7 Fanbase • Colossal Sub-Bass",
+    flavor: "Sub-bass shockwaves, aggressive riddim chops, and robotic metallic screeches",
+    reference: "Excision, Subtronics, Virtual Riot, Ray Volpe, Wooli",
+    description:
+      "Colossal bass impact designed to rattle sound rigs and shake foundations. Unapologetic mechanical growls, riddim chops, and bone-shattering low frequencies.",
+    accent: "text-yellow-400",
+    border: "border-yellow-500/30",
+    bg: "bg-yellow-500/10",
   },
 ];
 
@@ -140,7 +169,7 @@ export default function AboutPage() {
         </h1>
 
         <p className="text-base sm:text-xl text-zinc-300 max-w-3xl mx-auto leading-relaxed font-light">
-          We are not a generic &quot;EDM in Africa&quot; experiment or standard club promoter. AFREQA is Nairobi&apos;s dedicated Tomorrowland-scale rave movement, delivering uncompromising high-velocity electronic music and monumental festival fantasy to East Africa.
+          We are not a generic &quot;EDM in Africa&quot; experiment or standard club promoter. AFREQA is Nairobi&apos;s dedicated Tomorrowland-scale rave movement, delivering uncompromising electronic music and monumental festival fantasy to East Africa.
         </p>
       </div>
 
@@ -240,18 +269,18 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* 3. WHAT AFREQA PLAYS: THE 5 SONIC PILLARS */}
+      {/* 3. WHAT AFREQA PLAYS: THE 7 SONIC PILLARS */}
       <section className="space-y-8">
         <div className="text-center max-w-2xl mx-auto space-y-2">
           <div className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase text-amber-400 tracking-widest">
             <Volume2 className="w-4 h-4 text-amber-400" />
-            <span>The Sonic Manifesto</span>
+            <span>The Sonic Manifesto • Fanbase Ranking</span>
           </div>
           <h2 className="font-display font-black text-3xl sm:text-4xl text-white">
             What AFREQA Plays
           </h2>
           <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed font-normal">
-            No watered-down commercial pop or generic background music. Our sets are engineered for relentless kinetic momentum, high BPMs, and transcendent drops:
+            No watered-down commercial pop or generic background music. Ordered strictly by dancefloor frequency and fanbase size:
           </p>
         </div>
 
@@ -263,9 +292,14 @@ export default function AboutPage() {
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className={`text-[10px] font-mono font-bold px-2.5 py-1 rounded-full ${pillar.bg} ${pillar.accent} border ${pillar.border}`}>
-                    {pillar.bpm}
-                  </span>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className={`text-[10px] font-mono font-bold px-2.5 py-1 rounded-full ${pillar.bg} ${pillar.accent} border ${pillar.border}`}>
+                      {pillar.bpm}
+                    </span>
+                    <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-amber-300">
+                      {pillar.fanbase.split("•")[0].trim()}
+                    </span>
+                  </div>
                   <span className="text-xs font-mono text-zinc-500">
                     Pillar 0{i + 1}
                   </span>
@@ -301,7 +335,7 @@ export default function AboutPage() {
                 Stream the Official Arsenal
               </h3>
               <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
-                We maintain four dedicated Spotify playlists matching our core stages: HARDSTYLE & UPTEMPO, PROGRESSIVE EDM, BIG ROOM, and HARD TECHNO.
+                We maintain dedicated Spotify playlists matching our core stages: PROGRESSIVE EDM, BIG ROOM, TECHNO, and HARDSTYLE & UPTEMPO.
               </p>
             </div>
 
@@ -360,7 +394,7 @@ export default function AboutPage() {
             </div>
             <h3 className="font-display font-bold text-lg text-white">7PM to 6AM Continuous Journey</h3>
             <p className="text-xs text-zinc-300 leading-relaxed">
-              No awkward breaks or early shutdowns. Our nights are curated as continuous sonic narratives—moving from atmospheric warmups at sunset to peak-hour 160 BPM euphoria as the morning sun rises.
+              No awkward breaks or early shutdowns. Our nights are curated as continuous sonic narratives—moving from atmospheric warmups at sunset to peak-hour euphoria as the morning sun rises.
             </p>
           </div>
         </div>

@@ -130,7 +130,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
           setEndTime: "02:00",
           artist: {
             name: "Afreqa Soundsystem (Grand NYE Countdown)",
-            genres: ["Big Room", "Progressive EDM", "Hardstyle"],
+            genres: ["Progressive EDM", "Big Room", "Hardstyle"],
             bio: "The official midnight transition set with synchronized pyrotechnics, laser displays, and anthems.",
             photoUrl: "/images/afreqa-nye-banner.jpg",
           },
@@ -142,7 +142,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
           setEndTime: "23:30",
           artist: {
             name: "Special Guest Headliner",
-            genres: ["Hard Techno", "Afro-Tech"],
+            genres: ["African Tech", "Techno"],
             bio: "Peak-hour high-tempo techno and progressive African basslines.",
             photoUrl: "/images/afreqa-nye-banner.jpg",
           },

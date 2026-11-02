@@ -303,7 +303,7 @@ export default async function HomePage() {
           </h1>
 
           <p className="mt-6 text-base sm:text-lg md:text-xl text-zinc-300 max-w-2xl mx-auto leading-relaxed font-light drop-shadow">
-            Nairobi&apos;s dedicated Tomorrowland experience. High-velocity Hardstyle, anthemic Progressive EDM, Big Room, Hard Techno, and Afro-Tech engineered for pure rave catharsis.
+            Nairobi&apos;s dedicated Tomorrowland experience. Anthemic Progressive EDM, Big Room, African Tech, Techno, Hardstyle, Drum &amp; Bass, and Dubstep engineered for pure rave catharsis.
           </p>
 
           {/* Next Edition Meta Bar */}
@@ -568,10 +568,10 @@ export default async function HomePage() {
               <Music className="w-6 h-6" />
             </div>
             <h3 className="font-display font-bold text-lg text-white mb-2">
-              Hardstyle & Progressive EDM
+              Progressive EDM & Tomorrowland Anthems
             </h3>
             <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-              No watered-down pop. 128 to 160+ BPM festival velocity spanning Hardstyle raw kicks, anthemic Progressive EDM, Big Room drops, and industrial Hard Techno.
+              No watered-down pop. Euphoric Tomorrowland Progressive EDM anthems, Big Room, African Tech, Techno, Hardstyle, Drum &amp; Bass, and Dubstep uniting thousands of ravers.
             </p>
           </div>
 

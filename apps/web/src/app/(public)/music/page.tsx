@@ -1,6 +1,16 @@
 import React from "react";
 import Link from "next/link";
-import { Headphones, Radio, Sparkles, Disc, Flame, ArrowUpRight, ExternalLink, Play } from "lucide-react";
+import {
+  Headphones,
+  Radio,
+  Sparkles,
+  Disc,
+  Flame,
+  ArrowUpRight,
+  ExternalLink,
+  Play,
+  Volume2,
+} from "lucide-react";
 import { SpotifySection } from "@/components/festival/SpotifySection";
 import { TrackOfTheWeek } from "@/components/festival/TrackOfTheWeek";
 import { PLAYLISTS } from "@/lib/spotify";
@@ -8,23 +18,23 @@ import { PLAYLISTS } from "@/lib/spotify";
 export const metadata = {
   title: "Official Playlists & Music | Afreqa Nairobi",
   description:
-    "Stream official Afreqa festival warmup playlists, Afro-Tech live sets, and curated electronic dance selections on Spotify.",
+    "Stream official Afreqa festival warmup playlists: Tomorrowland Progressive EDM anthems, Big Room, African Tech, Techno, Hardstyle, Drum & Bass, and Dubstep on Spotify.",
 };
 
 export default function MusicPage() {
   return (
     <div className="space-y-16 pb-24 pt-8">
       {/* 1. Header Banner */}
-      <section className="text-center px-4 max-w-4xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-emerald-400 text-xs font-mono font-bold tracking-widest uppercase mb-4">
+      <section className="text-center px-4 max-w-4xl mx-auto space-y-4">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-emerald-400 text-xs font-mono font-bold tracking-widest uppercase">
           <Headphones className="w-3.5 h-3.5" />
-          <span>Afreqa Sound Archive</span>
+          <span>Afreqa Sound Archive • Fanbase Hierarchy</span>
         </div>
         <h1 className="font-display font-extrabold text-3xl sm:text-5xl lg:text-6xl text-white uppercase tracking-tight">
           SOUNDS OF <span className="text-festival-gradient">AFREQA</span>
         </h1>
-        <p className="text-sm sm:text-base text-zinc-300 max-w-2xl mx-auto mt-4 leading-relaxed font-normal">
-          The soundscapes powering Nairobi&apos;s Tomorrowland experience. From 160 BPM Hardstyle kicks and anthemic Progressive EDM to thunderous Big Room, industrial Hard Techno, and Afro-Tech B2B sets, stream the official frequencies on Spotify.
+        <p className="text-sm sm:text-base text-zinc-300 max-w-2xl mx-auto leading-relaxed font-normal">
+          The soundscapes powering Nairobi&apos;s Tomorrowland experience. Ordered strictly by dancefloor frequency and fanbase size: starting with euphoric Progressive EDM anthems and thunderous Big Room, through authentic African Tech and raw Acid/Hard Techno, into 150–200+ BPM Hardstyle velocity, Drum & Bass, and Dubstep.
         </p>
       </section>
 
@@ -38,13 +48,13 @@ export default function MusicPage() {
         <SpotifySection />
       </div>
 
-      {/* 4. All Official Playlists Direct Access Grid */}
+      {/* 4. All 7 Official Sound Pillars & Playlists Direct Access Grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
           <div className="flex items-center gap-2">
             <Radio className="w-4 h-4 text-emerald-400" />
             <h2 className="font-display font-bold text-xl text-white uppercase tracking-wide">
-              All Official Playlists ({PLAYLISTS.length})
+              All 7 Sound Pillars & Curations ({PLAYLISTS.length})
             </h2>
           </div>
           <a
@@ -66,55 +76,94 @@ export default function MusicPage() {
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 font-semibold">
-                    {pl.genre}
-                  </span>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-amber-400 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 font-bold">
+                      {pl.fanbaseRank.split("•")[0].trim()}
+                    </span>
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 font-semibold">
+                      {pl.genre}
+                    </span>
+                  </div>
                   <span className="text-xs font-mono text-zinc-500">
-                    Playlist 0{idx + 1}
+                    Pillar 0{idx + 1}
                   </span>
                 </div>
+
                 <h3 className="font-display font-bold text-xl text-white">
                   {pl.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+
+                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
                   {pl.tagline}
                 </p>
+
+                {pl.soundReferences && (
+                  <p className="text-[11px] font-mono text-zinc-400">
+                    <strong className="text-zinc-300">References:</strong>{" "}
+                    {pl.soundReferences}
+                  </p>
+                )}
               </div>
 
-              {/* Individual Spotify Mini Player */}
-              <div className="rounded-2xl overflow-hidden border border-white/10 bg-black/60">
-                <iframe
-                  title={pl.title}
-                  src={`https://open.spotify.com/embed/${pl.spotifyUri}?utm_source=generator&theme=0`}
-                  width="100%"
-                  height="152"
-                  frameBorder="0"
-                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                  loading="lazy"
-                  className="w-full"
-                />
-              </div>
+              {/* Player / Preview */}
+              {pl.status === "live" ? (
+                <div className="rounded-2xl overflow-hidden border border-white/10 bg-black/60 shadow-inner">
+                  <iframe
+                    title={pl.title}
+                    src={`https://open.spotify.com/embed/${pl.spotifyUri}?utm_source=generator&theme=0`}
+                    width="100%"
+                    height="152"
+                    frameBorder="0"
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                    loading="lazy"
+                    className="w-full"
+                  />
+                </div>
+              ) : (
+                <div className="rounded-2xl border border-amber-500/20 bg-black/50 p-4 space-y-2">
+                  <div className="flex items-center justify-between text-xs font-mono">
+                    <span className="text-amber-400 font-bold">
+                      Resident Curation Drop
+                    </span>
+                    <span className="text-zinc-500">{pl.bpm}</span>
+                  </div>
+                  <p className="text-xs text-zinc-400">
+                    Official Spotify drop releasing with edition timetable. Producers & DJs can submit tracks for resident B2B inclusion.
+                  </p>
+                </div>
+              )}
 
               <div className="flex items-center justify-between pt-2 border-t border-white/5">
                 <span className="text-xs font-mono text-zinc-500">
                   {pl.curator}
                 </span>
-                <a
-                  href={pl.spotifyUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 font-mono text-xs font-bold transition active:scale-95"
-                >
-                  <span>Open Playlist</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </a>
+
+                {pl.status === "live" ? (
+                  <a
+                    href={pl.spotifyUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 font-mono text-xs font-bold transition active:scale-95"
+                  >
+                    <span>Open on Spotify</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </a>
+                ) : (
+                  <Link
+                    href="/contact?subject=ARTIST_SUBMISSION"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 font-mono text-xs font-bold transition active:scale-95"
+                  >
+                    <span>Submit Track</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </Link>
+                )}
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* 4. Community Playlist Submission Callout */}
+      {/* 5. Community Playlist Submission Callout */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="rounded-3xl p-8 sm:p-10 relative overflow-hidden bg-gradient-to-r from-[#0d1512] via-[#0f1117] to-[#12111d] border border-emerald-500/20 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl">
           <div className="space-y-2 text-center sm:text-left">
@@ -126,7 +175,7 @@ export default function MusicPage() {
               Submit Your Tracks to Afreqa Playlists
             </h3>
             <p className="text-xs sm:text-sm text-zinc-400 max-w-xl">
-              We spotlight upcoming Kenyan and African electronic talent. Submit your original Afro-House, Melodic Techno, or Amapiano-EDM productions for consideration in our monthly curator drops.
+              We spotlight upcoming Kenyan and African electronic talent. Submit your original Progressive EDM anthems, Big Room, authentic African Tech, Techno, or Hardstyle productions for consideration in our curator drops.
             </p>
           </div>
 

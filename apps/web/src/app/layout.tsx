@@ -13,20 +13,23 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "AFREQA — A Tomorrowland XP in Nairobi | Hardstyle, Progressive EDM & Techno",
+    default: "AFREQA — A Tomorrowland XP in Nairobi | Progressive EDM, Big Room, African Tech & Techno",
     template: "%s | AFREQA Nairobi",
   },
   description:
-    "Official portal of AFREQA: A Tomorrowland XP in Nairobi. Dedicated to high-velocity electronic music: Hardstyle, Progressive EDM, Big Room, Hard Techno, and Afro-Tech. Discover official editions, lineups, HustleSasa tickets, and Spotify playlists.",
+    "Official portal of AFREQA: A Tomorrowland XP in Nairobi. Dedicated to electronic festival culture: Progressive EDM, Big Room, African Tech, Techno, Hardstyle, Drum & Bass, and Dubstep. Discover official editions, lineups, HustleSasa tickets, and Spotify playlists.",
   keywords: [
     "AFREQA",
     "AFREQA Nairobi",
     "Tomorrowland XP Kenya",
     "Tomorrowland Experience Nairobi",
-    "Hardstyle Kenya",
     "Progressive EDM Nairobi",
     "Big Room Kenya",
+    "African Tech Nairobi",
     "Hard Techno Nairobi",
+    "Hardstyle Kenya",
+    "Drum and Bass Kenya",
+    "Dubstep Kenya",
     "Nairobi Rave Culture",
     "HustleSasa Tickets AFREQA",
     "Tomorrowland Halloween XP",
