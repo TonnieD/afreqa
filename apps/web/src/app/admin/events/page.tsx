@@ -129,12 +129,12 @@ export default async function AdminEventsPage() {
                         className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider ${
                           event.status === "PUBLISHED"
                             ? "bg-emerald-500/15 border border-emerald-500/30 text-emerald-400"
-                            : event.status === "DRAFT"
-                            ? "bg-amber-500/15 border border-amber-500/30 text-amber-400"
-                            : "bg-white/10 border border-white/20 text-afreqa-silver-mid"
+                            : event.status === "ARCHIVED"
+                            ? "bg-purple-500/15 border border-purple-500/30 text-purple-300"
+                            : "bg-amber-500/15 border border-amber-500/30 text-amber-400"
                         }`}
                       >
-                        {event.status}
+                        {event.status === "ARCHIVED" ? "PASSED" : event.status}
                       </span>
                     </td>
 

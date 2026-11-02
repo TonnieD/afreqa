@@ -48,6 +48,7 @@ export async function POST(req: NextRequest) {
       externalTicketUrl,
       status,
       ticketPhases,
+      lineup,
     } = body;
 
     if (!title || !slug || !date || !venueName) {
@@ -89,9 +90,34 @@ export async function POST(req: NextRequest) {
               })),
             }
           : undefined,
+        lineup: Array.isArray(lineup) && lineup.length > 0
+          ? {
+              create: lineup
+                .filter((slot: { artistId?: string }) => Boolean(slot.artistId))
+                .map(
+                  (
+                    slot: {
+                      artistId: string;
+                      stageName?: string | null;
+                      setStartTime?: string | null;
+                      setEndTime?: string | null;
+                      sortOrder?: number;
+                    },
+                    idx: number
+                  ) => ({
+                    artistId: slot.artistId,
+                    stageName: slot.stageName || "Main Stage",
+                    setStartTime: slot.setStartTime || null,
+                    setEndTime: slot.setEndTime || null,
+                    sortOrder: typeof slot.sortOrder === "number" ? slot.sortOrder : idx,
+                  })
+                ),
+            }
+          : undefined,
       },
       include: {
         ticketPhases: true,
+        lineup: { include: { artist: true } },
       },
     });
 

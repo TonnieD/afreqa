@@ -49,7 +49,7 @@ export function ArtistsManager({ initialArtists }: { initialArtists: ArtistItem[
     setSlug("");
     setBio("");
     setPosterUrl("");
-    setGenresInput("Afro-Tech, Melodic House");
+    setGenresInput("Hardstyle, Progressive EDM, Hard Techno, Afro-Tech");
     setInstagramUrl("");
     setSoundcloudUrl("");
     setSpotifyUrl("");

@@ -58,6 +58,7 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
       externalTicketUrl,
       status,
       ticketPhases,
+      lineup,
     } = body;
 
     const updated = await db.event.update({
@@ -97,6 +98,44 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
             externalUrl: tp.externalUrl || null,
             sortOrder: idx,
           })),
+        });
+      }
+    }
+
+    // Update festival lineup if supplied
+    if (Array.isArray(lineup)) {
+      await db.eventArtist.deleteMany({ where: { eventId: id } });
+      const validSlots = lineup.filter(
+        (slot: { artistId?: string }) => Boolean(slot.artistId)
+      );
+      const seenArtists = new Set<string>();
+      const uniqueSlots = validSlots.filter((slot: { artistId: string }) => {
+        if (seenArtists.has(slot.artistId)) return false;
+        seenArtists.add(slot.artistId);
+        return true;
+      });
+
+      if (uniqueSlots.length > 0) {
+        await db.eventArtist.createMany({
+          data: uniqueSlots.map(
+            (
+              slot: {
+                artistId: string;
+                stageName?: string | null;
+                setStartTime?: string | null;
+                setEndTime?: string | null;
+                sortOrder?: number;
+              },
+              idx: number
+            ) => ({
+              eventId: id,
+              artistId: slot.artistId,
+              stageName: slot.stageName || "Main Stage",
+              setStartTime: slot.setStartTime || null,
+              setEndTime: slot.setEndTime || null,
+              sortOrder: typeof slot.sortOrder === "number" ? slot.sortOrder : idx,
+            })
+          ),
         });
       }
     }

@@ -21,10 +21,10 @@ export default function MusicPage() {
           <span>Afreqa Sound Archive</span>
         </div>
         <h1 className="font-display font-extrabold text-3xl sm:text-5xl lg:text-6xl text-white uppercase tracking-tight">
-          SOUNDS OF THE <span className="text-festival-gradient">TRIBE</span>
+          SOUNDS OF <span className="text-festival-gradient">AFREQA</span>
         </h1>
         <p className="text-sm sm:text-base text-zinc-300 max-w-2xl mx-auto mt-4 leading-relaxed font-normal">
-          Immerse yourself in Nairobi&apos;s electronic pulse. From hypnotic Afro-Tech progressions to peak-time rave anthems, stream the curated frequencies anytime on Spotify.
+          The soundscapes powering Nairobi&apos;s Tomorrowland experience. From 160 BPM Hardstyle kicks and anthemic Progressive EDM to thunderous Big Room, industrial Hard Techno, and Afro-Tech B2B sets, stream the official frequencies on Spotify.
         </p>
       </section>
 

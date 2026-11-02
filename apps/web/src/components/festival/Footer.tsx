@@ -26,30 +26,34 @@ export function Footer() {
                 AFREQA
               </span>
             </Link>
-            <p className="text-sm text-zinc-400 leading-relaxed">
-              Kenya&apos;s home for electronic dance music. Uniting high-energy festival fantasy with Nairobi&apos;s underground soundwaves.
+            <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+              <strong className="text-white">A Tomorrowland XP in Nairobi.</strong> Dedicated to uncompromising electronic music: Hardstyle & Uptempo, Progressive EDM, Big Room, Hard Techno, and Afro-Tech.
             </p>
-            <div className="flex items-center gap-3 pt-2">
-              <a
-                href="https://instagram.com/afreqa_"
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Afreqa on Instagram"
-                className="p-2.5 rounded-full glass-panel text-zinc-400 hover:text-white hover:border-white/25 transition-all"
-                aria-label="Afreqa Instagram"
-              >
-                <Instagram className="w-4 h-4" />
-              </a>
-              <a
-                href="https://tiktok.com/@afreqa_"
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Afreqa on TikTok"
-                className="p-2.5 rounded-full glass-panel text-zinc-400 hover:text-white hover:border-white/25 transition-all font-bold text-xs"
-                aria-label="Afreqa TikTok"
-              >
-                TT
-              </a>
+            <div className="pt-2">
+              <div className="text-[11px] font-mono uppercase tracking-wider text-amber-400 font-bold mb-2">
+                Official Channels (@afreqa_)
+              </div>
+              <div className="flex items-center gap-2.5">
+                <a
+                  href="https://instagram.com/afreqa_"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Instagram: @afreqa_ • Official Gallery, After-Movies & Announcements"
+                  className="p-2.5 rounded-full glass-panel text-pink-400 hover:text-white hover:border-pink-500/40 transition-all"
+                  aria-label="Afreqa Instagram @afreqa_"
+                >
+                  <Instagram className="w-4 h-4" />
+                </a>
+                <a
+                  href="https://tiktok.com/@afreqa_"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="TikTok: @afreqa_ • 160 BPM Rave Drops, Crowd POVs & Fit Checks"
+                  className="px-2.5 py-1.5 rounded-full glass-panel text-cyan-400 hover:text-white hover:border-cyan-500/40 transition-all font-mono font-bold text-[11px]"
+                  aria-label="Afreqa TikTok @afreqa_"
+                >
+                  TT
+                </a>
               <a
                 href="https://x.com/afreqa_"
                 target="_blank"
@@ -84,6 +88,7 @@ export function Footer() {
               </Link>
             </div>
           </div>
+        </div>
 
           {/* Col 2: Navigation */}
           <div>

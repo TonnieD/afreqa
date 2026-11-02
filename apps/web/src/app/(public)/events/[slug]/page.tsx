@@ -11,6 +11,9 @@ import {
   Download,
   Navigation,
   ShieldCheck,
+  Radio,
+  Sparkles,
+  Music,
 } from "lucide-react";
 import { db } from "@afreqa/core";
 import { CountdownTimer } from "@/components/festival/CountdownTimer";
@@ -271,6 +274,15 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
     `${event.venueName}, ${event.venueAddress || "Nairobi, Kenya"}`
   )}`;
 
+  const isLineupDroppingSoon =
+    event.description?.includes("<!-- LINEUP_DROPPING_SOON -->") ||
+    !event.lineup ||
+    event.lineup.length === 0;
+
+  const cleanDescription = event.description
+    ? event.description.replace(/<!--\s*LINEUP_DROPPING_SOON\s*-->/g, "").trim()
+    : "";
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
       {/* 1. HERO HEADER */}
@@ -381,7 +393,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                 {event.title}
               </h2>
               <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed max-w-2xl">
-                {event.description || "Official gathering artwork and festival identity. Prepare for high-octane stage production, immersive audio-visuals, and electronic energy."}
+                {cleanDescription || "Official gathering artwork and festival identity. Prepare for high-octane stage production, immersive audio-visuals, and electronic energy."}
               </p>
               <div className="pt-2 flex flex-wrap items-center gap-3">
                 <a
@@ -415,62 +427,118 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
         <TicketPhaseStrip phases={phaseStripData} eventSlug={event.slug} />
       </section>
 
-      {/* 3. LINEUP & SET TIMES */}
+      {/* 3. LINEUP & SET TIMES / DROPPING SOON */}
       <section className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="font-display font-extrabold text-2xl text-afreqa-chrome-high">
-              Festival Lineup & Set Times
+              Festival Lineup & Programming
             </h2>
             <p className="text-xs font-mono text-afreqa-silver-mid mt-0.5">
-              [Showcase Lineup: Strictly fictional sample artists for demo purposes]
+              {isLineupDroppingSoon
+                ? "Official roster curation in progress"
+                : "Curated festival roster & stage schedules"}
             </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {(event.lineup || []).map((slot) => (
-            <div
-              key={slot.id}
-              className="rounded-2xl bg-[#0f1117]/80 backdrop-blur-md p-6 border border-white/10 flex flex-col sm:flex-row items-start sm:items-center gap-6 group hover:border-amber-400/40 transition-all"
-            >
-              <div className="relative w-24 h-24 rounded-xl overflow-hidden border border-white/10 flex-shrink-0">
-                <Image
-                  src={slot.artist?.photoUrl || "/brand/logo.jpg"}
-                  alt={slot.artist?.name || "Artist"}
-                  fill
-                  sizes="96px"
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
-                />
+        {isLineupDroppingSoon ? (
+          <div className="rounded-3xl bg-[#0f1117]/90 border border-amber-500/30 p-8 sm:p-12 relative overflow-hidden text-center shadow-2xl backdrop-blur-md">
+            {/* Ambient golden stage glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-amber-500/10 rounded-full blur-[140px] pointer-events-none" />
+
+            <div className="relative z-10 max-w-2xl mx-auto space-y-6">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-mono font-bold tracking-widest uppercase shadow">
+                <Sparkles className="w-3.5 h-3.5 animate-spin" />
+                <span>Lineup Dropping Soon</span>
               </div>
 
-              <div className="flex-1 space-y-1">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-black/60 text-amber-400 border border-amber-400/30">
-                    {slot.stageName || "Main Stage"}
-                  </span>
-                  <span className="text-xs font-mono text-zinc-400">
-                    {slot.setStartTime} – {slot.setEndTime}
-                  </span>
-                </div>
+              {/* Animated audio frequency waveform bars */}
+              <div className="flex items-center justify-center gap-1.5 py-2">
+                {[40, 75, 55, 95, 60, 85, 45, 100, 70, 50, 90, 65, 80, 45, 90].map((h, i) => (
+                  <span
+                    key={i}
+                    style={{ height: `${h * 0.4}px` }}
+                    className="w-1.5 rounded-full bg-gradient-to-t from-amber-600 to-amber-300 animate-pulse"
+                  />
+                ))}
+              </div>
 
-                <h3 className="font-display font-bold text-xl text-white group-hover:text-amber-400 transition-colors">
-                  {slot.artist?.name}
+              <div className="space-y-2">
+                <h3 className="font-display font-black text-3xl sm:text-4xl text-white tracking-tight">
+                  ARTIST ROSTER UNDER CURATION
                 </h3>
-
-                <p className="text-xs font-mono text-amber-400/90">
-                  {(slot.artist?.genres || []).join(" • ")}
+                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                  The sonic architects are engineering the official electronic roster and stage set times for {event.title}. Be the first to receive the headliner drop and secret B2B announcements.
                 </p>
+              </div>
 
-                {slot.artist?.bio && (
-                  <p className="text-xs text-zinc-300 pt-1 leading-relaxed line-clamp-2">
-                    {slot.artist.bio}
-                  </p>
-                )}
+              <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a
+                  href="https://whatsapp.com/channel/0029VbAYtdlCcW4lOTonkS0h"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs uppercase tracking-wider transition shadow-lg hover:shadow-emerald-500/20 active:scale-95"
+                >
+                  <span>Join WhatsApp Channel For Lineup Reveal</span>
+                  <ArrowUpRight className="w-4 h-4" />
+                </a>
+
+                <Link
+                  href={`/go/tickets/${event.slug}?placement=lineup-soon`}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-xs uppercase tracking-wider transition active:scale-95"
+                >
+                  <Ticket className="w-4 h-4 text-amber-400" />
+                  <span>Secure Early Pass</span>
+                </Link>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {(event.lineup || []).map((slot) => (
+              <div
+                key={slot.id}
+                className="rounded-2xl bg-[#0f1117]/80 backdrop-blur-md p-6 border border-white/10 flex flex-col sm:flex-row items-start sm:items-center gap-6 group hover:border-amber-400/40 transition-all"
+              >
+                <div className="relative w-24 h-24 rounded-xl overflow-hidden border border-white/10 flex-shrink-0">
+                  <Image
+                    src={slot.artist?.photoUrl || "/brand/logo.jpg"}
+                    alt={slot.artist?.name || "Artist"}
+                    fill
+                    sizes="96px"
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+
+                <div className="flex-1 space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-black/60 text-amber-400 border border-amber-400/30">
+                      {slot.stageName || "Main Stage"}
+                    </span>
+                    <span className="text-xs font-mono text-zinc-400">
+                      {slot.setStartTime} – {slot.setEndTime}
+                    </span>
+                  </div>
+
+                  <h3 className="font-display font-bold text-xl text-white group-hover:text-amber-400 transition-colors">
+                    {slot.artist?.name}
+                  </h3>
+
+                  <p className="text-xs font-mono text-amber-400/90">
+                    {(slot.artist?.genres || []).join(" • ")}
+                  </p>
+
+                  {slot.artist?.bio && (
+                    <p className="text-xs text-zinc-300 pt-1 leading-relaxed line-clamp-2">
+                      {slot.artist.bio}
+                    </p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* 4. VENUE & GATE POLICIES */}

@@ -84,13 +84,23 @@ const FALLBACK_PHASES: PhaseItem[] = [
   },
 ];
 
-const POSTER_LINEUP = [
+interface LineupCardItem {
+  name: string;
+  genre: string;
+  time: string;
+  image?: string;
+  bio?: string;
+  stage?: string;
+}
+
+const POSTER_LINEUP: LineupCardItem[] = [
   {
     name: "Coco Kahi B2B Mike Muema",
     genre: "Headline B2B • Afro-Tech & Melodic Techno",
     time: "02:00 – 04:00",
     image: "/images/afreqa-halloween-alloy.jpg",
     bio: "Powerhouse B2B sonic journey fusing heavy percussive basslines with transcendent synthesis.",
+    stage: "Alloy Mainstage",
   },
   {
     name: "Nayäkaze",
@@ -98,6 +108,7 @@ const POSTER_LINEUP = [
     time: "00:30 – 02:00",
     image: "/images/afreqa-halloween-alloy.jpg",
     bio: "Atmospheric, euphoric chord progressions engineering midnight dancefloor transcendence.",
+    stage: "Alloy Mainstage",
   },
   {
     name: "Shock B2B Ryte",
@@ -105,6 +116,7 @@ const POSTER_LINEUP = [
     time: "23:00 – 00:30",
     image: "/images/afreqa-halloween-alloy.jpg",
     bio: "Relentless energy, driving drops, and seamless B2B rhythm switches.",
+    stage: "Alloy Mainstage",
   },
   {
     name: "Z4V3 B2B Alex Gvng Gvng",
@@ -112,6 +124,7 @@ const POSTER_LINEUP = [
     time: "21:30 – 23:00",
     image: "/images/afreqa-halloween-alloy.jpg",
     bio: "Sub-bass polyrhythms and heavy club energy to ignite the Halloween rave.",
+    stage: "Alloy Mainstage",
   },
   {
     name: "The Arkitekt & DJ Myth",
@@ -119,12 +132,15 @@ const POSTER_LINEUP = [
     time: "19:00 – 21:30",
     image: "/images/afreqa-halloween-alloy.jpg",
     bio: "Setting the night into motion from 7PM as dancers step into Alloy Bar & Lounge.",
+    stage: "Support Floor",
   },
 ];
 
 export default async function HomePage() {
   let event = FALLBACK_EVENT;
   let phases = FALLBACK_PHASES;
+  let activeLineup: LineupCardItem[] = POSTER_LINEUP;
+  let isLineupDroppingSoon = false;
 
   try {
     const now = new Date();
@@ -140,6 +156,10 @@ export default async function HomePage() {
         ticketPhases: {
           orderBy: { sortOrder: "asc" },
         },
+        lineup: {
+          include: { artist: true },
+          orderBy: { sortOrder: "asc" },
+        },
       },
     });
 
@@ -150,6 +170,10 @@ export default async function HomePage() {
         orderBy: { createdAt: "desc" },
         include: {
           ticketPhases: {
+            orderBy: { sortOrder: "asc" },
+          },
+          lineup: {
+            include: { artist: true },
             orderBy: { sortOrder: "asc" },
           },
         },
@@ -164,11 +188,19 @@ export default async function HomePage() {
           ticketPhases: {
             orderBy: { sortOrder: "asc" },
           },
+          lineup: {
+            include: { artist: true },
+            orderBy: { sortOrder: "asc" },
+          },
         },
       });
     }
 
     if (dbEvent) {
+      const cleanDesc = dbEvent.description
+        ? dbEvent.description.replace(/<!--\s*LINEUP_DROPPING_SOON\s*-->/g, "").trim()
+        : FALLBACK_EVENT.description;
+
       event = {
         id: dbEvent.id,
         title: dbEvent.title,
@@ -178,7 +210,7 @@ export default async function HomePage() {
         venueName: dbEvent.venueName,
         venueAddress: dbEvent.venueAddress || FALLBACK_EVENT.venueAddress,
         doorsOpen: dbEvent.doorsOpen || FALLBACK_EVENT.doorsOpen,
-        description: dbEvent.description || FALLBACK_EVENT.description,
+        description: cleanDesc,
         posterUrl: dbEvent.posterUrl || FALLBACK_EVENT.posterUrl,
         dressCode: FALLBACK_EVENT.dressCode,
         vipContact: FALLBACK_EVENT.vipContact,
@@ -192,6 +224,26 @@ export default async function HomePage() {
           currency: "KES",
           status: tp.status as "ON_SALE" | "SOLD_OUT" | "UPCOMING",
           description: null,
+        }));
+      }
+
+      // Check Lineup Dropping Soon flag
+      const hasDropFlag = dbEvent.description?.includes("<!-- LINEUP_DROPPING_SOON -->");
+      const hasLineupSlots = dbEvent.lineup && dbEvent.lineup.length > 0;
+
+      if (hasDropFlag || !hasLineupSlots) {
+        isLineupDroppingSoon = true;
+      } else {
+        isLineupDroppingSoon = false;
+        activeLineup = dbEvent.lineup.map((slot) => ({
+          name: slot.artist?.name || "Featured Artist",
+          genre: (slot.artist?.genres || []).join(" • ") || "Electronic",
+          time:
+            slot.setStartTime && slot.setEndTime
+              ? `${slot.setStartTime} – ${slot.setEndTime}`
+              : slot.setStartTime || "Mainstage",
+          image: slot.artist?.photoUrl || "/images/afreqa-nye-banner.jpg",
+          bio: slot.artist?.bio || "Peak-hour electronic energy.",
         }));
       }
     }
@@ -224,9 +276,9 @@ export default async function HomePage() {
         {/* Content Container (Layered above Cover Image) */}
         <div className="relative z-10 flex flex-col items-center max-w-5xl mx-auto">
           {/* Brand Tagline Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/15 backdrop-blur-md text-amber-400 text-xs font-mono font-bold tracking-widest uppercase mb-8 shadow-lg">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-amber-500/30 backdrop-blur-md text-amber-400 text-xs font-mono font-bold tracking-widest uppercase mb-8 shadow-lg">
             <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-            <span>Nairobi Electronic Movement • Official Gathering</span>
+            <span>A Tomorrowland XP in Nairobi • High-Velocity Rave</span>
           </div>
 
           {/* Afreqa Emblem */}
@@ -251,7 +303,7 @@ export default async function HomePage() {
           </h1>
 
           <p className="mt-6 text-base sm:text-lg md:text-xl text-zinc-300 max-w-2xl mx-auto leading-relaxed font-light drop-shadow">
-            Nairobi&apos;s home for electronic dance music. Where African percussive rhythms meet futuristic sound and monumental stage architecture.
+            Nairobi&apos;s dedicated Tomorrowland experience. High-velocity Hardstyle, anthemic Progressive EDM, Big Room, Hard Techno, and Afro-Tech engineered for pure rave catharsis.
           </p>
 
           {/* Next Edition Meta Bar */}
@@ -402,32 +454,80 @@ export default async function HomePage() {
                 </div>
               </div>
 
-              {/* Lineup Cards */}
-              <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {POSTER_LINEUP.map((dj) => (
-                  <div
-                    key={dj.name}
-                    className="rounded-2xl glass-panel p-5 border border-white/10 hover:border-amber-500/40 transition-all duration-300 group hover:-translate-y-1"
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-black/70 text-amber-400 border border-amber-400/30">
-                        {dj.time}
-                      </span>
-                      <span className="text-[10px] font-mono text-zinc-500">
-                        Alloy Mainstage
-                      </span>
+              {/* Lineup Cards or Lineup Dropping Soon Teaser */}
+              <div className="lg:col-span-3">
+                {isLineupDroppingSoon ? (
+                  <div className="rounded-2xl glass-panel p-8 sm:p-10 border border-amber-500/30 text-center relative overflow-hidden flex flex-col items-center justify-center min-h-[340px]">
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-40 bg-amber-500/10 rounded-full blur-[90px] pointer-events-none" />
+
+                    <div className="relative z-10 space-y-4 max-w-lg">
+                      <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-mono font-bold tracking-widest uppercase">
+                        <Sparkles className="w-3.5 h-3.5 animate-spin" />
+                        <span>Lineup Dropping Soon</span>
+                      </div>
+
+                      {/* Animated audio frequency waveform */}
+                      <div className="flex items-center justify-center gap-1.5 py-1">
+                        {[40, 75, 55, 95, 60, 85, 45, 100, 70, 50, 90].map((h, i) => (
+                          <span
+                            key={i}
+                            style={{ height: `${h * 0.3}px` }}
+                            className="w-1.5 rounded-full bg-gradient-to-t from-amber-600 to-amber-300 animate-pulse"
+                          />
+                        ))}
+                      </div>
+
+                      <h4 className="font-display font-black text-2xl sm:text-3xl text-white tracking-tight">
+                        ARTIST ROSTER UNDER CURATION
+                      </h4>
+
+                      <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                        The festival sound architects are finalizing the electronic headliners and stage schedules for this edition.
+                      </p>
+
+                      <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+                        <a
+                          href="https://whatsapp.com/channel/0029VbAYtdlCcW4lOTonkS0h"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs uppercase tracking-wider transition shadow-lg hover:shadow-emerald-500/20 active:scale-95"
+                        >
+                          <span>Join WhatsApp Channel For Drop</span>
+                          <ArrowUpRight className="w-4 h-4" />
+                        </a>
+                      </div>
                     </div>
-                    <h4 className="font-display font-bold text-lg text-white group-hover:text-amber-400 transition-colors">
-                      {dj.name}
-                    </h4>
-                    <p className="text-xs font-mono text-amber-400/90 mt-0.5">
-                      {dj.genre}
-                    </p>
-                    <p className="text-xs text-zinc-400 mt-2 line-clamp-2 leading-relaxed">
-                      {dj.bio}
-                    </p>
                   </div>
-                ))}
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {activeLineup.map((dj) => (
+                      <div
+                        key={dj.name}
+                        className="rounded-2xl glass-panel p-5 border border-white/10 hover:border-amber-500/40 transition-all duration-300 group hover:-translate-y-1"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-black/70 text-amber-400 border border-amber-400/30">
+                            {dj.time}
+                          </span>
+                          <span className="text-[10px] font-mono text-zinc-500">
+                            {dj.stage || "Mainstage"}
+                          </span>
+                        </div>
+                        <h4 className="font-display font-bold text-lg text-white group-hover:text-amber-400 transition-colors">
+                          {dj.name}
+                        </h4>
+                        <p className="text-xs font-mono text-amber-400/90 mt-0.5">
+                          {dj.genre}
+                        </p>
+                        {dj.bio && (
+                          <p className="text-xs text-zinc-400 mt-2 line-clamp-2 leading-relaxed">
+                            {dj.bio}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -438,13 +538,13 @@ export default async function HomePage() {
       <section id="experience" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full scroll-mt-24">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="font-mono text-xs font-bold tracking-widest text-amber-400 uppercase">
-            The Frequency Standard
+            A Tomorrowland XP in Nairobi
           </span>
           <h2 className="font-display font-black text-3xl sm:text-5xl text-chrome mt-2">
-            Tomorrowland Fantasy. African Soul.
+            Tomorrowland Scale. Uncompromising Sound.
           </h2>
           <p className="mt-4 text-zinc-400 text-sm sm:text-base leading-relaxed">
-            Every Afreqa edition is designed as an all-encompassing sensorial ritual, fusing monumental stage production with Nairobi&apos;s unmatched electronic groove.
+            Every AFREQA edition is engineered as a high-octane sensory ritual, pairing monumental stage production with peak-velocity electronic dance music.
           </p>
         </div>
 
@@ -455,10 +555,10 @@ export default async function HomePage() {
               <Zap className="w-6 h-6" />
             </div>
             <h3 className="font-display font-bold text-lg text-white mb-2">
-              Atmospheric Stage Architecture
+              Monumental Stage Craft
             </h3>
             <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-              Custom-engineered light installations, synchronized stage visuals, and atmospheric haze designed to transport dancers into a futuristic dreamscape.
+              Custom-engineered light installations, synchronized stage visuals, laser matrices, and atmospheric haze designed to transport ravers into an unearthly Tomorrowland fantasy.
             </p>
           </div>
 
@@ -468,10 +568,10 @@ export default async function HomePage() {
               <Music className="w-6 h-6" />
             </div>
             <h3 className="font-display font-bold text-lg text-white mb-2">
-              Deep Sub-Bass Clarity
+              Hardstyle & Progressive EDM
             </h3>
             <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-              Precision-tuned acoustic engineering so every Afro-Tech polyrhythm and melodic bass drop resonates directly in your chest with zero harsh distortion.
+              No watered-down pop. 128 to 160+ BPM festival velocity spanning Hardstyle raw kicks, anthemic Progressive EDM, Big Room drops, and industrial Hard Techno.
             </p>
           </div>
 
@@ -481,10 +581,10 @@ export default async function HomePage() {
               <ShieldCheck className="w-6 h-6" />
             </div>
             <h3 className="font-display font-bold text-lg text-white mb-2">
-              Safe & Unified Dancefloor
+              Creative Costume Culture
             </h3>
             <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-              Strict zero-tolerance harassment policies, professional venue security, on-site medics, and an ethos where everyone dances freely as one tribe.
+              A judgment-free dancefloor celebrating creative Halloween outfits, festival chic, and futuristic rave gear—where thousands unite under pure PLUR.
             </p>
           </div>
 
@@ -494,10 +594,10 @@ export default async function HomePage() {
               <Radio className="w-6 h-6" />
             </div>
             <h3 className="font-display font-bold text-lg text-white mb-2">
-              African Percussive Soul
+              7PM–6AM B2B Marathons
             </h3>
             <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-              Championing Kenya, South Africa, and East Africa&apos;s electronic producers. From tribal rhythms to modern progressive synthesis.
+              Seamless back-to-back power sets featuring Nairobi&apos;s finest electronic selectors (Coco Kahi, Mike Muema, Nayäkaze, Shock, Ryte, Z4V3) in an all-night odyssey.
             </p>
           </div>
         </div>

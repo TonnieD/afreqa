@@ -97,8 +97,19 @@ export default async function EventsPage() {
   }
 
   const now = new Date();
-  const upcomingEvents = events.filter((e) => new Date(e.date) >= now);
-  const pastEvents = events.filter((e) => new Date(e.date) < now);
+  const upcomingEvents = events
+    .filter((e) => e.status === "PUBLISHED" && new Date(e.date) >= now)
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+  // Strictly display at most 3 previous, already passed events (newest passed first).
+  // If another event passes, the oldest passed event is automatically dropped from display.
+  const MAX_PAST_EVENTS = 3;
+  const pastEvents = events
+    .filter(
+      (e) => e.status === "ARCHIVED" || (e.status === "PUBLISHED" && new Date(e.date) < now)
+    )
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, MAX_PAST_EVENTS);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -191,51 +202,74 @@ export default async function EventsPage() {
         )}
       </section>
 
-      {/* PAST EDITIONS ARCHIVE */}
+      {/* PAST EDITIONS ARCHIVE (STRICTLY AT MOST 3) */}
       <section id="past" className="scroll-mt-24">
-        <div className="flex items-center gap-3 mb-8">
-          <span className="w-3 h-3 rounded-full bg-zinc-600" />
-          <h2 className="font-display font-extrabold text-2xl text-zinc-300 tracking-wide">
-            Past Chronicles
-          </h2>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-8">
+          <div className="flex items-center gap-3">
+            <span className="w-3 h-3 rounded-full bg-zinc-600" />
+            <h2 className="font-display font-extrabold text-2xl text-zinc-300 tracking-wide">
+              Past Chronicles
+            </h2>
+          </div>
+          <span className="text-xs font-mono text-zinc-500">
+            Archive • Displaying latest {pastEvents.length} passed {pastEvents.length === 1 ? "edition" : "editions"} (Max 3)
+          </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {pastEvents.map((evt) => (
-            <div
-              key={evt.id}
-              className="rounded-2xl bg-[#0f1117]/80 backdrop-blur-md p-5 border border-white/10 opacity-85 hover:opacity-100 transition-opacity"
-            >
-              <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-4 border border-white/10">
-                <Image
-                  src={evt.posterUrl || "/images/afreqa-live-crowd.jpg"}
-                  alt={evt.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-cover grayscale hover:grayscale-0 transition-all duration-300"
-                />
+        {pastEvents.length === 0 ? (
+          <div className="rounded-2xl bg-[#0f1117]/60 p-8 text-center border border-white/5">
+            <p className="text-xs font-mono text-zinc-500">No past chronicles to display.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {pastEvents.map((evt) => (
+              <div
+                key={evt.id}
+                className="rounded-2xl bg-[#0f1117]/80 backdrop-blur-md p-5 border border-white/10 opacity-85 hover:opacity-100 transition-opacity flex flex-col justify-between"
+              >
+                <div>
+                  <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-4 border border-white/10">
+                    <Image
+                      src={evt.posterUrl || "/images/afreqa-live-crowd.jpg"}
+                      alt={evt.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover grayscale hover:grayscale-0 transition-all duration-300"
+                    />
+                    <div className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-black/80 backdrop-blur-md text-zinc-400 border border-white/10">
+                      PASSED
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-mono font-bold text-amber-400/80 uppercase tracking-widest">
+                    Concluded Edition
+                  </span>
+                  <h4 className="font-display font-bold text-lg text-white mt-1">
+                    {evt.title}
+                  </h4>
+                  <p className="text-xs font-mono text-zinc-400 mt-1">
+                    {new Date(evt.date).toLocaleDateString("en-KE", { month: "short", day: "numeric", year: "numeric" })} • {evt.venueName}
+                  </p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
+                  <Link
+                    href={`/events/${evt.slug}`}
+                    className="text-xs font-mono text-amber-400 hover:text-white transition-colors flex items-center gap-1 font-semibold"
+                  >
+                    <span>View Chronicle</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </Link>
+                  <Link
+                    href="/gallery"
+                    className="text-xs font-mono text-zinc-400 hover:text-white transition-colors flex items-center gap-1"
+                  >
+                    <span>Photos & After-Movie</span>
+                    <ArrowUpRight className="w-3 h-3" />
+                  </Link>
+                </div>
               </div>
-              <span className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-widest">
-                Archived
-              </span>
-              <h4 className="font-display font-bold text-lg text-white mt-1">
-                {evt.title}
-              </h4>
-              <p className="text-xs font-mono text-zinc-400 mt-1">
-                {new Date(evt.date).toLocaleDateString("en-KE", { month: "short", year: "numeric" })} • {evt.venueName}
-              </p>
-              <div className="mt-4 pt-3 border-t border-white/5">
-                <Link
-                  href="/gallery"
-                  className="text-xs font-mono text-amber-400 hover:text-white transition-colors flex items-center gap-1"
-                >
-                  <span>Browse Photos & After-Movie</span>
-                  <ArrowUpRight className="w-3 h-3" />
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );
