@@ -156,6 +156,11 @@ export function Footer() {
                   Contact & Bookings
                 </Link>
               </li>
+              <li>
+                <a href="tel:+254743836164" className="text-zinc-400 hover:text-emerald-400 transition-colors font-mono text-xs">
+                  +254 743 836 164
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -193,7 +198,7 @@ export function Footer() {
               </li>
               <li>
                 <a href="/api/whatsapp/vcard" download="afreqa.vcf" className="text-amber-400/80 hover:text-amber-400 transition-colors">
-                  Save Afreqa Contact (.vcf)
+                  Save Contact (+254 743 836 164)
                 </a>
               </li>
             </ul>

@@ -8,10 +8,10 @@ export async function GET() {
     name: "Afreqa Nairobi",
     org: "Afreqa Productions Ltd",
     title: "Official EDM Community & Event Desk",
-    phone: process.env.WHATSAPP_PHONE || "+254700000000",
+    phone: process.env.WHATSAPP_PHONE || "+254743836164",
     email: "frequencies@afreqa.com",
     url: "https://afreqa.com",
-    note: "Official Afreqa Nairobi contact. Save this contact to guarantee delivery of WhatsApp festival announcements, secret lineups, and Early Bird drops.",
+    note: "Official Afreqa Nairobi contact (+254 743 836 164). Save this contact to guarantee delivery of WhatsApp festival announcements, secret lineups, and Early Bird drops.",
   });
 
   return new NextResponse(vcard, {

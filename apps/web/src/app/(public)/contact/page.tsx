@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Mail, MessageCircle, MapPin, Send, CheckCircle2, AlertCircle, ArrowUpRight } from "lucide-react";
+import { Mail, MessageCircle, MapPin, Send, CheckCircle2, AlertCircle, ArrowUpRight, Phone } from "lucide-react";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -76,26 +76,41 @@ export default function ContactPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
         {/* Left Column: Direct Communication Cards */}
         <div className="space-y-6 lg:col-span-1">
-          {/* WhatsApp Direct Chat */}
+          {/* Direct Line & WhatsApp Card */}
           <div className="rounded-3xl bg-[#0f1117]/80 backdrop-blur-md p-6 sm:p-8 border border-emerald-500/30 space-y-4 shadow-xl relative overflow-hidden">
             <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
-              <MessageCircle className="w-5 h-5" />
+              <Phone className="w-5 h-5" />
             </div>
-            <h3 className="font-display font-bold text-xl text-white">
-              Instant WhatsApp
-            </h3>
-            <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed font-normal">
-              Fastest response for urgent ticketing inquiries, VIP table reservations, or gate access questions.
-            </p>
-            <div className="pt-2">
+            <div>
+              <h3 className="font-display font-bold text-xl text-white">
+                Direct Line & WhatsApp
+              </h3>
               <a
-                href={`https://wa.me/254700000000?text=${whatsappMessage}`}
+                href="tel:+254743836164"
+                className="font-mono font-bold text-lg text-emerald-400 hover:text-emerald-300 transition-colors inline-block mt-1"
+              >
+                +254 743 836 164
+              </a>
+            </div>
+            <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed font-normal">
+              Direct hotline for urgent ticketing inquiries, VIP table reservations, partnerships, or gate access questions.
+            </p>
+            <div className="pt-2 flex flex-wrap items-center gap-3">
+              <a
+                href={`https://wa.me/254743836164?text=${whatsappMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs uppercase tracking-wider transition-colors shadow-lg shadow-emerald-950/40"
               >
-                <span>Chat with Operations</span>
+                <MessageCircle className="w-3.5 h-3.5" />
+                <span>Chat on WhatsApp</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />
+              </a>
+              <a
+                href="tel:+254743836164"
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-mono text-xs font-bold transition-colors"
+              >
+                <span>Call Hotline</span>
               </a>
             </div>
           </div>

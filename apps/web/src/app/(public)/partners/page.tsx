@@ -259,12 +259,12 @@ ${formData.objectives}`;
             </p>
             <div className="pt-2">
               <a
-                href={`https://wa.me/254702665665?text=${whatsappMessage}`}
+                href={`https://wa.me/254743836164?text=${whatsappMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs uppercase tracking-wider transition-colors shadow-lg shadow-emerald-950/40"
               >
-                <span>WhatsApp 0702 665 665</span>
+                <span>WhatsApp +254 743 836 164</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </a>
             </div>
