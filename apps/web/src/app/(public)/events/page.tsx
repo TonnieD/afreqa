@@ -3,6 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { Calendar, MapPin, Ticket, ArrowUpRight, Clock, Sparkles } from "lucide-react";
 import { db } from "@afreqa/core";
+import { parseEventMetadata } from "@/lib/event-metadata";
+import { KenyanAccentBar } from "@/components/festival/KenyanAccentBar";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -17,11 +19,14 @@ interface EventItem {
   title: string;
   slug: string;
   tagline?: string | null;
+  description?: string | null;
   posterUrl?: string | null;
   date: Date | string;
   venueName: string;
   venueAddress?: string | null;
   status: string;
+  photosUrl?: string | null;
+  hasTableBooking?: boolean;
   ticketPhases: Array<{
     id: string;
     name: string;
@@ -34,7 +39,7 @@ export default async function EventsPage() {
   let events: EventItem[] = [];
 
   try {
-    events = await db.event.findMany({
+    const dbEvents = await db.event.findMany({
       orderBy: { date: "desc" },
       include: {
         ticketPhases: {
@@ -42,6 +47,34 @@ export default async function EventsPage() {
         },
       },
     });
+
+    if (dbEvents.length > 0) {
+      events = dbEvents.map((evt) => {
+        const meta = parseEventMetadata(evt.description, evt.date);
+        return {
+          id: evt.id,
+          title: evt.title,
+          slug: evt.slug,
+          tagline: evt.tagline,
+          description: meta.cleanDescription,
+          posterUrl: evt.posterUrl,
+          date: evt.date,
+          venueName: evt.venueName,
+          venueAddress: evt.venueAddress,
+          status: evt.status,
+          photosUrl: meta.photosUrl,
+          hasTableBooking: meta.hasTableBooking,
+          ticketPhases: evt.ticketPhases
+            .filter((tp) => meta.hasTableBooking || !/table/i.test(tp.name))
+            .map((tp) => ({
+              id: tp.id,
+              name: tp.name,
+              priceKes: tp.priceKes,
+              status: tp.status,
+            })),
+        };
+      });
+    }
   } catch {
     // If DB is offline, fall back to mock
   }
@@ -59,11 +92,12 @@ export default async function EventsPage() {
         venueName: "Parklands Road, Westlands",
         venueAddress: "Westlands, Nairobi, Kenya",
         status: "PUBLISHED",
+        photosUrl: null,
+        hasTableBooking: false,
         ticketPhases: [
           { id: "p1", name: "Early Bird Rave Pass", priceKes: 1500, status: "ON_SALE" },
           { id: "p2", name: "Advance Ticket", priceKes: 2500, status: "ON_SALE" },
           { id: "p3", name: "VIP Festival Pass", priceKes: 5000, status: "ON_SALE" },
-          { id: "p4", name: "VIP Table Package", priceKes: 25000, status: "ON_SALE" },
         ],
       },
       {
@@ -76,10 +110,13 @@ export default async function EventsPage() {
         venueName: "Alloy Bar & Lounge",
         venueAddress: "Nairobi, Kenya",
         status: "ARCHIVED",
+        photosUrl:
+          process.env.NEXT_PUBLIC_HALLOWEEN_PHOTOS_URL ||
+          "https://drive.google.com/drive/folders/1EKHSU4PsGTeNACb7GM6ST-mGbslRuiKA",
+        hasTableBooking: false,
         ticketPhases: [
           { id: "p1", name: "Rave Pass", priceKes: 1000, status: "SOLD_OUT" },
           { id: "p2", name: "Advance Ticket", priceKes: 1500, status: "SOLD_OUT" },
-          { id: "p3", name: "VIP Table Package", priceKes: 15000, status: "SOLD_OUT" },
         ],
       },
       {
@@ -91,6 +128,8 @@ export default async function EventsPage() {
         venueName: "Alchemist / Ngong Racecourse",
         venueAddress: "Nairobi, Kenya",
         status: "ARCHIVED",
+        photosUrl: null,
+        hasTableBooking: false,
         ticketPhases: [],
       },
     ];
@@ -119,9 +158,11 @@ export default async function EventsPage() {
           <Sparkles className="w-3.5 h-3.5" />
           <span>The Gathering Calendar</span>
         </div>
-        <h1 className="font-display font-black text-4xl sm:text-6xl text-white tracking-tight">
-          FESTIVAL EDITIONS
+        <h1 className="font-display font-black text-4xl sm:text-6xl tracking-tight">
+          <span className="text-[#ef4444] drop-shadow-[0_2px_12px_rgba(239,68,68,0.3)]">FESTIVAL</span>{" "}
+          <span className="text-[#10b981] drop-shadow-[0_2px_12px_rgba(16,185,129,0.3)]">EDITIONS</span>
         </h1>
+        <KenyanAccentBar />
         <p className="mt-4 text-zinc-300 text-sm sm:text-base leading-relaxed">
           From full-scale outdoor festival spectacles to intimate underground warehouse sessions. Explore upcoming gatherings and relive past sonic rituals.
         </p>
@@ -187,14 +228,16 @@ export default async function EventsPage() {
                   >
                     View Schedule & Lineup →
                   </Link>
-                  <Link
+                  <a
                     href={`/go/tickets/${evt.slug}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs uppercase tracking-wider transition-all shadow-lg hover:shadow-amber-500/20"
                   >
                     <Ticket className="w-4 h-4" />
                     <span>Get Tickets</span>
                     <ArrowUpRight className="w-3.5 h-3.5" />
-                  </Link>
+                  </a>
                 </div>
               </div>
             ))}
@@ -258,13 +301,17 @@ export default async function EventsPage() {
                     <span>View Chronicle</span>
                     <ArrowUpRight className="w-3.5 h-3.5" />
                   </Link>
-                  <Link
-                    href="/gallery"
-                    className="text-xs font-mono text-zinc-400 hover:text-white transition-colors flex items-center gap-1"
-                  >
-                    <span>Photos & After-Movie</span>
-                    <ArrowUpRight className="w-3 h-3" />
-                  </Link>
+                  {evt.photosUrl && (
+                    <a
+                      href={evt.photosUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs font-mono text-zinc-400 hover:text-white transition-colors flex items-center gap-1"
+                    >
+                      <span>Night Photos</span>
+                      <ArrowUpRight className="w-3 h-3" />
+                    </a>
+                  )}
                 </div>
               </div>
             ))}

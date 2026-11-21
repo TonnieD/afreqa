@@ -19,6 +19,8 @@ import { CountdownTimer } from "@/components/festival/CountdownTimer";
 import { TicketPhaseStrip } from "@/components/festival/TicketPhaseStrip";
 import { SubscribeSection } from "@/components/festival/SubscribeSection";
 import { SpotifySection } from "@/components/festival/SpotifySection";
+import { parseEventMetadata } from "@/lib/event-metadata";
+import { KenyanAccentBar } from "@/components/festival/KenyanAccentBar";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -37,7 +39,9 @@ const FALLBACK_EVENT = {
     "Afreqa presents Nairobi's Ultimate Tomorrowland New Year's Eve Festival. Step into the monumental 2026 midnight countdown with high-velocity electronic dance music, massive stage architecture, and Nairobi's finest soundsystem. Tickets live on HustleSasa.",
   posterUrl: "/images/afreqa-nye-banner.jpg",
   dressCode: "Festival Chic & Futuristic Glam",
-  vipContact: "+254 743 836 164",
+  vipContact: null as string | null,
+  hasTableBooking: false,
+  photosUrl: null as string | null,
 };
 
 interface PhaseItem {
@@ -73,14 +77,6 @@ const FALLBACK_PHASES: PhaseItem[] = [
     currency: "KES",
     status: "ON_SALE",
     description: "Elevated stage platform • Private bar & premium amenities",
-  },
-  {
-    id: "p4",
-    name: "VIP Table Package",
-    price: 25000,
-    currency: "KES",
-    status: "ON_SALE",
-    description: "Dedicated bottle service, lounge seating & priority parking",
   },
 ];
 
@@ -197,9 +193,7 @@ export default async function HomePage() {
     }
 
     if (dbEvent) {
-      const cleanDesc = dbEvent.description
-        ? dbEvent.description.replace(/<!--\s*LINEUP_DROPPING_SOON\s*-->/g, "").trim()
-        : FALLBACK_EVENT.description;
+      const meta = parseEventMetadata(dbEvent.description, dbEvent.date);
 
       event = {
         id: dbEvent.id,
@@ -210,21 +204,26 @@ export default async function HomePage() {
         venueName: dbEvent.venueName,
         venueAddress: dbEvent.venueAddress || FALLBACK_EVENT.venueAddress,
         doorsOpen: dbEvent.doorsOpen || FALLBACK_EVENT.doorsOpen,
-        description: cleanDesc,
+        description: meta.cleanDescription,
         posterUrl: dbEvent.posterUrl || FALLBACK_EVENT.posterUrl,
         dressCode: FALLBACK_EVENT.dressCode,
-        vipContact: FALLBACK_EVENT.vipContact,
+        vipContact: meta.tableBookingContact,
+        hasTableBooking: meta.hasTableBooking,
+        photosUrl: meta.photosUrl,
       };
 
       if (dbEvent.ticketPhases && dbEvent.ticketPhases.length > 0) {
-        phases = dbEvent.ticketPhases.map((tp) => ({
-          id: tp.id,
-          name: tp.name,
-          price: tp.priceKes,
-          currency: "KES",
-          status: tp.status as "ON_SALE" | "SOLD_OUT" | "UPCOMING",
-          description: null,
-        }));
+        // Table packages are removed unless table booking is explicitly specified
+        phases = dbEvent.ticketPhases
+          .filter((tp) => meta.hasTableBooking || !/table/i.test(tp.name))
+          .map((tp) => ({
+            id: tp.id,
+            name: tp.name,
+            price: tp.priceKes,
+            currency: "KES",
+            status: tp.status as "ON_SALE" | "SOLD_OUT" | "UPCOMING",
+            description: null,
+          }));
       }
 
       // Check Lineup Dropping Soon flag
@@ -297,10 +296,13 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* Headline */}
-          <h1 className="font-display font-black text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-white max-w-5xl leading-[1.05] drop-shadow-md">
-            FEEL THE <span className="text-festival-gradient">FREQUENCY</span>
+          {/* Headline with Kenyan Rave Flag Scheme (Whole Words: Red, White, Green + Black Backdrop & Accent Bar) */}
+          <h1 className="font-display font-black text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight max-w-5xl leading-[1.05] drop-shadow-md">
+            <span className="text-[#ef4444] drop-shadow-[0_2px_14px_rgba(239,68,68,0.35)]">FEEL</span>{" "}
+            <span className="text-white drop-shadow-[0_2px_14px_rgba(255,255,255,0.35)]">THE</span>{" "}
+            <span className="text-[#10b981] drop-shadow-[0_2px_14px_rgba(16,185,129,0.35)]">FREQUENCY</span>
           </h1>
+          <KenyanAccentBar />
 
           <p className="mt-6 text-base sm:text-lg md:text-xl text-zinc-300 max-w-2xl mx-auto leading-relaxed font-light drop-shadow">
             Nairobi&apos;s dedicated Tomorrowland experience. Anthemic Progressive EDM, Big Room, African Tech, Techno, Hardstyle, Drum &amp; Bass, and Dubstep engineered for pure rave catharsis.
@@ -331,14 +333,16 @@ export default async function HomePage() {
 
           {/* Hero CTA cluster */}
           <div className="flex flex-col sm:flex-row items-center gap-4 mt-2">
-            <Link
+            <a
               href={`/go/tickets/${event.slug}?placement=hero`}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-sm sm:text-base tracking-wider uppercase shadow-xl hover:scale-105 transition-all duration-300 active:scale-95"
             >
               <Ticket className="w-5 h-5 text-black" />
               <span>Get Tickets via HustleSasa</span>
               <ArrowUpRight className="w-4 h-4" />
-            </Link>
+            </a>
 
             <Link
               href="#spotlight"
@@ -430,28 +434,34 @@ export default async function HomePage() {
                     OFFICIAL POSTER
                   </div>
                 </div>
-                <div className="p-1 space-y-2 text-center">
-                  <div>
-                    <p className="text-[11px] font-mono text-zinc-400">
-                      VIP & Table Bookings
-                    </p>
-                    <a
-                      href={`tel:${event.vipContact?.replace(/[^0-9+]/g, "") || "0743836164"}`}
-                      className="inline-block text-xs font-mono font-bold text-amber-400 hover:underline"
-                    >
-                      📞 {event.vipContact || "+254 743 836 164"}
-                    </a>
+                {(event.hasTableBooking || event.photosUrl) && (
+                  <div className="p-1 space-y-2 text-center">
+                    {event.hasTableBooking && event.vipContact && (
+                      <div>
+                        <p className="text-[11px] font-mono text-zinc-400">
+                          VIP & Table Bookings
+                        </p>
+                        <a
+                          href={`tel:${event.vipContact.replace(/[^0-9+]/g, "")}`}
+                          className="inline-block text-xs font-mono font-bold text-amber-400 hover:underline"
+                        >
+                          📞 {event.vipContact}
+                        </a>
+                      </div>
+                    )}
+                    {event.photosUrl && (
+                      <a
+                        href={event.photosUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-400 text-xs font-mono font-bold transition-all"
+                      >
+                        <span>📸 Night Photos (Google Drive)</span>
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                      </a>
+                    )}
                   </div>
-                  <a
-                    href="https://drive.google.com/drive/folders/1EKHSU4PsGTeNACb7GM6ST-mGbslRuiKA"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-400 text-xs font-mono font-bold transition-all"
-                  >
-                    <span>📸 Night Photos (Google Drive)</span>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </a>
-                </div>
+                )}
               </div>
 
               {/* Lineup Cards or Lineup Dropping Soon Teaser */}

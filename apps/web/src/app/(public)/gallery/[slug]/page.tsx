@@ -4,6 +4,8 @@ import { db } from "@afreqa/core";
 import { ShieldAlert, ArrowLeft, Camera, Film, ArrowUpRight, FolderHeart, DownloadCloud } from "lucide-react";
 import { AlbumView } from "@/components/media/AlbumView";
 import { VideoPlayer } from "@/components/media/VideoPlayer";
+import { parseEventMetadata } from "@/lib/event-metadata";
+import { KenyanAccentBar } from "@/components/festival/KenyanAccentBar";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -45,10 +47,13 @@ export default async function AlbumDetailPage({ params }: AlbumPageProps) {
     }>;
   } | null = null;
 
+  let photosUrl: string | null = null;
+
   try {
     const dbAlbum = await db.album.findUnique({
       where: { slug },
       include: {
+        event: true,
         media: {
           where: { status: "READY" },
           orderBy: { sortOrder: "asc" },
@@ -57,6 +62,10 @@ export default async function AlbumDetailPage({ params }: AlbumPageProps) {
     });
 
     if (dbAlbum) {
+      if (dbAlbum.event) {
+        const meta = parseEventMetadata(dbAlbum.event.description, dbAlbum.event.date);
+        photosUrl = meta.photosUrl;
+      }
       albumData = {
         id: dbAlbum.id,
         title: dbAlbum.title,
@@ -158,6 +167,12 @@ export default async function AlbumDetailPage({ params }: AlbumPageProps) {
     }
   }
 
+  if (!photosUrl && slug === "halloween-alloy") {
+    photosUrl =
+      process.env.NEXT_PUBLIC_HALLOWEEN_PHOTOS_URL ||
+      "https://drive.google.com/drive/folders/1EKHSU4PsGTeNACb7GM6ST-mGbslRuiKA";
+  }
+
   return (
     <div className="space-y-12 pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
       {/* Back button & Header */}
@@ -175,6 +190,7 @@ export default async function AlbumDetailPage({ params }: AlbumPageProps) {
             <h1 className="font-display font-extrabold text-3xl sm:text-4xl text-white uppercase tracking-wide">
               {albumData.title}
             </h1>
+            <KenyanAccentBar className="my-2" />
             {albumData.description && (
               <p className="text-sm text-zinc-300 mt-2 max-w-2xl leading-relaxed">
                 {albumData.description}
@@ -190,37 +206,39 @@ export default async function AlbumDetailPage({ params }: AlbumPageProps) {
           )}
         </div>
 
-        {/* External High-Res Drive / Cloud Photos Vault */}
-        <div className="mt-6 rounded-2xl bg-gradient-to-r from-[#0f1117] via-[#151926] to-[#0f1117] border border-amber-500/40 p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 shadow-2xl">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/30 shadow-inner">
-              <FolderHeart className="w-6 h-6" />
-            </div>
-            <div className="space-y-1">
-              <div className="flex items-center gap-2">
-                <h4 className="font-display font-bold text-base sm:text-lg text-white">
-                  Official Google Drive Photo Vault
-                </h4>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                  Google Drive Cloud
-                </span>
+        {/* External High-Res Drive / Cloud Photos Vault - Only when photos link has been added */}
+        {photosUrl && (
+          <div className="mt-6 rounded-2xl bg-gradient-to-r from-[#0f1117] via-[#151926] to-[#0f1117] border border-amber-500/40 p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 shadow-2xl">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/30 shadow-inner">
+                <FolderHeart className="w-6 h-6" />
               </div>
-              <p className="text-xs text-zinc-300 max-w-xl">
-                Browse, download, and share full uncompressed high-resolution event photography from Alloy Bar & Lounge directly on Google Drive.
-              </p>
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <h4 className="font-display font-bold text-base sm:text-lg text-white">
+                    Official Night Photography Vault
+                  </h4>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                    Live Photos
+                  </span>
+                </div>
+                <p className="text-xs text-zinc-300 max-w-xl">
+                  Browse, download, and share full uncompressed high-resolution event photography from this gathering.
+                </p>
+              </div>
             </div>
+            <a
+              href={photosUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-black font-extrabold text-xs uppercase tracking-wider shadow-lg hover:shadow-amber-500/30 transition-all shrink-0 active:scale-95"
+            >
+              <DownloadCloud className="w-4 h-4" />
+              <span>Open Photo Vault</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </a>
           </div>
-          <a
-            href={process.env.NEXT_PUBLIC_HALLOWEEN_PHOTOS_URL || "https://drive.google.com/drive/folders/1EKHSU4PsGTeNACb7GM6ST-mGbslRuiKA"}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-black font-extrabold text-xs uppercase tracking-wider shadow-lg hover:shadow-amber-500/30 transition-all shrink-0 active:scale-95"
-          >
-            <DownloadCloud className="w-4 h-4" />
-            <span>Open Google Drive Vault</span>
-            <ArrowUpRight className="w-4 h-4" />
-          </a>
-        </div>
+        )}
       </div>
 
       {/* Video Section if available */}

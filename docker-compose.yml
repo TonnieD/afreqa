@@ -41,7 +41,7 @@ services:
       DEMO_MODE: ${DEMO_MODE:-false}
       SESSION_SECRET: ${SESSION_SECRET:-dev-session-secret-must-be-changed-in-production-min-32-chars!}
       NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3001}
-      HUSTLESASA_STORE_URL: ${HUSTLESASA_STORE_URL:-https://afreqanairobi.hustlesasa.shop/}
+      HUSTLESASA_STORE_URL: ${HUSTLESASA_STORE_URL:-https://afreqamusicfestival.hustlesasa.shop/}
     volumes:
       - uploads:/app/uploads
     ports:

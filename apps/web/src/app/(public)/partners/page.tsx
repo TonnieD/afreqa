@@ -18,6 +18,7 @@ import {
   TrendingUp,
   Sparkles,
 } from "lucide-react";
+import { KenyanAccentBar } from "@/components/festival/KenyanAccentBar";
 
 export default function PartnersPage() {
   const [formData, setFormData] = useState({
@@ -101,9 +102,12 @@ ${formData.objectives}`;
           <Handshake className="w-3.5 h-3.5" />
           <span>Brand Alliances & Sponsorships</span>
         </div>
-        <h1 className="font-display font-black text-4xl sm:text-6xl text-white tracking-tight">
-          PARTNER WITH AFREQA
+        <h1 className="font-display font-black text-4xl sm:text-6xl tracking-tight">
+          <span className="text-[#ef4444] drop-shadow-[0_2px_12px_rgba(239,68,68,0.3)]">PARTNER</span>{" "}
+          <span className="text-white drop-shadow-[0_2px_12px_rgba(255,255,255,0.3)]">WITH</span>{" "}
+          <span className="text-[#10b981] drop-shadow-[0_2px_12px_rgba(16,185,129,0.3)]">AFREQA</span>
         </h1>
+        <KenyanAccentBar />
         <p className="text-sm sm:text-base text-zinc-300 leading-relaxed font-normal">
           Connect your brand with East Africa&apos;s most culturally magnetic electronic music movement. Elevate your presence through multi-sensory stage takeovers, experiential lounges, and digital reach.
         </p>

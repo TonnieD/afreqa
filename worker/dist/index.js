@@ -18,17 +18,115 @@ async function runWorker() {
     });
     await boss.start();
     core_1.logger.info("🚀 Background worker connected and listening for jobs.");
-    // 1. Transactional Email Queue Worker
-    await boss.work("email:send", async (jobs) => {
+    for (const queueName of Object.values(core_1.QUEUE_NAMES)) {
+        try {
+            await boss.createQueue(queueName);
+        }
+        catch {
+            // ignore if already created
+        }
+    }
+    // 1. Verification Email Worker
+    await boss.work(core_1.QUEUE_NAMES.EMAIL_VERIFICATION, async (jobs) => {
         for (const job of jobs) {
-            core_1.logger.info("Processing email job", { jobId: job.id, name: job.name });
-            // Email delivery logic in Phase 2
+            const { email, firstName, verifyUrl, tokenExpiresHours } = job.data;
+            core_1.logger.info(`Processing verification email for ${email} (job: ${job.id})`);
+            const html = (0, core_1.renderVerificationEmail)({
+                recipientName: firstName,
+                verifyUrl,
+                tokenExpiresHours,
+            });
+            await (0, core_1.sendEmail)({
+                to: email,
+                subject: "Confirm your Afreqa Frequency [Verification Required]",
+                html,
+            });
+            core_1.logger.info(`Successfully sent verification email to ${email}`);
         }
     });
-    // 2. Scheduled Cleanup Worker (abandoned Tus uploads & expired rate limit entries)
-    await boss.work("cleanup:worker", async () => {
-        core_1.logger.info("Running periodic cleanup worker for abandoned uploads and expired sessions");
+    // 2. Welcome Email Worker
+    await boss.work(core_1.QUEUE_NAMES.EMAIL_WELCOME, async (jobs) => {
+        for (const job of jobs) {
+            const { email, firstName, whatsappCommunityUrl, vcardUrl } = job.data;
+            core_1.logger.info(`Processing welcome email for ${email} (job: ${job.id})`);
+            const html = (0, core_1.renderWelcomeEmail)({
+                recipientName: firstName,
+                whatsappCommunityUrl,
+                vcardUrl,
+            });
+            await (0, core_1.sendEmail)({
+                to: email,
+                subject: "Welcome to Afreqa Nairobi — Your Frequency is Verified",
+                html,
+            });
+            core_1.logger.info(`Successfully sent welcome email to ${email}`);
+        }
     });
+    // 3. Campaign Email Worker
+    await boss.work(core_1.QUEUE_NAMES.EMAIL_CAMPAIGN, async (jobs) => {
+        for (const job of jobs) {
+            const { campaignId, subscriberId, email, subject, html } = job.data;
+            core_1.logger.info(`Processing campaign email for ${email} (campaign: ${campaignId})`);
+            try {
+                await (0, core_1.sendEmail)({
+                    to: email,
+                    subject,
+                    html,
+                });
+                // Update campaign recipient status
+                await core_1.db.campaignRecipient.updateMany({
+                    where: { campaignId, subscriberId },
+                    data: { status: "SENT", sentAt: new Date() },
+                });
+                await core_1.db.campaign.update({
+                    where: { id: campaignId },
+                    data: { sentCount: { increment: 1 } },
+                });
+            }
+            catch (err) {
+                const errorMessage = err instanceof Error ? err.message : String(err);
+                await core_1.db.campaignRecipient.updateMany({
+                    where: { campaignId, subscriberId },
+                    data: { status: "FAILED", error: errorMessage },
+                });
+                await core_1.db.campaign.update({
+                    where: { id: campaignId },
+                    data: { failedCount: { increment: 1 } },
+                });
+                throw err; // Allow pg-boss to retry if applicable
+            }
+        }
+    });
+    // 4. Scheduled Cleanup Worker (expired rate limit entries & unverified subscribers after 30 days)
+    await boss.work(core_1.QUEUE_NAMES.CLEANUP_HOURLY, async () => {
+        core_1.logger.info("Running periodic cleanup worker...");
+        try {
+            const now = new Date();
+            // Clean expired rate limit records
+            const deletedRateLimits = await core_1.db.rateLimitEntry.deleteMany({
+                where: { resetAt: { lt: now } },
+            });
+            core_1.logger.info(`Cleaned up ${deletedRateLimits.count} expired rate limit entries.`);
+            // Clean abandoned partial Tus uploads older than 24 hours
+            const cleanedUploads = await (0, core_1.cleanAbandonedTusUploads)(24);
+            if (cleanedUploads > 0) {
+                core_1.logger.info(`Pruned ${cleanedUploads} abandoned Tus uploads.`);
+            }
+        }
+        catch (err) {
+            core_1.logger.error("Cleanup worker error", err);
+        }
+    });
+    // Schedule the hourly cleanup cron
+    try {
+        await boss.schedule(core_1.QUEUE_NAMES.CLEANUP_HOURLY, "0 * * * *");
+        core_1.logger.info("Hourly cleanup job scheduled with cron '0 * * * *'");
+    }
+    catch (err) {
+        core_1.logger.warn("Could not schedule hourly cleanup cron (might already be scheduled)", {
+            error: err instanceof Error ? err.message : String(err),
+        });
+    }
     // Graceful shutdown
     const shutdown = async (signal) => {
         core_1.logger.info(`Received ${signal}, shutting down pg-boss gracefully...`);

@@ -16,7 +16,7 @@ exports.envSchema = zod_1.z.object({
     SESSION_SECRET: zod_1.z.string().min(16).default("dev-session-secret-key-at-least-32-chars!"),
     STORAGE_UPLOAD_DIR: zod_1.z.string().default("./uploads"),
     STORAGE_PUBLIC_URL_PREFIX: zod_1.z.string().default("/uploads"),
-    HUSTLESASA_STORE_URL: zod_1.z.string().url().default("https://afreqanairobi.hustlesasa.shop/"),
+    HUSTLESASA_STORE_URL: zod_1.z.string().url().default("https://afreqamusicfestival.hustlesasa.shop/"),
     SMTP_HOST: zod_1.z.string().default("localhost"),
     SMTP_PORT: zod_1.z.coerce.number().default(1025),
     SMTP_USER: zod_1.z.string().optional(),

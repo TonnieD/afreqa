@@ -48,7 +48,7 @@ async function main() {
     },
     {
       key: "hustlesasa.url",
-      value: process.env.HUSTLESASA_STORE_URL || "https://afreqanairobi.hustlesasa.shop/",
+      value: process.env.HUSTLESASA_STORE_URL || "https://afreqamusicfestival.hustlesasa.shop/",
       description: "Primary external HustleSasa ticket storefront link",
     },
     {

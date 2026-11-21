@@ -117,10 +117,15 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/go/tickets/resonance" className="text-amber-400 hover:text-white transition-colors inline-flex items-center gap-1 font-semibold">
+                <a
+                  href="/go/tickets/tomorrowland-nye"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-amber-400 hover:text-white transition-colors inline-flex items-center gap-1 font-semibold"
+                >
                   <span>Get Tickets</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />
-                </Link>
+                </a>
               </li>
             </ul>
           </div>

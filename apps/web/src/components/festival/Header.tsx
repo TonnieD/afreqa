@@ -92,14 +92,16 @@ export function Header() {
           <AudioWaveIndicator />
 
           {/* Primary "Get Tickets" CTA */}
-          <Link
-            href="/go/tickets/resonance"
+          <a
+            href="/go/tickets/tomorrowland-nye"
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs tracking-wider uppercase shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 hidden sm:inline-flex"
           >
             <Ticket className="w-4 h-4 text-black" />
             <span>Get Tickets</span>
             <ArrowUpRight className="w-3.5 h-3.5 text-black" />
-          </Link>
+          </a>
 
           {/* Mobile Menu Button */}
           <button
@@ -134,14 +136,16 @@ export function Header() {
                 </Link>
               ))}
 
-              <Link
-                href="/go/tickets/resonance"
+              <a
+                href="/go/tickets/tomorrowland-nye"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="mt-4 flex items-center justify-center gap-2 w-full py-3 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-sm uppercase tracking-wider shadow-lg"
               >
                 <Ticket className="w-4 h-4 text-black" />
                 <span>Get Tickets Now</span>
                 <ArrowUpRight className="w-4 h-4 text-black" />
-              </Link>
+              </a>
             </nav>
           </motion.div>
         )}

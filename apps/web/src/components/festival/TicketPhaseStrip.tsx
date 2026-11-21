@@ -94,14 +94,16 @@ export function TicketPhaseStrip({ phases, eventSlug }: TicketPhaseStripProps) {
               {/* Action Button */}
               <div>
                 {isOnSale ? (
-                  <Link
+                  <a
                     href={`/go/tickets/${eventSlug}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex items-center justify-center gap-1.5 w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs uppercase tracking-wider transition-all shadow-md active:scale-95"
                   >
                     <Ticket className="w-3.5 h-3.5 text-black" />
-                    <span>Claim Ticket</span>
+                    <span>Get Ticket</span>
                     <ArrowUpRight className="w-3.5 h-3.5 text-black" />
-                  </Link>
+                  </a>
                 ) : (
                   <button
                     disabled

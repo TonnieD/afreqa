@@ -16,6 +16,7 @@ import {
   ShieldCheck,
   Flame,
 } from "lucide-react";
+import { KenyanAccentBar } from "@/components/festival/KenyanAccentBar";
 
 export default function VendorsPage() {
   const [formData, setFormData] = useState({
@@ -102,9 +103,12 @@ ${formData.description}`;
           <Store className="w-3.5 h-3.5" />
           <span>Festival Market Village</span>
         </div>
-        <h1 className="font-display font-black text-4xl sm:text-6xl text-white tracking-tight">
-          VEND WITH AFREQA
+        <h1 className="font-display font-black text-4xl sm:text-6xl tracking-tight">
+          <span className="text-[#ef4444] drop-shadow-[0_2px_12px_rgba(239,68,68,0.3)]">VEND</span>{" "}
+          <span className="text-white drop-shadow-[0_2px_12px_rgba(255,255,255,0.3)]">WITH</span>{" "}
+          <span className="text-[#10b981] drop-shadow-[0_2px_12px_rgba(16,185,129,0.3)]">AFREQA</span>
         </h1>
+        <KenyanAccentBar />
         <p className="text-sm sm:text-base text-zinc-300 leading-relaxed font-normal">
           Showcase your culinary creations, streetwear, festival apparel, or rave accessories to thousands of passionate electronic music dancers in Nairobi.
         </p>

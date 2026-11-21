@@ -15,6 +15,7 @@ import {
   ExternalLink,
   MessageCircle,
 } from "lucide-react";
+import { KenyanAccentBar } from "@/components/festival/KenyanAccentBar";
 
 export const metadata = {
   title: "About AFREQA | Nairobi's Tomorrowland Experience & Rave Culture",
@@ -164,9 +165,12 @@ export default function AboutPage() {
           <span>A Tomorrowland XP in Nairobi</span>
         </div>
 
-        <h1 className="font-display font-black text-4xl sm:text-6xl lg:text-7xl text-white tracking-tight leading-none uppercase">
-          WHAT <span className="text-festival-gradient">AFREQA</span> STANDS FOR
+        <h1 className="font-display font-black text-4xl sm:text-6xl lg:text-7xl tracking-tight leading-none uppercase">
+          <span className="text-[#ef4444] drop-shadow-[0_2px_12px_rgba(239,68,68,0.3)]">WHAT</span>{" "}
+          <span className="text-white drop-shadow-[0_2px_12px_rgba(255,255,255,0.3)]">AFREQA</span>{" "}
+          <span className="text-[#10b981] drop-shadow-[0_2px_12px_rgba(16,185,129,0.3)]">STANDS FOR</span>
         </h1>
+        <KenyanAccentBar />
 
         <p className="text-base sm:text-xl text-zinc-300 max-w-3xl mx-auto leading-relaxed font-light">
           We are not a generic &quot;EDM in Africa&quot; experiment or standard club promoter. AFREQA is Nairobi&apos;s dedicated Tomorrowland-scale rave movement, delivering uncompromising electronic music and monumental festival fantasy to East Africa.

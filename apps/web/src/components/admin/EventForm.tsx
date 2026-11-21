@@ -18,7 +18,10 @@ import {
   UserPlus,
   CheckCircle2,
   Calendar,
+  Camera,
+  Wine,
 } from "lucide-react";
+import { parseEventMetadata, buildEventDescription } from "@/lib/event-metadata";
 
 export interface TicketPhaseInput {
   id?: string;
@@ -89,11 +92,14 @@ export function EventForm({
   const [slug, setSlug] = useState(initialData?.slug || "");
   const [tagline, setTagline] = useState(initialData?.tagline || "");
   
-  // Clean description of hidden metadata flags
-  const initialCleanDescription = initialData?.description
-    ? initialData.description.replace(/<!--\s*LINEUP_DROPPING_SOON\s*-->/g, "").trim()
-    : "";
-  const [description, setDescription] = useState(initialCleanDescription);
+  // Clean description of hidden metadata flags and parse options
+  const parsedMeta = parseEventMetadata(initialData?.description, initialData?.date);
+  const [description, setDescription] = useState(parsedMeta.cleanDescription);
+  const [photosUrl, setPhotosUrl] = useState(parsedMeta.rawPhotosUrl || "");
+  const [tableBookingSpecified, setTableBookingSpecified] = useState(parsedMeta.hasTableBooking);
+  const [tableBookingContact, setTableBookingContact] = useState(
+    parsedMeta.tableBookingContact || "+254 743 836 164"
+  );
   const [posterUrl, setPosterUrl] = useState(initialData?.posterUrl || "");
 
   // Pure calendar date picker (YYYY-MM-DD)
@@ -113,7 +119,7 @@ export function EventForm({
   );
   const [refundPolicy, setRefundPolicy] = useState(initialData?.refundPolicy || "");
   const [externalTicketUrl, setExternalTicketUrl] = useState(
-    initialData?.externalTicketUrl || "https://afreqanairobi.hustlesasa.shop/"
+    initialData?.externalTicketUrl || "https://afreqamusicfestival.hustlesasa.shop/"
   );
   const [status, setStatus] = useState<"DRAFT" | "PUBLISHED" | "ARCHIVED">(
     initialData?.status || "PUBLISHED"
@@ -122,7 +128,7 @@ export function EventForm({
   // Lineup Dropping Soon flag
   const [lineupDroppingSoon, setLineupDroppingSoon] = useState<boolean>(
     initialData?.lineupDroppingSoon ??
-      (initialData?.description?.includes("<!-- LINEUP_DROPPING_SOON -->") || !isEditing)
+      (parsedMeta.lineupDroppingSoon || !isEditing)
   );
 
   // Ticket Phases
@@ -356,11 +362,14 @@ export function EventForm({
       return;
     }
 
-    // Embed Lineup Dropping Soon marker into description cleanly
-    let finalDescription = description.trim();
-    if (lineupDroppingSoon) {
-      finalDescription = `${finalDescription}\n\n<!-- LINEUP_DROPPING_SOON -->`;
-    }
+    // Embed Lineup Dropping Soon, Photos Link, and Table Booking metadata cleanly into description
+    const finalDescription = buildEventDescription({
+      description,
+      lineupDroppingSoon,
+      photosUrl: photosUrl.trim() || null,
+      tableBookingSpecified,
+      tableBookingContact: tableBookingContact.trim() || "+254 743 836 164",
+    });
 
     // Construct ISO date string incorporating pure calendar date + doorsOpen
     let isoDate = "";
@@ -958,7 +967,7 @@ export function EventForm({
             type="url"
             value={externalTicketUrl || ""}
             onChange={(e) => setExternalTicketUrl(e.target.value)}
-            placeholder="https://afreqanairobi.hustlesasa.shop/"
+            placeholder="https://afreqamusicfestival.hustlesasa.shop/"
             className="w-full px-3.5 py-2.5 rounded-xl bg-afreqa-shadow border border-afreqa-chrome-high/15 text-afreqa-chrome-high text-sm focus:outline-none focus:border-afreqa-teal transition font-mono mb-4"
           />
         </div>
@@ -1015,6 +1024,112 @@ export function EventForm({
               </button>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* SECTION 6: Media Vault & VIP Table Bookings (Strict Conditional Display) */}
+      <div className="rounded-2xl bg-afreqa-stage/70 border border-afreqa-chrome-high/10 p-6 space-y-6">
+        <div className="border-b border-afreqa-chrome-high/10 pb-3">
+          <h3 className="font-bold text-base text-afreqa-chrome-high flex items-center gap-2">
+            <Camera className="w-4 h-4 text-amber-400" />
+            <span>6. Photography Vault & VIP Table Booking Options</span>
+          </h3>
+          <p className="text-xs text-afreqa-silver-mid mt-0.5">
+            Strict display rules: Photos only appear once a link is added AND the event has taken place. VIP tables only appear if explicitly enabled.
+          </p>
+        </div>
+
+        {/* 6.1 Photos Link */}
+        <div className="space-y-2">
+          <label className="block text-xs font-mono uppercase text-afreqa-silver flex items-center gap-2">
+            <Camera className="w-3.5 h-3.5 text-afreqa-teal" />
+            <span>Night Photos / Google Drive Vault Link</span>
+          </label>
+          <input
+            type="url"
+            value={photosUrl}
+            onChange={(e) => setPhotosUrl(e.target.value)}
+            placeholder="https://drive.google.com/drive/folders/... or cloud storage URL"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-afreqa-shadow border border-afreqa-chrome-high/15 text-afreqa-chrome-high text-sm focus:outline-none focus:border-amber-400 transition font-mono"
+          />
+          <p className="text-[11px] text-zinc-400 font-mono leading-relaxed">
+            📸 <strong>Visibility Rule:</strong> The Night Photos button and photo vault section will <em>only</em> appear on the public event page if this link has been added AND the event has taken place (past date or Concluded/Passed status). For upcoming gatherings, photo options remain hidden.
+          </p>
+        </div>
+
+        {/* 6.2 Table Booking Toggle */}
+        <div className="pt-2 border-t border-white/5 space-y-3">
+          <div
+            onClick={() => setTableBookingSpecified(!tableBookingSpecified)}
+            className={`p-4 rounded-xl border cursor-pointer transition-all flex items-start sm:items-center justify-between gap-4 select-none ${
+              tableBookingSpecified
+                ? "bg-amber-500/10 border-amber-500/40"
+                : "bg-black/40 border-white/10 hover:border-white/20"
+            }`}
+          >
+            <div className="flex items-start gap-3">
+              <div
+                className={`p-2 rounded-xl mt-0.5 sm:mt-0 ${
+                  tableBookingSpecified
+                    ? "bg-amber-500 text-black font-bold"
+                    : "bg-white/5 text-zinc-400"
+                }`}
+              >
+                <Wine className="w-4 h-4" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-white">
+                    Enable VIP & Table Bookings
+                  </span>
+                  <span
+                    className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full ${
+                      tableBookingSpecified
+                        ? "bg-amber-500/20 text-amber-400 border border-amber-500/30"
+                        : "bg-zinc-800 text-zinc-400"
+                    }`}
+                  >
+                    {tableBookingSpecified ? "ENABLED" : "HIDDEN (DEFAULT)"}
+                  </span>
+                </div>
+                <p className="text-xs text-zinc-400 mt-1 leading-relaxed">
+                  {tableBookingSpecified
+                    ? "Active: The VIP & Table Booking button and concierge contact will be displayed on this event's page."
+                    : "Hidden: No table booking options or VIP contacts are shown on the event page unless explicitly specified here."}
+                </p>
+              </div>
+            </div>
+
+            <div
+              className={`w-12 h-6 rounded-full p-1 transition-colors shrink-0 ${
+                tableBookingSpecified ? "bg-amber-500" : "bg-zinc-700"
+              }`}
+            >
+              <div
+                className={`w-4 h-4 rounded-full bg-black transition-transform ${
+                  tableBookingSpecified ? "translate-x-6" : "translate-x-0"
+                }`}
+              />
+            </div>
+          </div>
+
+          {tableBookingSpecified && (
+            <div className="p-4 rounded-xl bg-black/40 border border-amber-500/20 space-y-2">
+              <label className="block text-xs font-mono uppercase text-amber-300">
+                VIP Concierge Direct Contact Number / WhatsApp
+              </label>
+              <input
+                type="text"
+                value={tableBookingContact}
+                onChange={(e) => setTableBookingContact(e.target.value)}
+                placeholder="+254 743 836 164"
+                className="w-full sm:w-80 px-3.5 py-2.5 rounded-xl bg-afreqa-shadow border border-afreqa-chrome-high/20 text-white text-sm focus:outline-none focus:border-amber-400 transition font-mono"
+              />
+              <p className="text-[10px] text-zinc-400 font-mono">
+                Official AFREQA VIP Concierge hotline: +254 743 836 164
+              </p>
+            </div>
+          )}
         </div>
       </div>
 

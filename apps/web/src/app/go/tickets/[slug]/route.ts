@@ -63,8 +63,10 @@ export async function GET(
       targetUrl = eventRecord.externalTicketUrl;
     } else {
       // Check site settings for global tickets URL override
-      const setting = await db.siteSetting.findUnique({
-        where: { key: "HUSTLESASA_STORE_URL" },
+      const setting = await db.siteSetting.findFirst({
+        where: {
+          key: { in: ["HUSTLESASA_STORE_URL", "hustlesasa.url"] },
+        },
       });
       if (setting?.value) {
         targetUrl = setting.value;
@@ -73,6 +75,11 @@ export async function GET(
   } catch {
     // If DB read fails, fall back to default URL
     targetUrl = DEFAULT_TICKETS_URL;
+  }
+
+  // Sanitize: Automatically normalize any deprecated afreqanairobi URL to the verified active shop
+  if (targetUrl.includes("afreqanairobi.hustlesasa.shop")) {
+    targetUrl = targetUrl.replace("afreqanairobi.hustlesasa.shop", "afreqamusicfestival.hustlesasa.shop");
   }
 
   // Construct final redirect URL with UTM query params appended
@@ -115,11 +122,44 @@ export async function GET(
     })();
   }
 
-  // 5. Immediate HTTP 302 Redirect
-  return NextResponse.redirect(targetUrl, {
+  // 5. Cross-Browser Resilient Redirect (Native HTTP 302 + Meta-Refresh + JS fallback)
+  // Ensures compatibility across Edge, Chrome, Safari, Firefox, and mobile browsers
+  const htmlBody = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Redirecting to Official Tickets • Afreqa</title>
+  <meta http-equiv="refresh" content="0;url=${targetUrl}">
+  <meta name="referrer" content="no-referrer-when-downgrade">
+</head>
+<body style="background:#070709;color:#ffffff;font-family:system-ui,-apple-system,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;padding:20px;box-sizing:border-box;">
+  <div style="text-align:center;max-width:480px;">
+    <div style="width:40px;height:40px;border:3px solid rgba(245,158,11,0.2);border-top-color:#f59e0b;border-radius:50%;margin:0 auto 20px;animation:spin 1s linear infinite;"></div>
+    <h2 style="font-size:18px;font-weight:800;letter-spacing:1px;margin:0 0 8px;text-transform:uppercase;">Redirecting to HustleSasa</h2>
+    <p style="font-size:14px;color:#a1a1aa;margin:0 0 16px;">Securing your spot at Nairobi's Tomorrowland Experience...</p>
+    <p style="font-size:13px;color:#71717a;margin:0;">If you are not redirected automatically, <a href="${targetUrl}" style="color:#f59e0b;text-decoration:underline;font-weight:bold;">click here</a>.</p>
+  </div>
+  <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+  <script>
+    try {
+      window.location.replace(${JSON.stringify(targetUrl)});
+    } catch (e) {
+      window.location.href = ${JSON.stringify(targetUrl)};
+    }
+  </script>
+</body>
+</html>`;
+
+  return new NextResponse(htmlBody, {
     status: 302,
     headers: {
+      Location: targetUrl,
+      Refresh: `0; url=${targetUrl}`,
+      "Content-Type": "text/html; charset=utf-8",
       "Cache-Control": "no-store, no-cache, must-revalidate",
+      "Referrer-Policy": "no-referrer-when-downgrade",
+      "Access-Control-Allow-Origin": "*",
+      "x-nextjs-redirect": targetUrl,
     },
   });
 }

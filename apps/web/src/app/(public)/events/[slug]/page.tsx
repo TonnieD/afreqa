@@ -14,10 +14,13 @@ import {
   Radio,
   Sparkles,
   Music,
+  Camera,
 } from "lucide-react";
 import { db } from "@afreqa/core";
 import { CountdownTimer } from "@/components/festival/CountdownTimer";
 import { TicketPhaseStrip } from "@/components/festival/TicketPhaseStrip";
+import { parseEventMetadata } from "@/lib/event-metadata";
+import { KenyanAccentBar } from "@/components/festival/KenyanAccentBar";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -120,7 +123,6 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
         { id: "p1", name: "Early Bird Rave Pass", priceKes: 1500, status: "ON_SALE" },
         { id: "p2", name: "Advance Ticket", priceKes: 2500, status: "ON_SALE" },
         { id: "p3", name: "VIP Festival Pass", priceKes: 5000, status: "ON_SALE" },
-        { id: "p4", name: "VIP Table Package", priceKes: 25000, status: "ON_SALE" },
       ],
       lineup: [
         {
@@ -176,11 +178,10 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
       doorsOpen: "19:00 EAT (7PM – 5AM)",
       agePolicy: "Strict 18+ Government ID Required",
       description:
-        "Afreqa presents A Tomorrowland Halloween XP at Alloy Bar & Lounge. High-energy electronic dance music, mind-altering production, and monumental B2B sets. Dress Code: Halloween Creative Costumes. VIP & Tables: 0702 665 665.",
+        "Afreqa presents A Tomorrowland Halloween XP at Alloy Bar & Lounge. High-energy electronic dance music, mind-altering production, and monumental B2B sets. Dress Code: Halloween Creative Costumes.\n\n<!-- PHOTOS_URL: https://drive.google.com/drive/folders/1EKHSU4PsGTeNACb7GM6ST-mGbslRuiKA -->",
       ticketPhases: [
         { id: "p1", name: "Rave Pass", priceKes: 1000, status: "ON_SALE" },
         { id: "p2", name: "Advance Ticket", priceKes: 1500, status: "ON_SALE" },
-        { id: "p3", name: "VIP Table Package", priceKes: 15000, status: "ON_SALE" },
       ],
       lineup: [
         {
@@ -251,15 +252,19 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
     notFound();
   }
 
+  const meta = parseEventMetadata(event.description, event.date);
+
   const phaseStripData =
     event.ticketPhases && event.ticketPhases.length > 0
-      ? event.ticketPhases.map((tp) => ({
-          id: tp.id,
-          name: tp.name,
-          price: tp.priceKes,
-          currency: "KES",
-          status: tp.status as "ON_SALE" | "SOLD_OUT" | "UPCOMING",
-        }))
+      ? event.ticketPhases
+          .filter((tp) => meta.hasTableBooking || !/table/i.test(tp.name))
+          .map((tp) => ({
+            id: tp.id,
+            name: tp.name,
+            price: tp.priceKes,
+            currency: "KES",
+            status: tp.status as "ON_SALE" | "SOLD_OUT" | "UPCOMING",
+          }))
       : [
           {
             id: "p-def",
@@ -275,13 +280,11 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
   )}`;
 
   const isLineupDroppingSoon =
-    event.description?.includes("<!-- LINEUP_DROPPING_SOON -->") ||
+    meta.lineupDroppingSoon ||
     !event.lineup ||
     event.lineup.length === 0;
 
-  const cleanDescription = event.description
-    ? event.description.replace(/<!--\s*LINEUP_DROPPING_SOON\s*-->/g, "").trim()
-    : "";
+  const cleanDescription = meta.cleanDescription;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
@@ -311,6 +314,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
           <h1 className="font-display font-black text-3xl sm:text-6xl text-white tracking-tight">
             {event.title}
           </h1>
+          <KenyanAccentBar className="my-4" />
 
           {event.tagline && (
             <p className="mt-3 text-base sm:text-xl text-zinc-300 font-normal">
@@ -341,14 +345,16 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
 
           {/* Actions Bar */}
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <Link
+            <a
               href={`/go/tickets/${event.slug}?placement=event_detail`}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center gap-2 px-8 py-3.5 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-sm uppercase tracking-wider shadow-lg hover:shadow-amber-500/20 active:scale-95 transition-all"
             >
               <Ticket className="w-4 h-4" />
               <span>Get Tickets via HustleSasa</span>
               <ArrowUpRight className="w-4 h-4" />
-            </Link>
+            </a>
 
             <a
               href={`/events/${event.slug}/calendar.ics`}
@@ -367,6 +373,15 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
               <Navigation className="w-4 h-4 text-zinc-400" />
               <span>Directions</span>
             </a>
+
+            {meta.hasTableBooking && meta.tableBookingContact && (
+              <a
+                href={`tel:${meta.tableBookingContact.replace(/[^0-9+]/g, "")}`}
+                className="flex items-center gap-2 px-5 py-3.5 rounded-full bg-white/10 hover:bg-white/15 border border-white/20 text-amber-400 font-bold text-xs uppercase tracking-wider transition-all"
+              >
+                <span>📞 VIP & Tables: {meta.tableBookingContact}</span>
+              </a>
+            )}
           </div>
         </div>
       </div>
@@ -409,6 +424,40 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
               </div>
             </div>
           </div>
+        </section>
+      )}
+
+      {/* 2.5 OFFICIAL PHOTO ARCHIVE SECTION (ONLY WHEN LINK TO PHOTOS HAS BEEN ADDED) */}
+      {meta.photosUrl && (
+        <section className="rounded-3xl bg-gradient-to-r from-[#0f1117] via-[#141926] to-[#0f1117] border border-amber-500/40 p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shadow-2xl">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/30 shadow-inner">
+              <Camera className="w-6 h-6" />
+            </div>
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <h3 className="font-display font-bold text-xl text-white">
+                  Official Night Photography Vault
+                </h3>
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                  Live Photos
+                </span>
+              </div>
+              <p className="text-xs text-zinc-300 max-w-xl">
+                Uncompressed full-resolution festival photography from {event.title}. Browse, download, and relive the night.
+              </p>
+            </div>
+          </div>
+          <a
+            href={meta.photosUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs uppercase tracking-wider shadow-lg hover:shadow-amber-500/20 transition-all shrink-0 active:scale-95"
+          >
+            <Download className="w-4 h-4" />
+            <span>Open Night Photos Vault</span>
+            <ArrowUpRight className="w-4 h-4" />
+          </a>
         </section>
       )}
 
@@ -484,13 +533,15 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                   <ArrowUpRight className="w-4 h-4" />
                 </a>
 
-                <Link
+                <a
                   href={`/go/tickets/${event.slug}?placement=lineup-soon`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-xs uppercase tracking-wider transition active:scale-95"
                 >
                   <Ticket className="w-4 h-4 text-amber-400" />
                   <span>Secure Early Pass</span>
-                </Link>
+                </a>
               </div>
             </div>
           </div>

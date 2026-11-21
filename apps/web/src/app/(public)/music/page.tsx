@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { SpotifySection } from "@/components/festival/SpotifySection";
 import { TrackOfTheWeek } from "@/components/festival/TrackOfTheWeek";
+import { KenyanAccentBar } from "@/components/festival/KenyanAccentBar";
 import { PLAYLISTS } from "@/lib/spotify";
 
 export const metadata = {
@@ -30,9 +31,12 @@ export default function MusicPage() {
           <Headphones className="w-3.5 h-3.5" />
           <span>Afreqa Sound Archive • Fanbase Hierarchy</span>
         </div>
-        <h1 className="font-display font-extrabold text-3xl sm:text-5xl lg:text-6xl text-white uppercase tracking-tight">
-          SOUNDS OF <span className="text-festival-gradient">AFREQA</span>
+        <h1 className="font-display font-extrabold text-3xl sm:text-5xl lg:text-6xl uppercase tracking-tight">
+          <span className="text-[#ef4444] drop-shadow-[0_2px_12px_rgba(239,68,68,0.3)]">SOUNDS</span>{" "}
+          <span className="text-white drop-shadow-[0_2px_12px_rgba(255,255,255,0.3)]">OF</span>{" "}
+          <span className="text-[#10b981] drop-shadow-[0_2px_12px_rgba(16,185,129,0.3)]">AFREQA</span>
         </h1>
+        <KenyanAccentBar />
         <p className="text-sm sm:text-base text-zinc-300 max-w-2xl mx-auto leading-relaxed font-normal">
           The soundscapes powering Nairobi&apos;s Tomorrowland experience. Ordered strictly by dancefloor frequency and fanbase size: starting with euphoric Progressive EDM anthems and thunderous Big Room, through authentic African Tech and raw Acid/Hard Techno, into 150–200+ BPM Hardstyle velocity, Drum & Bass, and Dubstep.
         </p>
