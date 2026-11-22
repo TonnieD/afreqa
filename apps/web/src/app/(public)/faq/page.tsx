@@ -3,7 +3,6 @@
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { Search, ChevronDown, ChevronUp, HelpCircle, Shield, AlertTriangle, ArrowRight } from "lucide-react";
-import { KenyanAccentBar } from "@/components/festival/KenyanAccentBar";
 
 interface FAQItem {
   id: string;
@@ -125,12 +124,9 @@ export default function FAQPage() {
           <HelpCircle className="w-3.5 h-3.5" />
           <span>Knowledge Base</span>
         </div>
-        <h1 className="font-display font-black text-4xl sm:text-6xl tracking-tight">
-          <span className="text-[#ef4444] drop-shadow-[0_2px_12px_rgba(239,68,68,0.3)]">FREQUENTLY</span>{" "}
-          <span className="text-white drop-shadow-[0_2px_12px_rgba(255,255,255,0.3)]">ASKED</span>{" "}
-          <span className="text-[#10b981] drop-shadow-[0_2px_12px_rgba(16,185,129,0.3)]">QUESTIONS</span>
+        <h1 className="font-display font-black text-4xl sm:text-6xl text-white tracking-tight">
+          FREQUENTLY ASKED QUESTIONS
         </h1>
-        <KenyanAccentBar />
         <p className="text-sm sm:text-base text-zinc-300 max-w-xl mx-auto">
           Everything you need to know about tickets, gate admission protocols, venue transit, and festival guidelines.
         </p>

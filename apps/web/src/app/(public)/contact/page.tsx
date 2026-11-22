@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { Mail, MessageCircle, MapPin, Send, CheckCircle2, AlertCircle, ArrowUpRight, Phone } from "lucide-react";
-import { KenyanAccentBar } from "@/components/festival/KenyanAccentBar";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -66,12 +65,9 @@ export default function ContactPage() {
           <Mail className="w-3.5 h-3.5" />
           <span>Direct Lines</span>
         </div>
-        <h1 className="font-display font-black text-4xl sm:text-6xl tracking-tight">
-          <span className="text-[#ef4444] drop-shadow-[0_2px_12px_rgba(239,68,68,0.3)]">CONTACT</span>{" "}
-          <span className="text-white drop-shadow-[0_2px_12px_rgba(255,255,255,0.3)]">&</span>{" "}
-          <span className="text-[#10b981] drop-shadow-[0_2px_12px_rgba(16,185,129,0.3)]">BOOKINGS</span>
+        <h1 className="font-display font-black text-4xl sm:text-6xl text-white tracking-tight">
+          CONTACT & BOOKINGS
         </h1>
-        <KenyanAccentBar />
         <p className="text-sm sm:text-base text-zinc-300">
           Whether you are an electronic music producer, potential brand partner, press representative, or festival attendee, we welcome your inquiry.
         </p>

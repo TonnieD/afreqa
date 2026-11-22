@@ -20,7 +20,6 @@ import { db } from "@afreqa/core";
 import { CountdownTimer } from "@/components/festival/CountdownTimer";
 import { TicketPhaseStrip } from "@/components/festival/TicketPhaseStrip";
 import { parseEventMetadata } from "@/lib/event-metadata";
-import { KenyanAccentBar } from "@/components/festival/KenyanAccentBar";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -69,6 +68,7 @@ interface EventDetail {
     name: string;
     priceKes?: number | null;
     status: string;
+    description?: string | null;
   }>;
   lineup: Array<{
     id: string;
@@ -120,9 +120,9 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
       description:
         "Afreqa presents Nairobi's Ultimate Tomorrowland New Year's Eve Festival. Step into the monumental 2026 midnight countdown with high-velocity electronic dance music, massive stage architecture, and Nairobi's finest soundsystem. Official tickets live on HustleSasa.",
       ticketPhases: [
-        { id: "p1", name: "Early Bird Rave Pass", priceKes: 1500, status: "ON_SALE" },
-        { id: "p2", name: "Advance Ticket", priceKes: 2500, status: "ON_SALE" },
-        { id: "p3", name: "VIP Festival Pass", priceKes: 5000, status: "ON_SALE" },
+        { id: "p1", name: "Early Bird Rave Pass", priceKes: 1500, status: "ON_SALE", description: "Standard NYE Festival Admission • 6PM till 6AM" },
+        { id: "p2", name: "Advance Ticket", priceKes: 2500, status: "ON_SALE", description: "Guaranteed NYE entry • Fast-track turnstile access" },
+        { id: "p3", name: "VIP Festival Pass", priceKes: 5000, status: "ON_SALE", description: "Elevated stage platform • Private bar & premium amenities" },
       ],
       lineup: [
         {
@@ -264,6 +264,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
             price: tp.priceKes,
             currency: "KES",
             status: tp.status as "ON_SALE" | "SOLD_OUT" | "UPCOMING",
+            description: meta.phaseDescriptions[tp.name] || (tp as any).description || null,
           }))
       : [
           {
@@ -272,6 +273,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
             price: 2000,
             currency: "KES",
             status: "ON_SALE" as const,
+            description: "Standard Festival Admission • Turnstile access",
           },
         ];
 
@@ -314,7 +316,6 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
           <h1 className="font-display font-black text-3xl sm:text-6xl text-white tracking-tight">
             {event.title}
           </h1>
-          <KenyanAccentBar className="my-4" />
 
           {event.tagline && (
             <p className="mt-3 text-base sm:text-xl text-zinc-300 font-normal">

@@ -29,6 +29,7 @@ export interface TicketPhaseInput {
   priceKes?: number | string | null;
   status: "UPCOMING" | "ON_SALE" | "SOLD_OUT";
   externalUrl?: string | null;
+  description?: string | null;
 }
 
 export interface LineupSlotInput {
@@ -134,12 +135,15 @@ export function EventForm({
   // Ticket Phases
   const [phases, setPhases] = useState<TicketPhaseInput[]>(
     initialData?.ticketPhases && initialData.ticketPhases.length > 0
-      ? initialData.ticketPhases
+      ? initialData.ticketPhases.map((tp) => ({
+          ...tp,
+          description: tp.description || parsedMeta.phaseDescriptions[tp.name] || "",
+        }))
       : [
-          { name: "Early Bird", priceKes: 1500, status: "UPCOMING" },
-          { name: "Phase 1", priceKes: 2000, status: "UPCOMING" },
-          { name: "Final Release", priceKes: 2500, status: "UPCOMING" },
-          { name: "Gate", priceKes: 3000, status: "UPCOMING" },
+          { name: "Early Bird", priceKes: 1500, status: "UPCOMING", description: "Standard NYE Festival Admission • 6PM till 6AM" },
+          { name: "Phase 1", priceKes: 2000, status: "UPCOMING", description: "Guaranteed festival entry • Fast-track turnstile access" },
+          { name: "Final Release", priceKes: 2500, status: "UPCOMING", description: "Peak tier festival pass • Standard general access" },
+          { name: "Gate", priceKes: 3000, status: "UPCOMING", description: "Door admission subject to venue capacity" },
         ]
   );
 
@@ -235,7 +239,7 @@ export function EventForm({
 
   // Ticket phase helpers
   const addPhase = () => {
-    setPhases([...phases, { name: "New Phase", priceKes: 2000, status: "UPCOMING" }]);
+    setPhases([...phases, { name: "New Phase", priceKes: 2000, status: "UPCOMING", description: "" }]);
   };
 
   const updatePhase = (index: number, updates: Partial<TicketPhaseInput>) => {
@@ -362,13 +366,22 @@ export function EventForm({
       return;
     }
 
-    // Embed Lineup Dropping Soon, Photos Link, and Table Booking metadata cleanly into description
+    // Collect phase descriptions mapped by phase name
+    const phaseDescriptions: Record<string, string> = {};
+    phases.forEach((p) => {
+      if (p.name && p.description && p.description.trim()) {
+        phaseDescriptions[p.name.trim()] = p.description.trim();
+      }
+    });
+
+    // Embed Lineup Dropping Soon, Photos Link, Table Booking, and Phase Descriptions cleanly into description
     const finalDescription = buildEventDescription({
       description,
       lineupDroppingSoon,
       photosUrl: photosUrl.trim() || null,
       tableBookingSpecified,
       tableBookingContact: tableBookingContact.trim() || "+254 743 836 164",
+      phaseDescriptions,
     });
 
     // Construct ISO date string incorporating pure calendar date + doorsOpen
@@ -976,52 +989,65 @@ export function EventForm({
           {phases.map((phase, idx) => (
             <div
               key={idx}
-              className="p-3.5 rounded-xl bg-afreqa-shadow/90 border border-white/10 flex flex-col sm:flex-row items-center gap-3 text-xs"
+              className="p-3.5 rounded-xl bg-afreqa-shadow/90 border border-white/10 flex flex-col gap-2.5 text-xs"
             >
-              <div className="flex-1 w-full">
+              <div className="flex flex-col sm:flex-row items-center gap-3">
+                <div className="flex-1 w-full">
+                  <input
+                    type="text"
+                    value={phase.name}
+                    onChange={(e) => updatePhase(idx, { name: e.target.value })}
+                    placeholder="Phase Name (e.g. Early Bird)"
+                    className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/10 text-afreqa-chrome-high"
+                  />
+                </div>
+
+                <div className="w-full sm:w-32">
+                  <input
+                    type="number"
+                    value={phase.priceKes ?? ""}
+                    onChange={(e) => updatePhase(idx, { priceKes: e.target.value })}
+                    placeholder="Price (KES)"
+                    className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/10 text-afreqa-chrome-high font-mono"
+                  />
+                </div>
+
+                <div className="w-full sm:w-36">
+                  <select
+                    value={phase.status}
+                    onChange={(e) =>
+                      updatePhase(idx, {
+                        status: e.target.value as "UPCOMING" | "ON_SALE" | "SOLD_OUT",
+                      })
+                    }
+                    className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/10 text-afreqa-chrome-high font-mono"
+                  >
+                    <option value="UPCOMING">UPCOMING</option>
+                    <option value="ON_SALE">ON SALE</option>
+                    <option value="SOLD_OUT">SOLD OUT</option>
+                  </select>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => removePhase(idx)}
+                  className="p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 self-end sm:self-center transition"
+                  title="Remove phase"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Phase Description (Syncs to public ticket tier cards) */}
+              <div className="w-full">
                 <input
                   type="text"
-                  value={phase.name}
-                  onChange={(e) => updatePhase(idx, { name: e.target.value })}
-                  placeholder="Phase Name (e.g. Early Bird)"
-                  className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/10 text-afreqa-chrome-high"
+                  value={phase.description ?? ""}
+                  onChange={(e) => updatePhase(idx, { description: e.target.value })}
+                  placeholder="Phase Description (e.g. Standard admission • 6PM till 6AM • Turnstile access)"
+                  className="w-full px-3 py-2 rounded-lg bg-black/30 border border-white/5 text-afreqa-silver placeholder:text-zinc-500 text-xs focus:outline-none focus:border-afreqa-teal transition"
                 />
               </div>
-
-              <div className="w-full sm:w-32">
-                <input
-                  type="number"
-                  value={phase.priceKes ?? ""}
-                  onChange={(e) => updatePhase(idx, { priceKes: e.target.value })}
-                  placeholder="Price (KES)"
-                  className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/10 text-afreqa-chrome-high font-mono"
-                />
-              </div>
-
-              <div className="w-full sm:w-36">
-                <select
-                  value={phase.status}
-                  onChange={(e) =>
-                    updatePhase(idx, {
-                      status: e.target.value as "UPCOMING" | "ON_SALE" | "SOLD_OUT",
-                    })
-                  }
-                  className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/10 text-afreqa-chrome-high font-mono"
-                >
-                  <option value="UPCOMING">UPCOMING</option>
-                  <option value="ON_SALE">ON SALE</option>
-                  <option value="SOLD_OUT">SOLD OUT</option>
-                </select>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => removePhase(idx)}
-                className="p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 self-end sm:self-center transition"
-                title="Remove phase"
-              >
-                <Trash2 className="w-4 h-4" />
-              </button>
             </div>
           ))}
         </div>

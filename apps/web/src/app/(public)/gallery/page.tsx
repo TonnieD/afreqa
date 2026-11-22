@@ -3,7 +3,6 @@ import Image from "next/image";
 import { db } from "@afreqa/core";
 import { Camera, Film, ArrowUpRight, Sparkles } from "lucide-react";
 import { VideoPlayer } from "@/components/media/VideoPlayer";
-import { KenyanAccentBar } from "@/components/festival/KenyanAccentBar";
 
 export const metadata = {
   title: "Visual Gallery & After-Movies | Afreqa Nairobi",
@@ -90,12 +89,9 @@ export default async function GalleryPage() {
           <Sparkles className="w-3.5 h-3.5" />
           <span>Visual Archive</span>
         </div>
-        <h1 className="font-display font-extrabold text-3xl sm:text-5xl uppercase tracking-tight">
-          <span className="text-[#ef4444] drop-shadow-[0_2px_12px_rgba(239,68,68,0.3)]">CAPTURED IN</span>{" "}
-          <span className="text-white drop-shadow-[0_2px_12px_rgba(255,255,255,0.3)]">THE</span>{" "}
-          <span className="text-[#10b981] drop-shadow-[0_2px_12px_rgba(16,185,129,0.3)]">FREQUENCY</span>
+        <h1 className="font-display font-extrabold text-3xl sm:text-5xl text-white uppercase tracking-tight">
+          Captured In The Frequency
         </h1>
-        <KenyanAccentBar />
         <p className="text-sm sm:text-base text-zinc-300 max-w-2xl mx-auto mt-4 leading-relaxed font-normal">
           Relive the euphoria. A sensory catalog of stage designs, transcendent crowd moments, and official after-movies recorded across Nairobi.
         </p>

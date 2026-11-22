@@ -4,7 +4,6 @@ import Image from "next/image";
 import { Calendar, MapPin, Ticket, ArrowUpRight, Clock, Sparkles } from "lucide-react";
 import { db } from "@afreqa/core";
 import { parseEventMetadata } from "@/lib/event-metadata";
-import { KenyanAccentBar } from "@/components/festival/KenyanAccentBar";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -32,6 +31,7 @@ interface EventItem {
     name: string;
     priceKes?: number | null;
     status: string;
+    description?: string | null;
   }>;
 }
 
@@ -71,6 +71,7 @@ export default async function EventsPage() {
               name: tp.name,
               priceKes: tp.priceKes,
               status: tp.status,
+              description: meta.phaseDescriptions[tp.name] || (tp as any).description || null,
             })),
         };
       });
@@ -158,11 +159,9 @@ export default async function EventsPage() {
           <Sparkles className="w-3.5 h-3.5" />
           <span>The Gathering Calendar</span>
         </div>
-        <h1 className="font-display font-black text-4xl sm:text-6xl tracking-tight">
-          <span className="text-[#ef4444] drop-shadow-[0_2px_12px_rgba(239,68,68,0.3)]">FESTIVAL</span>{" "}
-          <span className="text-[#10b981] drop-shadow-[0_2px_12px_rgba(16,185,129,0.3)]">EDITIONS</span>
+        <h1 className="font-display font-black text-4xl sm:text-6xl text-white tracking-tight">
+          FESTIVAL EDITIONS
         </h1>
-        <KenyanAccentBar />
         <p className="mt-4 text-zinc-300 text-sm sm:text-base leading-relaxed">
           From full-scale outdoor festival spectacles to intimate underground warehouse sessions. Explore upcoming gatherings and relive past sonic rituals.
         </p>

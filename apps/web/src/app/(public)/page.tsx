@@ -20,7 +20,6 @@ import { TicketPhaseStrip } from "@/components/festival/TicketPhaseStrip";
 import { SubscribeSection } from "@/components/festival/SubscribeSection";
 import { SpotifySection } from "@/components/festival/SpotifySection";
 import { parseEventMetadata } from "@/lib/event-metadata";
-import { KenyanAccentBar } from "@/components/festival/KenyanAccentBar";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -59,7 +58,7 @@ const FALLBACK_PHASES: PhaseItem[] = [
     name: "Early Bird Rave Pass",
     price: 1500,
     currency: "KES",
-    status: "ON_SALE",
+    status: "SOLD_OUT",
     description: "Standard NYE Festival Admission • 6PM till 6AM",
   },
   {
@@ -222,7 +221,7 @@ export default async function HomePage() {
             price: tp.priceKes,
             currency: "KES",
             status: tp.status as "ON_SALE" | "SOLD_OUT" | "UPCOMING",
-            description: null,
+            description: meta.phaseDescriptions[tp.name] || (tp as any).description || null,
           }));
       }
 
@@ -296,13 +295,10 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* Headline with Kenyan Rave Flag Scheme (Whole Words: Red, White, Green + Black Backdrop & Accent Bar) */}
-          <h1 className="font-display font-black text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight max-w-5xl leading-[1.05] drop-shadow-md">
-            <span className="text-[#ef4444] drop-shadow-[0_2px_14px_rgba(239,68,68,0.35)]">FEEL</span>{" "}
-            <span className="text-white drop-shadow-[0_2px_14px_rgba(255,255,255,0.35)]">THE</span>{" "}
-            <span className="text-[#10b981] drop-shadow-[0_2px_14px_rgba(16,185,129,0.35)]">FREQUENCY</span>
+          {/* Headline */}
+          <h1 className="font-display font-black text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-white max-w-5xl leading-[1.05] drop-shadow-md">
+            FEEL THE <span className="text-festival-gradient">FREQUENCY</span>
           </h1>
-          <KenyanAccentBar />
 
           <p className="mt-6 text-base sm:text-lg md:text-xl text-zinc-300 max-w-2xl mx-auto leading-relaxed font-light drop-shadow">
             Nairobi&apos;s dedicated Tomorrowland experience. Anthemic Progressive EDM, Big Room, African Tech, Techno, Hardstyle, Drum &amp; Bass, and Dubstep engineered for pure rave catharsis.

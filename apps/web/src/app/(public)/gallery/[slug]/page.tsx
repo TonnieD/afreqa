@@ -5,7 +5,6 @@ import { ShieldAlert, ArrowLeft, Camera, Film, ArrowUpRight, FolderHeart, Downlo
 import { AlbumView } from "@/components/media/AlbumView";
 import { VideoPlayer } from "@/components/media/VideoPlayer";
 import { parseEventMetadata } from "@/lib/event-metadata";
-import { KenyanAccentBar } from "@/components/festival/KenyanAccentBar";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -190,7 +189,6 @@ export default async function AlbumDetailPage({ params }: AlbumPageProps) {
             <h1 className="font-display font-extrabold text-3xl sm:text-4xl text-white uppercase tracking-wide">
               {albumData.title}
             </h1>
-            <KenyanAccentBar className="my-2" />
             {albumData.description && (
               <p className="text-sm text-zinc-300 mt-2 max-w-2xl leading-relaxed">
                 {albumData.description}
