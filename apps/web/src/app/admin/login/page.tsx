@@ -48,8 +48,8 @@ function LoginForm() {
   return (
     <div className="rounded-3xl bg-afreqa-stage/90 border border-afreqa-chrome-high/15 p-8 backdrop-blur-xl shadow-2xl shadow-afreqa-shadow">
       {reason === "inactivity" && (
-        <div className="mb-5 p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex items-center gap-3">
-          <ShieldAlert className="w-5 h-5 text-amber-400 shrink-0" />
+        <div className="mb-5 p-3.5 rounded-xl bg-pink-500/10 border border-pink-500/30 text-pink-300 text-xs flex items-center gap-3">
+          <ShieldAlert className="w-5 h-5 text-pink-400 shrink-0" />
           <span className="leading-snug">
             Your session was locked and terminated after 30 minutes of inactivity for system security. Please re-authenticate.
           </span>

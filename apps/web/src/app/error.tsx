@@ -37,7 +37,7 @@ export default function ErrorBoundary({
         <div className="flex items-center justify-center gap-4 pt-4">
           <button
             onClick={() => reset()}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs uppercase tracking-wider shadow-lg hover:shadow-amber-500/20 active:scale-95 transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-pink-950/30 active:scale-95 transition-all"
           >
             <RefreshCw className="w-4 h-4" />
             <span>Retry Connection</span>

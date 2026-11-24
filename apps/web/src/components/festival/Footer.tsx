@@ -27,10 +27,10 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-              <strong className="text-white">A Tomorrowland XP in Nairobi.</strong> Dedicated to uncompromising electronic music: Progressive EDM (Tomorrowland anthems), Big Room, African Tech, Techno, Hardstyle, Drum &amp; Bass, and Dubstep.
+              <strong className="text-white">A Tomorrowland XP in Nairobi.</strong> Dedicated to uncompromising electronic music: Progressive EDM (Tomorrowland anthems), Big Room, Melodic Techno, Techno, Hardstyle, Drum &amp; Bass, and Dubstep.
             </p>
             <div className="pt-2">
-              <div className="text-[11px] font-mono uppercase tracking-wider text-amber-400 font-bold mb-2">
+              <div className="text-[11px] font-mono uppercase tracking-wider text-pink-400 font-bold mb-2">
                 Official Channels (@afreqa_)
               </div>
               <div className="flex items-center gap-2.5">
@@ -92,7 +92,7 @@ export function Footer() {
 
           {/* Col 2: Navigation */}
           <div>
-            <h4 className="font-mono text-xs uppercase tracking-widest text-amber-400 mb-4 font-bold">
+            <h4 className="font-mono text-xs uppercase tracking-widest text-zinc-300 mb-4 font-bold">
               Festival
             </h4>
             <ul className="space-y-2.5 text-sm">
@@ -121,7 +121,7 @@ export function Footer() {
                   href="/go/tickets/tomorrowland-nye"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-amber-400 hover:text-white transition-colors inline-flex items-center gap-1 font-semibold"
+                  className="text-pink-400 hover:text-white transition-colors inline-flex items-center gap-1 font-semibold"
                 >
                   <span>Get Tickets</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />
@@ -132,7 +132,7 @@ export function Footer() {
 
           {/* Col 3: Collaborate & Connect */}
           <div>
-            <h4 className="font-mono text-xs uppercase tracking-widest text-amber-400 mb-4 font-bold">
+            <h4 className="font-mono text-xs uppercase tracking-widest text-zinc-300 mb-4 font-bold">
               Collaborate
             </h4>
             <ul className="space-y-2.5 text-sm">
@@ -161,17 +161,12 @@ export function Footer() {
                   Contact & Bookings
                 </Link>
               </li>
-              <li>
-                <a href="tel:+254743836164" className="text-zinc-400 hover:text-emerald-400 transition-colors font-mono text-xs">
-                  +254 743 836 164
-                </a>
-              </li>
             </ul>
           </div>
 
           {/* Col 4: Privacy & Compliance */}
           <div>
-            <h4 className="font-mono text-xs uppercase tracking-widest text-amber-400 mb-4 font-bold">
+            <h4 className="font-mono text-xs uppercase tracking-widest text-zinc-300 mb-4 font-bold">
               Legal & Privacy
             </h4>
             <ul className="space-y-2.5 text-sm">
@@ -192,7 +187,7 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/legal/data-request" className="text-zinc-400 hover:text-white transition-colors flex items-center gap-1.5">
-                  <Shield className="w-3.5 h-3.5 text-amber-400" />
+                  <Shield className="w-3.5 h-3.5 text-pink-400" />
                   <span>Data Subject Request</span>
                 </Link>
               </li>
@@ -202,9 +197,9 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <a href="/api/whatsapp/vcard" download="afreqa.vcf" className="text-amber-400/80 hover:text-amber-400 transition-colors">
-                  Save Contact (+254 743 836 164)
-                </a>
+                <Link href="/contact" className="text-pink-400/80 hover:text-pink-400 transition-colors">
+                  Official Inquiries Desk
+                </Link>
               </li>
             </ul>
           </div>
@@ -215,7 +210,7 @@ export function Footer() {
           <p>© {new Date().getFullYear()} Afreqa Nairobi. All rights reserved.</p>
           <p className="flex items-center gap-1">
             <span>Engineered with passion for African Electronic Music</span>
-            <Heart className="w-3 h-3 text-amber-400 inline" />
+            <Heart className="w-3 h-3 text-pink-400 inline" />
           </p>
         </div>
       </div>

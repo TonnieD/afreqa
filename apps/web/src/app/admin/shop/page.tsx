@@ -44,7 +44,7 @@ export default async function AdminShopPage() {
           className={`flex items-center gap-2 px-3.5 py-2 rounded-xl border text-xs font-mono font-bold uppercase ${
             isShopEnabled
               ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-400"
-              : "bg-amber-500/15 border-amber-500/30 text-amber-400"
+              : "bg-pink-500/15 border-pink-500/30 text-pink-400"
           }`}
         >
           {isShopEnabled ? <ToggleRight className="w-4 h-4" /> : <ToggleLeft className="w-4 h-4" />}

@@ -91,7 +91,7 @@ interface LineupCardItem {
 const POSTER_LINEUP: LineupCardItem[] = [
   {
     name: "Coco Kahi B2B Mike Muema",
-    genre: "Headline B2B • Afro-Tech & Melodic Techno",
+    genre: "Headline B2B • Melodic Techno & Progressive",
     time: "02:00 – 04:00",
     image: "/images/afreqa-halloween-alloy.jpg",
     bio: "Powerhouse B2B sonic journey fusing heavy percussive basslines with transcendent synthesis.",
@@ -115,10 +115,10 @@ const POSTER_LINEUP: LineupCardItem[] = [
   },
   {
     name: "Z4V3 B2B Alex Gvng Gvng",
-    genre: "Amapiano / EDM Mainstage Fusion",
+    genre: "Peak-Time EDM & Electro Fusion",
     time: "21:30 – 23:00",
     image: "/images/afreqa-halloween-alloy.jpg",
-    bio: "Sub-bass polyrhythms and heavy club energy to ignite the Halloween rave.",
+    bio: "Heavy sub-bass drops and festival energy to ignite the Halloween rave.",
     stage: "Alloy Mainstage",
   },
   {
@@ -267,15 +267,15 @@ export default async function HomePage() {
           <div className="absolute inset-0 bg-gradient-to-b from-[#070709]/75 via-[#070709]/35 to-[#070709]" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,#070709_90%)] opacity-70" />
           
-          {/* Warm Stage Tungsten Ambient Glow */}
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-amber-500/15 rounded-full blur-[140px] pointer-events-none" />
+          {/* Warm Stage Ambient Glow */}
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-purple-900/15 rounded-full blur-[140px] pointer-events-none" />
         </div>
 
         {/* Content Container (Layered above Cover Image) */}
         <div className="relative z-10 flex flex-col items-center max-w-5xl mx-auto">
           {/* Brand Tagline Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-amber-500/30 backdrop-blur-md text-amber-400 text-xs font-mono font-bold tracking-widest uppercase mb-8 shadow-lg">
-            <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-pink-500/30 backdrop-blur-md text-pink-400 text-xs font-mono font-bold tracking-widest uppercase mb-8 shadow-lg">
+            <span className="w-2 h-2 rounded-full bg-pink-500 animate-pulse" />
             <span>A Tomorrowland XP in Nairobi • High-Velocity Rave</span>
           </div>
 
@@ -301,12 +301,12 @@ export default async function HomePage() {
           </h1>
 
           <p className="mt-6 text-base sm:text-lg md:text-xl text-zinc-300 max-w-2xl mx-auto leading-relaxed font-light drop-shadow">
-            Nairobi&apos;s dedicated Tomorrowland experience. Anthemic Progressive EDM, Big Room, African Tech, Techno, Hardstyle, Drum &amp; Bass, and Dubstep engineered for pure rave catharsis.
+            Nairobi&apos;s dedicated Tomorrowland experience. Anthemic Progressive EDM, Big Room, Melodic Techno, Techno, Hardstyle, Drum &amp; Bass, and Dubstep engineered for pure rave catharsis.
           </p>
 
           {/* Next Edition Meta Bar */}
           <div className="mt-8 inline-flex flex-wrap items-center justify-center gap-3 px-5 py-2.5 rounded-2xl bg-black/60 border border-white/10 backdrop-blur-md font-mono text-xs text-zinc-300">
-            <span className="text-amber-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+            <span className="text-pink-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
               <Radio className="w-3.5 h-3.5 animate-pulse" />
               {event.title}
             </span>
@@ -333,9 +333,9 @@ export default async function HomePage() {
               href={`/go/tickets/${event.slug}?placement=hero`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-sm sm:text-base tracking-wider uppercase shadow-xl hover:scale-105 transition-all duration-300 active:scale-95"
+              className="flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-extrabold text-sm sm:text-base tracking-wider uppercase shadow-xl hover:scale-105 transition-all duration-300 active:scale-95 shadow-pink-950/30"
             >
-              <Ticket className="w-5 h-5 text-black" />
+              <Ticket className="w-5 h-5 text-white" />
               <span>Get Tickets via HustleSasa</span>
               <ArrowUpRight className="w-4 h-4" />
             </a>
@@ -345,7 +345,7 @@ export default async function HomePage() {
               className="flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold text-sm sm:text-base tracking-wide backdrop-blur-md transition-all active:scale-95"
             >
               <span>Explore Lineup & Venue</span>
-              <ArrowRight className="w-4 h-4 text-amber-400" />
+              <ArrowRight className="w-4 h-4 text-pink-400" />
             </Link>
           </div>
         </div>
@@ -354,13 +354,13 @@ export default async function HomePage() {
       {/* 2. NEXT GATHERING SPOTLIGHT */}
       <section id="spotlight" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full scroll-mt-28">
         <div className="rounded-3xl glass-panel p-6 sm:p-10 lg:p-12 relative overflow-hidden border border-white/10 shadow-2xl">
-          {/* Subtle Warm Stage Glow */}
-          <div className="absolute top-0 right-0 w-80 h-80 bg-afreqa-amber/10 rounded-full blur-[120px] pointer-events-none" />
+          {/* Subtle Stage Glow */}
+          <div className="absolute top-0 right-0 w-80 h-80 bg-purple-900/15 rounded-full blur-[120px] pointer-events-none" />
 
           {/* Section Header */}
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-10 border-b border-white/10">
             <div>
-              <div className="inline-flex items-center gap-2 text-xs font-mono font-bold tracking-widest text-amber-400 uppercase mb-2">
+              <div className="inline-flex items-center gap-2 text-xs font-mono font-bold tracking-widest text-pink-400 uppercase mb-2">
                 <Radio className="w-4 h-4 animate-pulse" />
                 <span>Next Official Edition</span>
               </div>
@@ -375,7 +375,7 @@ export default async function HomePage() {
             {/* Event Meta Badges */}
             <div className="flex flex-wrap items-center gap-3 font-mono text-xs text-zinc-300">
               <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-black/60 border border-white/10">
-                <Calendar className="w-4 h-4 text-amber-400" />
+                <Calendar className="w-4 h-4 text-pink-400" />
                 <span>{new Date(event.date).toLocaleDateString("en-KE", { weekday: "short", day: "numeric", month: "short", year: "numeric" })}</span>
               </div>
               <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-black/60 border border-white/10">
@@ -388,7 +388,7 @@ export default async function HomePage() {
           {/* Ticket Phase Tracker Strip */}
           <div className="py-10">
             <h3 className="font-mono text-xs uppercase tracking-widest text-zinc-400 font-semibold mb-6 flex items-center gap-2">
-              <Ticket className="w-4 h-4 text-amber-400" />
+              <Ticket className="w-4 h-4 text-pink-400" />
               <span>Official Ticket Tiers (HustleSasa Live Inventory)</span>
             </h3>
             <TicketPhaseStrip phases={phases} eventSlug={event.slug} />
@@ -401,13 +401,13 @@ export default async function HomePage() {
                 <h3 className="font-display font-extrabold text-2xl text-white">
                   Official Festival Lineup
                 </h3>
-                <p className="text-xs font-mono text-amber-400 mt-0.5">
+                <p className="text-xs font-mono text-pink-400 mt-0.5">
                   {event.venueName} • {new Date(event.date).toLocaleDateString("en-KE", { weekday: "short", day: "numeric", month: "short", year: "numeric" })} • Doors: {event.doorsOpen}
                 </p>
               </div>
               <Link
                 href={`/events/${event.slug}`}
-                className="text-xs font-mono text-amber-400 hover:text-white flex items-center gap-1 transition-colors"
+                className="text-xs font-mono text-pink-400 hover:text-white flex items-center gap-1 transition-colors"
               >
                 <span>Full Event Details</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -426,7 +426,7 @@ export default async function HomePage() {
                     sizes="(max-width: 1024px) 100vw, 25vw"
                     className="object-cover"
                   />
-                  <div className="absolute top-2 left-2 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-black/80 backdrop-blur-md text-amber-400 border border-amber-400/40">
+                  <div className="absolute top-2 left-2 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-black/80 backdrop-blur-md text-pink-400 border border-pink-500/30">
                     OFFICIAL POSTER
                   </div>
                 </div>
@@ -438,10 +438,14 @@ export default async function HomePage() {
                           VIP & Table Bookings
                         </p>
                         <a
-                          href={`tel:${event.vipContact.replace(/[^0-9+]/g, "")}`}
-                          className="inline-block text-xs font-mono font-bold text-amber-400 hover:underline"
+                          href={
+                            event.vipContact.includes("@")
+                              ? `mailto:${event.vipContact}`
+                              : `/contact?subject=BOOKING`
+                          }
+                          className="inline-block text-xs font-mono font-bold text-pink-400 hover:underline"
                         >
-                          📞 {event.vipContact}
+                          ✉️ {event.vipContact}
                         </a>
                       </div>
                     )}
@@ -450,7 +454,7 @@ export default async function HomePage() {
                         href={event.photosUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-400 text-xs font-mono font-bold transition-all"
+                        className="w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-pink-500/15 hover:bg-pink-500/25 border border-pink-500/30 text-pink-400 text-xs font-mono font-bold transition-all"
                       >
                         <span>📸 Night Photos (Google Drive)</span>
                         <ArrowUpRight className="w-3.5 h-3.5" />
@@ -463,11 +467,11 @@ export default async function HomePage() {
               {/* Lineup Cards or Lineup Dropping Soon Teaser */}
               <div className="lg:col-span-3">
                 {isLineupDroppingSoon ? (
-                  <div className="rounded-2xl glass-panel p-8 sm:p-10 border border-amber-500/30 text-center relative overflow-hidden flex flex-col items-center justify-center min-h-[340px]">
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-40 bg-amber-500/10 rounded-full blur-[90px] pointer-events-none" />
+                  <div className="rounded-2xl glass-panel p-8 sm:p-10 border border-pink-500/30 text-center relative overflow-hidden flex flex-col items-center justify-center min-h-[340px]">
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-40 bg-purple-900/15 rounded-full blur-[90px] pointer-events-none" />
 
                     <div className="relative z-10 space-y-4 max-w-lg">
-                      <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-mono font-bold tracking-widest uppercase">
+                      <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-pink-500/15 border border-pink-500/30 text-pink-400 text-xs font-mono font-bold tracking-widest uppercase">
                         <Sparkles className="w-3.5 h-3.5 animate-spin" />
                         <span>Lineup Dropping Soon</span>
                       </div>
@@ -478,7 +482,7 @@ export default async function HomePage() {
                           <span
                             key={i}
                             style={{ height: `${h * 0.3}px` }}
-                            className="w-1.5 rounded-full bg-gradient-to-t from-amber-600 to-amber-300 animate-pulse"
+                            className="w-1.5 rounded-full bg-gradient-to-t from-pink-600 to-rose-400 animate-pulse"
                           />
                         ))}
                       </div>
@@ -509,20 +513,20 @@ export default async function HomePage() {
                     {activeLineup.map((dj) => (
                       <div
                         key={dj.name}
-                        className="rounded-2xl glass-panel p-5 border border-white/10 hover:border-amber-500/40 transition-all duration-300 group hover:-translate-y-1"
+                        className="rounded-2xl glass-panel p-5 border border-white/10 hover:border-pink-500/40 transition-all duration-300 group hover:-translate-y-1"
                       >
                         <div className="flex items-center justify-between mb-2">
-                          <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-black/70 text-amber-400 border border-amber-400/30">
+                          <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-black/70 text-pink-400 border border-pink-500/30">
                             {dj.time}
                           </span>
                           <span className="text-[10px] font-mono text-zinc-500">
                             {dj.stage || "Mainstage"}
                           </span>
                         </div>
-                        <h4 className="font-display font-bold text-lg text-white group-hover:text-amber-400 transition-colors">
+                        <h4 className="font-display font-bold text-lg text-white group-hover:text-pink-400 transition-colors">
                           {dj.name}
                         </h4>
-                        <p className="text-xs font-mono text-amber-400/90 mt-0.5">
+                        <p className="text-xs font-mono text-pink-400/90 mt-0.5">
                           {dj.genre}
                         </p>
                         {dj.bio && (
@@ -543,7 +547,7 @@ export default async function HomePage() {
       {/* 3. THE AFREQA EXPERIENCE (4 PILLARS) */}
       <section id="experience" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full scroll-mt-24">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="font-mono text-xs font-bold tracking-widest text-amber-400 uppercase">
+          <span className="font-mono text-xs font-bold tracking-widest text-pink-400 uppercase">
             A Tomorrowland XP in Nairobi
           </span>
           <h2 className="font-display font-black text-3xl sm:text-5xl text-chrome mt-2">
@@ -556,8 +560,8 @@ export default async function HomePage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Pillar 1 */}
-          <div className="rounded-2xl glass-panel p-6 border border-white/10 hover:border-amber-500/30 transition-all">
-            <div className="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center mb-5 border border-amber-500/20">
+          <div className="rounded-2xl glass-panel p-6 border border-white/10 hover:border-pink-500/30 transition-all">
+            <div className="w-12 h-12 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center mb-5 border border-pink-500/20">
               <Zap className="w-6 h-6" />
             </div>
             <h3 className="font-display font-bold text-lg text-white mb-2">
@@ -569,21 +573,21 @@ export default async function HomePage() {
           </div>
 
           {/* Pillar 2 */}
-          <div className="rounded-2xl glass-panel p-6 border border-white/10 hover:border-amber-500/30 transition-all">
-            <div className="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center mb-5 border border-amber-500/20">
+          <div className="rounded-2xl glass-panel p-6 border border-white/10 hover:border-pink-500/30 transition-all">
+            <div className="w-12 h-12 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center mb-5 border border-pink-500/20">
               <Music className="w-6 h-6" />
             </div>
             <h3 className="font-display font-bold text-lg text-white mb-2">
               Progressive EDM & Tomorrowland Anthems
             </h3>
             <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-              No watered-down pop. Euphoric Tomorrowland Progressive EDM anthems, Big Room, African Tech, Techno, Hardstyle, Drum &amp; Bass, and Dubstep uniting thousands of ravers.
+              No watered-down pop. Euphoric Tomorrowland Progressive EDM anthems, Big Room, Melodic Techno, Techno, Hardstyle, Drum &amp; Bass, and Dubstep uniting thousands of ravers.
             </p>
           </div>
 
           {/* Pillar 3 */}
-          <div className="rounded-2xl glass-panel p-6 border border-white/10 hover:border-amber-500/30 transition-all">
-            <div className="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center mb-5 border border-amber-500/20">
+          <div className="rounded-2xl glass-panel p-6 border border-white/10 hover:border-pink-500/30 transition-all">
+            <div className="w-12 h-12 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center mb-5 border border-pink-500/20">
               <ShieldCheck className="w-6 h-6" />
             </div>
             <h3 className="font-display font-bold text-lg text-white mb-2">
@@ -595,8 +599,8 @@ export default async function HomePage() {
           </div>
 
           {/* Pillar 4 */}
-          <div className="rounded-2xl glass-panel p-6 border border-white/10 hover:border-amber-500/30 transition-all">
-            <div className="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center mb-5 border border-amber-500/20">
+          <div className="rounded-2xl glass-panel p-6 border border-white/10 hover:border-pink-500/30 transition-all">
+            <div className="w-12 h-12 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center mb-5 border border-pink-500/20">
               <Radio className="w-6 h-6" />
             </div>
             <h3 className="font-display font-bold text-lg text-white mb-2">
@@ -647,7 +651,7 @@ export default async function HomePage() {
       {/* 6. QUICK FAQ TEASER */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="text-center mb-10">
-          <span className="font-mono text-xs font-bold tracking-widest text-amber-400 uppercase">
+          <span className="font-mono text-xs font-bold tracking-widest text-pink-400 uppercase">
             Essentials
           </span>
           <h2 className="font-display font-extrabold text-2xl sm:text-4xl text-chrome mt-1">
@@ -687,7 +691,7 @@ export default async function HomePage() {
         <div className="mt-8 text-center">
           <Link
             href="/faq"
-            className="inline-flex items-center gap-1.5 text-xs font-mono text-amber-400 hover:text-white transition-colors font-semibold"
+            className="inline-flex items-center gap-1.5 text-xs font-mono text-pink-400 hover:text-white transition-colors font-semibold"
           >
             <span>View All Prohibited Items, Parking & Venue Guidelines</span>
             <ArrowRight className="w-3.5 h-3.5" />

@@ -98,12 +98,12 @@ ${formData.description}`;
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-20">
       {/* 1. HERO HEADER */}
       <div className="text-center space-y-4 max-w-3xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/5 border border-white/10 text-amber-400 text-xs font-mono font-bold uppercase tracking-widest">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/5 border border-white/10 text-pink-400 text-xs font-mono font-bold uppercase tracking-widest">
           <Store className="w-3.5 h-3.5" />
           <span>Festival Market Village</span>
         </div>
         <h1 className="font-display font-black text-4xl sm:text-6xl text-white tracking-tight">
-          VEND WITH AFREQA
+          VEND WITH <span className="text-festival-gradient">AFREQA</span>
         </h1>
         <p className="text-sm sm:text-base text-zinc-300 leading-relaxed font-normal">
           Showcase your culinary creations, streetwear, festival apparel, or rave accessories to thousands of passionate electronic music dancers in Nairobi.
@@ -113,7 +113,7 @@ ${formData.description}`;
       {/* 2. WHY VEND STATS STRIP */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="rounded-2xl bg-[#0f1117]/80 backdrop-blur-md p-6 border border-white/10 space-y-2 shadow-lg">
-          <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20">
+          <div className="w-10 h-10 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center border border-pink-500/20">
             <Flame className="w-5 h-5" />
           </div>
           <h4 className="font-display font-bold text-lg text-white">Prime Demographics</h4>
@@ -123,7 +123,7 @@ ${formData.description}`;
         </div>
 
         <div className="rounded-2xl bg-[#0f1117]/80 backdrop-blur-md p-6 border border-white/10 space-y-2 shadow-lg">
-          <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20">
+          <div className="w-10 h-10 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center border border-pink-500/20">
             <Store className="w-5 h-5" />
           </div>
           <h4 className="font-display font-bold text-lg text-white">Curated Market Village</h4>
@@ -133,7 +133,7 @@ ${formData.description}`;
         </div>
 
         <div className="rounded-2xl bg-[#0f1117]/80 backdrop-blur-md p-6 border border-white/10 space-y-2 shadow-lg">
-          <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20">
+          <div className="w-10 h-10 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center border border-pink-500/20">
             <Zap className="w-5 h-5" />
           </div>
           <h4 className="font-display font-bold text-lg text-white">Full Power & Security</h4>
@@ -143,7 +143,7 @@ ${formData.description}`;
         </div>
 
         <div className="rounded-2xl bg-[#0f1117]/80 backdrop-blur-md p-6 border border-white/10 space-y-2 shadow-lg">
-          <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20">
+          <div className="w-10 h-10 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center border border-pink-500/20">
             <Sparkles className="w-5 h-5" />
           </div>
           <h4 className="font-display font-bold text-lg text-white">Digital Brand Exposure</h4>
@@ -166,7 +166,7 @@ ${formData.description}`;
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="rounded-2xl bg-black/40 p-5 border border-white/10 space-y-2">
-            <div className="text-amber-400 flex items-center gap-2 font-mono text-xs font-bold uppercase">
+            <div className="text-pink-400 flex items-center gap-2 font-mono text-xs font-bold uppercase">
               <Utensils className="w-4 h-4" />
               <span>Gourmet Street Food</span>
             </div>
@@ -176,7 +176,7 @@ ${formData.description}`;
           </div>
 
           <div className="rounded-2xl bg-black/40 p-5 border border-white/10 space-y-2">
-            <div className="text-amber-400 flex items-center gap-2 font-mono text-xs font-bold uppercase">
+            <div className="text-pink-400 flex items-center gap-2 font-mono text-xs font-bold uppercase">
               <ShoppingBag className="w-4 h-4" />
               <span>Fashion & Streetwear</span>
             </div>
@@ -186,7 +186,7 @@ ${formData.description}`;
           </div>
 
           <div className="rounded-2xl bg-black/40 p-5 border border-white/10 space-y-2">
-            <div className="text-amber-400 flex items-center gap-2 font-mono text-xs font-bold uppercase">
+            <div className="text-pink-400 flex items-center gap-2 font-mono text-xs font-bold uppercase">
               <Sparkles className="w-4 h-4" />
               <span>Sensory & Glow</span>
             </div>
@@ -196,7 +196,7 @@ ${formData.description}`;
           </div>
 
           <div className="rounded-2xl bg-black/40 p-5 border border-white/10 space-y-2">
-            <div className="text-amber-400 flex items-center gap-2 font-mono text-xs font-bold uppercase">
+            <div className="text-pink-400 flex items-center gap-2 font-mono text-xs font-bold uppercase">
               <Store className="w-4 h-4" />
               <span>Beverage & Refreshment</span>
             </div>
@@ -224,12 +224,10 @@ ${formData.description}`;
             </p>
             <div className="pt-2">
               <a
-                href={`https://wa.me/254743836164?text=${whatsappMessage}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs uppercase tracking-wider transition-colors shadow-lg shadow-emerald-950/40"
+                href="#vendor-form"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-white font-extrabold text-xs uppercase tracking-wider transition-colors shadow-lg shadow-pink-950/40"
               >
-                <span>WhatsApp +254 743 836 164</span>
+                <span>Submit Vendor Application</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </a>
             </div>
@@ -237,21 +235,21 @@ ${formData.description}`;
 
           {/* Checklist */}
           <div className="rounded-3xl bg-[#0f1117]/80 backdrop-blur-md p-6 sm:p-8 border border-white/10 space-y-4 shadow-xl">
-            <div className="flex items-center gap-2 text-amber-400 font-mono text-xs font-bold uppercase">
+            <div className="flex items-center gap-2 text-pink-400 font-mono text-xs font-bold uppercase">
               <ShieldCheck className="w-4 h-4" />
               <span>Vendor Checklist</span>
             </div>
             <ul className="space-y-3 text-xs text-zinc-300 font-normal">
               <li className="flex items-start gap-2">
-                <span className="text-amber-400 font-bold">•</span>
+                <span className="text-pink-400 font-bold">•</span>
                 <span><strong>Public Health Certificate:</strong> Required for all Food & Beverage personnel handling consumables.</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-amber-400 font-bold">•</span>
+                <span className="text-pink-400 font-bold">•</span>
                 <span><strong>Eco-Friendly Packaging:</strong> Strictly zero single-use plastics or non-biodegradable containers.</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-amber-400 font-bold">•</span>
+                <span className="text-pink-400 font-bold">•</span>
                 <span><strong>Digital Payments:</strong> Bring an active M-Pesa Till / Paybill or card POS terminal for quick transactions.</span>
               </li>
             </ul>
@@ -313,7 +311,7 @@ ${formData.description}`;
                     placeholder="e.g. Nairobi Smash Burger Co."
                     value={formData.businessName}
                     onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-pink-500 focus:ring-1 focus:ring-pink-500/30 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-colors"
                   />
                 </div>
 
@@ -327,7 +325,7 @@ ${formData.description}`;
                     placeholder="e.g. Zawadi Maina"
                     value={formData.contactName}
                     onChange={(e) => setFormData({ ...formData, contactName: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-pink-500 focus:ring-1 focus:ring-pink-500/30 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-colors"
                   />
                 </div>
               </div>
@@ -343,7 +341,7 @@ ${formData.description}`;
                     placeholder="orders@yourbrand.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-pink-500 focus:ring-1 focus:ring-pink-500/30 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-colors"
                   />
                 </div>
 
@@ -357,7 +355,7 @@ ${formData.description}`;
                     placeholder="+254 7XX XXX XXX"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-pink-500 focus:ring-1 focus:ring-pink-500/30 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-colors"
                   />
                 </div>
               </div>
@@ -370,7 +368,7 @@ ${formData.description}`;
                   <select
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-[#141721] border border-white/10 focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 text-white text-sm focus:outline-none transition-colors cursor-pointer"
+                    className="w-full px-4 py-3 rounded-xl bg-[#141721] border border-white/10 focus:border-pink-500 focus:ring-1 focus:ring-pink-500/30 text-white text-sm focus:outline-none transition-colors cursor-pointer"
                   >
                     <option value="FOOD_BEVERAGE">Food & Gourmet Dining</option>
                     <option value="BEVERAGE_COFFEE">Artisan Drinks & Specialty Coffee</option>
@@ -389,7 +387,7 @@ ${formData.description}`;
                     placeholder="@yourbrand or link"
                     value={formData.instagramHandle}
                     onChange={(e) => setFormData({ ...formData, instagramHandle: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-pink-500 focus:ring-1 focus:ring-pink-500/30 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-colors"
                   />
                 </div>
               </div>
@@ -402,7 +400,7 @@ ${formData.description}`;
                   <select
                     value={formData.spaceNeeds}
                     onChange={(e) => setFormData({ ...formData, spaceNeeds: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-[#141721] border border-white/10 focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 text-white text-sm focus:outline-none transition-colors cursor-pointer"
+                    className="w-full px-4 py-3 rounded-xl bg-[#141721] border border-white/10 focus:border-pink-500 focus:ring-1 focus:ring-pink-500/30 text-white text-sm focus:outline-none transition-colors cursor-pointer"
                   >
                     <option value="3x3m Canopy">Standard 3m x 3m Stall Space</option>
                     <option value="6x3m Double Stall">Expanded 6m x 3m Double Stall</option>
@@ -418,7 +416,7 @@ ${formData.description}`;
                   <select
                     value={formData.powerNeeds}
                     onChange={(e) => setFormData({ ...formData, powerNeeds: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-[#141721] border border-white/10 focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 text-white text-sm focus:outline-none transition-colors cursor-pointer"
+                    className="w-full px-4 py-3 rounded-xl bg-[#141721] border border-white/10 focus:border-pink-500 focus:ring-1 focus:ring-pink-500/30 text-white text-sm focus:outline-none transition-colors cursor-pointer"
                   >
                     <option value="Standard 13A Single Socket">Standard 13A Single Socket (POS / Lighting / Phone)</option>
                     <option value="Heavy Load 16A/32A">Heavy Appliance Load (Deep Fryers / Grills / Espresso)</option>
@@ -437,7 +435,7 @@ ${formData.description}`;
                   placeholder="Detail what you will sell, average price points, and any previous event experience..."
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-colors resize-none"
+                  className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-pink-500 focus:ring-1 focus:ring-pink-500/30 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-colors resize-none"
                 />
               </div>
 
@@ -445,7 +443,7 @@ ${formData.description}`;
                 <button
                   type="submit"
                   disabled={loading}
-                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-sm uppercase tracking-wider shadow-lg hover:shadow-amber-500/20 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-extrabold text-sm uppercase tracking-wider shadow-lg shadow-pink-950/30 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Send className="w-4 h-4" />
                   <span>{loading ? "Submitting Application..." : "Submit Vendor Application"}</span>

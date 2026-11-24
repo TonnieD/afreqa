@@ -87,13 +87,13 @@ export function ProductDetailView({ product }: ProductDetailProps) {
       {/* Product Details & Actions */}
       <div className="space-y-6">
         <div>
-          <span className="text-xs font-mono uppercase tracking-widest text-amber-400">
+          <span className="text-xs font-mono uppercase tracking-widest text-pink-400">
             Limited Merch Drop
           </span>
           <h1 className="font-display font-black text-3xl sm:text-4xl text-white uppercase tracking-tight mt-1">
             {product.title}
           </h1>
-          <div className="text-2xl font-bold font-mono text-amber-400 mt-3">
+          <div className="text-2xl font-bold font-mono text-pink-400 mt-3">
             KES {priceKes.toLocaleString()}
           </div>
         </div>
@@ -126,7 +126,7 @@ export function ProductDetailView({ product }: ProductDetailProps) {
                   onClick={() => setSelectedVariantId(v.id)}
                   className={`px-4 py-2.5 rounded-xl text-xs font-mono transition border ${
                     isSelected
-                      ? "bg-amber-500 text-black border-amber-400 font-bold shadow-lg shadow-amber-500/10"
+                      ? "bg-gradient-to-r from-pink-600 to-rose-600 text-white border-pink-400/40 font-bold shadow-md shadow-pink-950/30"
                       : disabled
                       ? "bg-white/5 border-white/5 text-zinc-500 cursor-not-allowed line-through"
                       : "bg-white/5 border-white/10 text-white hover:border-white/20"
@@ -146,7 +146,7 @@ export function ProductDetailView({ product }: ProductDetailProps) {
             <button
               type="button"
               onClick={() => setQuantity(Math.max(1, quantity - 1))}
-              className="px-3 py-2 hover:text-amber-400"
+              className="px-3 py-2 hover:text-pink-400"
             >
               -
             </button>
@@ -154,7 +154,7 @@ export function ProductDetailView({ product }: ProductDetailProps) {
             <button
               type="button"
               onClick={() => setQuantity(quantity + 1)}
-              className="px-3 py-2 hover:text-amber-400"
+              className="px-3 py-2 hover:text-pink-400"
             >
               +
             </button>
@@ -190,7 +190,7 @@ export function ProductDetailView({ product }: ProductDetailProps) {
             type="button"
             disabled={loading || isOutOfStock}
             onClick={handleBuyNow}
-            className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs uppercase tracking-widest shadow-lg hover:shadow-amber-500/20 active:scale-95 transition-all disabled:opacity-50"
+            className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-extrabold text-xs uppercase tracking-widest shadow-lg shadow-pink-950/30 active:scale-95 transition-all disabled:opacity-50"
           >
             <span>Express Checkout</span>
             <ArrowRight className="w-4 h-4" />
@@ -198,7 +198,7 @@ export function ProductDetailView({ product }: ProductDetailProps) {
         </div>
 
         <div className="pt-4 border-t border-white/10 text-xs text-zinc-400 flex items-center gap-2 font-mono">
-          <ShieldCheck className="w-4 h-4 text-amber-400" />
+          <ShieldCheck className="w-4 h-4 text-pink-400" />
           <span>Pick up at Gate Turnstiles or Choose Nairobi Courier Delivery</span>
         </div>
       </div>

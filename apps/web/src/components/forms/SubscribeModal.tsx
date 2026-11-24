@@ -77,7 +77,7 @@ export function SubscribeModal({ isOpen, onClose, defaultSource = "modal" }: Sub
         onClick={(e) => e.stopPropagation()}
       >
         {/* Subtle Ambient warmth */}
-        <div className="absolute -top-16 -right-16 w-48 h-48 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute -top-16 -right-16 w-48 h-48 bg-purple-900/15 rounded-full blur-2xl pointer-events-none" />
 
         {/* Close Button */}
         <button
@@ -90,7 +90,7 @@ export function SubscribeModal({ isOpen, onClose, defaultSource = "modal" }: Sub
 
         {success ? (
           <div className="text-center py-6 relative z-10">
-            <div className="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/40 flex items-center justify-center mx-auto mb-4 text-amber-400 text-3xl">
+            <div className="w-16 h-16 rounded-full bg-pink-500/10 border border-pink-500/30 flex items-center justify-center mx-auto mb-4 text-pink-400 text-3xl">
               ✓
             </div>
             <h3 className="text-2xl font-black text-white uppercase tracking-wide mb-2">
@@ -100,11 +100,11 @@ export function SubscribeModal({ isOpen, onClose, defaultSource = "modal" }: Sub
               {successMessage}
             </p>
             <div className="p-4 rounded-xl bg-black/60 border border-white/10 text-left text-xs text-zinc-300 mb-6">
-              <span className="font-bold text-amber-400">Next Step:</span> Open the confirmation email and click <strong>Verify My Frequency</strong> to lock in your early access.
+              <span className="font-bold text-pink-400">Next Step:</span> Open the confirmation email and click <strong>Verify My Frequency</strong> to lock in your early access.
             </div>
             <button
               onClick={onClose}
-              className="px-8 py-3 rounded-full bg-amber-500 text-black font-black text-xs uppercase tracking-widest hover:bg-amber-400 transition shadow-lg"
+              className="px-8 py-3 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-extrabold text-xs uppercase tracking-widest shadow-lg shadow-pink-950/30 transition"
             >
               Done
             </button>
@@ -112,7 +112,7 @@ export function SubscribeModal({ isOpen, onClose, defaultSource = "modal" }: Sub
         ) : (
           <form onSubmit={handleSubmit} className="relative z-10 space-y-4">
             <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono tracking-widest uppercase mb-2">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-400 text-xs font-mono tracking-widest uppercase mb-2">
                 Inner Circle Access
               </div>
               <h2 className="text-2xl font-black text-white uppercase tracking-tight">
@@ -151,7 +151,7 @@ export function SubscribeModal({ isOpen, onClose, defaultSource = "modal" }: Sub
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   placeholder="e.g. Amani"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-black/70 border border-white/15 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-amber-400 transition"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-black/70 border border-white/15 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-pink-500 transition"
                 />
               </div>
 
@@ -165,7 +165,7 @@ export function SubscribeModal({ isOpen, onClose, defaultSource = "modal" }: Sub
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="amani@example.com"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-black/70 border border-white/15 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-amber-400 transition"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-black/70 border border-white/15 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-pink-500 transition"
                 />
               </div>
             </div>
@@ -179,7 +179,7 @@ export function SubscribeModal({ isOpen, onClose, defaultSource = "modal" }: Sub
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="0712 345 678 or +254 712 345 678"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-black/70 border border-white/15 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-amber-400 transition"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-black/70 border border-white/15 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-pink-500 transition"
               />
               <span className="text-[11px] text-zinc-500 mt-1 block">
                 Kenyan (+254) numbers are automatically formatted to international standard.
@@ -193,7 +193,7 @@ export function SubscribeModal({ isOpen, onClose, defaultSource = "modal" }: Sub
                 type="checkbox"
                 checked={whatsappOptIn}
                 onChange={(e) => setWhatsappOptIn(e.target.checked)}
-                className="mt-1 h-4 w-4 rounded border-white/20 bg-black text-amber-500 focus:ring-amber-500"
+                className="mt-1 h-4 w-4 rounded border-white/20 bg-black text-pink-500 focus:ring-pink-500"
               />
               <label htmlFor="modal_wa_optin" className="text-xs text-zinc-300 cursor-pointer">
                 <span className="font-bold text-white block mb-0.5">Opt into WhatsApp Broadcasts</span>
@@ -216,7 +216,7 @@ export function SubscribeModal({ isOpen, onClose, defaultSource = "modal" }: Sub
                       onClick={() => toggleInterest(item.id)}
                       className={`px-3 py-1.5 rounded-full text-xs font-mono transition border ${
                         isSelected
-                          ? "bg-amber-500/15 border-amber-500/40 text-amber-400 font-bold"
+                          ? "bg-pink-500/15 border-pink-500/30 text-pink-400 font-bold"
                           : "bg-white/5 border-white/10 text-zinc-400 hover:border-white/20"
                       }`}
                     >
@@ -235,7 +235,7 @@ export function SubscribeModal({ isOpen, onClose, defaultSource = "modal" }: Sub
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-black text-xs uppercase tracking-widest transition shadow-lg disabled:opacity-50"
+              className="w-full py-3.5 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-extrabold text-xs uppercase tracking-widest shadow-lg shadow-pink-950/30 transition disabled:opacity-50"
             >
               {loading ? "Locking in Frequency..." : "Confirm & Join Inner Circle"}
             </button>

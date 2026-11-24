@@ -120,12 +120,12 @@ export default function FAQPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
       {/* Header */}
       <div className="text-center space-y-4">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/5 border border-white/10 text-amber-400 text-xs font-mono font-bold uppercase tracking-widest">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/5 border border-white/10 text-cyan-400 text-xs font-mono font-bold uppercase tracking-widest">
           <HelpCircle className="w-3.5 h-3.5" />
           <span>Knowledge Base</span>
         </div>
         <h1 className="font-display font-black text-4xl sm:text-6xl text-white tracking-tight">
-          FREQUENTLY ASKED QUESTIONS
+          FREQUENTLY ASKED <span className="text-turquoise-gradient">QUESTIONS</span>
         </h1>
         <p className="text-sm sm:text-base text-zinc-300 max-w-xl mx-auto">
           Everything you need to know about tickets, gate admission protocols, venue transit, and festival guidelines.
@@ -140,7 +140,7 @@ export default function FAQPage() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search questions (e.g. age limit, parking, tickets, refund)..."
-          className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-[#0f1117]/80 backdrop-blur-md border border-white/10 focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-all shadow-xl"
+          className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-[#0f1117]/80 backdrop-blur-md border border-white/10 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/30 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-all shadow-xl"
         />
       </div>
 
@@ -152,7 +152,7 @@ export default function FAQPage() {
             onClick={() => setSelectedCategory(cat)}
             className={`px-4 py-2 rounded-full text-xs font-mono transition-all ${
               selectedCategory === cat
-                ? "bg-amber-500 text-black font-bold shadow-lg shadow-amber-500/10"
+                ? "bg-cyan-500 text-black font-bold shadow-lg shadow-cyan-500/20"
                 : "bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:border-white/20"
             }`}
           >
@@ -173,7 +173,7 @@ export default function FAQPage() {
                 setSearchQuery("");
                 setSelectedCategory("All");
               }}
-              className="mt-3 text-xs font-mono text-amber-400 hover:underline font-semibold"
+              className="mt-3 text-xs font-mono text-cyan-400 hover:underline font-semibold"
             >
               Reset filter
             </button>
@@ -192,7 +192,7 @@ export default function FAQPage() {
                   aria-expanded={isOpen}
                 >
                   <div className="space-y-1">
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-semibold">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-semibold">
                       {item.category}
                     </span>
                     <h3 className="font-display font-bold text-base sm:text-lg text-white">
@@ -201,7 +201,7 @@ export default function FAQPage() {
                   </div>
                   <div className="p-1 rounded-full text-zinc-400">
                     {isOpen ? (
-                      <ChevronUp className="w-5 h-5 text-amber-400" />
+                      <ChevronUp className="w-5 h-5 text-cyan-400" />
                     ) : (
                       <ChevronDown className="w-5 h-5" />
                     )}
@@ -227,7 +227,7 @@ export default function FAQPage() {
         <div>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-1.5 text-xs font-mono text-amber-400 hover:text-white font-semibold transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-mono text-pink-400 hover:text-white font-semibold transition-colors"
           >
             <span>Reach out to our operations team</span>
             <ArrowRight className="w-3.5 h-3.5" />

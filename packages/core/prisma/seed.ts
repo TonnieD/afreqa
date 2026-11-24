@@ -77,15 +77,15 @@ async function main() {
     {
       name: "Coco Kahi",
       slug: "coco-kahi",
-      bio: "High-energy selector driving heavy melodic techno and afro-electronic rhythms.",
-      genres: ["Afro-Tech", "Melodic Techno"],
+      bio: "High-energy selector driving heavy melodic techno and electronic rhythms.",
+      genres: ["Melodic Techno", "Progressive House"],
       isFictional: false,
     },
     {
       name: "Mike Muema",
       slug: "mike-muema",
       bio: "Nairobi club maestro crafting transcendent basslines and seamless B2B energy.",
-      genres: ["Techno", "Afro-House"],
+      genres: ["Techno", "Peak-Time EDM"],
       isFictional: false,
     },
     {
@@ -113,7 +113,7 @@ async function main() {
       name: "Z4V3",
       slug: "z4v3",
       bio: "Polyrhythmic sub-bass fused with modern dance floor anthems.",
-      genres: ["Amapiano / EDM Fusion"],
+      genres: ["Peak-Time EDM", "Electro"],
       isFictional: false,
     },
     {

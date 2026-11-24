@@ -117,15 +117,15 @@ export function AdminInactivityTimeout() {
   return (
     <div
       role="alert"
-      className="fixed bottom-6 right-6 z-50 max-w-sm w-full bg-[#161922] border border-amber-500/40 rounded-2xl p-4 shadow-2xl backdrop-blur-xl animate-fade-in text-white"
+      className="fixed bottom-6 right-6 z-50 max-w-sm w-full bg-[#161922] border border-pink-500/40 rounded-2xl p-4 shadow-2xl backdrop-blur-xl animate-fade-in text-white"
     >
       <div className="flex items-start gap-3">
-        <div className="p-2 rounded-xl bg-amber-500/20 text-amber-400 shrink-0">
+        <div className="p-2 rounded-xl bg-pink-500/20 text-pink-400 shrink-0">
           <Clock className="w-5 h-5 animate-pulse" />
         </div>
         <div className="flex-1 space-y-1">
           <div className="flex items-center justify-between">
-            <h4 className="text-xs font-mono font-bold uppercase text-amber-400 tracking-wider">
+            <h4 className="text-xs font-mono font-bold uppercase text-pink-400 tracking-wider">
               Inactivity Notice
             </h4>
             <span className="text-xs font-mono font-bold text-white bg-black/60 px-2 py-0.5 rounded-full border border-white/10">
@@ -139,7 +139,7 @@ export function AdminInactivityTimeout() {
             <button
               type="button"
               onClick={updateActivity}
-              className="flex-1 px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-black text-xs font-mono font-bold transition shadow"
+              className="flex-1 px-3 py-1.5 rounded-lg bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white text-xs font-mono font-bold transition shadow shadow-pink-950/30"
             >
               Stay Signed In
             </button>

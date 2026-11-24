@@ -64,8 +64,8 @@ export function CountdownTimer({ targetDate, eventTitle = "Next Gathering" }: Co
 
   if (timeLeft.isExpired) {
     return (
-      <div className="py-4 px-6 rounded-2xl glass-panel border-amber-500/40 text-center shadow-xl">
-        <p className="font-mono text-xs text-amber-400 uppercase tracking-widest font-semibold animate-pulse">
+      <div className="py-4 px-6 rounded-2xl glass-panel border-pink-500/30 text-center shadow-xl">
+        <p className="font-mono text-xs text-pink-400 uppercase tracking-widest font-semibold animate-pulse">
           Live Now
         </p>
         <h3 className="font-display font-extrabold text-2xl text-white mt-1">
@@ -91,7 +91,7 @@ export function CountdownTimer({ targetDate, eventTitle = "Next Gathering" }: Co
               <span className="font-display text-2xl sm:text-4xl font-black text-white tracking-tight">
                 {String(unit.value).padStart(2, "0")}
               </span>
-              <span className="text-[9px] sm:text-[10px] font-mono tracking-widest text-amber-400 font-bold mt-1">
+              <span className="text-[9px] sm:text-[10px] font-mono tracking-widest text-pink-400 font-bold mt-1">
                 {unit.label}
               </span>
             </div>

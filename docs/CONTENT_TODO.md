@@ -29,7 +29,7 @@
 | **Next Event Title** | "Afreqa: Resonance" | Real next event title | Labeled `[Sample Demo Event]` |
 | **Next Event Date/Time** | +30 days from launch, 18:00 – 06:00 EAT | Actual event date & doors time | Live countdown binds to this |
 | **Venue & Location** | "The Carnivore Grounds / Waterfront Karen, Nairobi" | Actual confirmed venue | Maps link & directions placeholder |
-| **Lineup (Fictional Artists)** | DJ Nova Rift (Afro-Tech), Kazi Pulse (Deep Melodic), Zuri Bass (Amapiano/EDM), Solar Soundwave (Progressive House) | Actual booked DJ roster | Purely fictional sample DJs |
+| **Lineup (Fictional Artists)** | DJ Nova Rift (Melodic Techno), Kazi Pulse (Deep Melodic), Zuri Bass (Hardstyle/EDM), Solar Soundwave (Progressive House) | Actual booked DJ roster | Purely fictional sample DJs |
 | **Ticket Phases** | Early Bird: KES 1,500; Phase 1: KES 2,000; Final: KES 2,500; Gate: KES 3,500 | Actual phase names, prices & HustleSasa ticket links | Configured in admin; never hardcoded |
 | **Past Editions** | "Afreqa Edition 001", "Afreqa Solstice 2025" | Historical dates, lineups, attendance numbers | Gallery albums linked to these |
 

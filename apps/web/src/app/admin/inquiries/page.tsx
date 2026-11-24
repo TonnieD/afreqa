@@ -17,10 +17,20 @@ export default async function AdminInquiriesPage() {
   }> = [];
 
   try {
-    inquiries = await db.contactMessage.findMany({
+    const raw = await db.contactMessage.findMany({
       orderBy: { createdAt: "desc" },
       take: 100,
     });
+    inquiries = raw.map((item) => ({
+      id: item.id,
+      name: item.name,
+      email: item.email,
+      topic: item.topic,
+      message: item.message,
+      isRead: item.isRead,
+      isReplied: item.isReplied,
+      createdAt: item.createdAt.toISOString() as unknown as Date,
+    }));
   } catch {
     // If DB offline
   }

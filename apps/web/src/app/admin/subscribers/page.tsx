@@ -155,7 +155,7 @@ export default async function AdminSubscribersPage({ searchParams }: Subscribers
                           sub.emailStatus === "ACTIVE"
                             ? "bg-emerald-500/15 border border-emerald-500/30 text-emerald-400"
                             : sub.emailStatus === "UNVERIFIED"
-                            ? "bg-amber-500/15 border border-amber-500/30 text-amber-400"
+                            ? "bg-pink-500/15 border border-pink-500/30 text-pink-400"
                             : "bg-red-500/15 border border-red-500/30 text-red-400"
                         }`}
                       >

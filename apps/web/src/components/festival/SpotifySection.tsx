@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Music,
@@ -20,13 +20,29 @@ import { PLAYLISTS, LIVE_PLAYLISTS, type Playlist } from "@/lib/spotify";
 
 export { PLAYLISTS, LIVE_PLAYLISTS, type Playlist };
 
-export function SpotifySection() {
+export function SpotifySection({ initialPlaylists }: { initialPlaylists?: Playlist[] }) {
+  const [allPlaylists, setAllPlaylists] = useState<Playlist[]>(initialPlaylists || PLAYLISTS);
   const [filterMode, setFilterMode] = useState<"all" | "live">("all");
-  const [activePlaylist, setActivePlaylist] = useState<Playlist>(PLAYLISTS[0]);
+  const [activePlaylist, setActivePlaylist] = useState<Playlist>(allPlaylists[0] || PLAYLISTS[0]);
   const [copied, setCopied] = useState(false);
 
-  const displayedPlaylists =
-    filterMode === "live" ? LIVE_PLAYLISTS : PLAYLISTS;
+  useEffect(() => {
+    fetch("/api/playlists")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data && Array.isArray(data) && data.length > 0) {
+          setAllPlaylists(data);
+          setActivePlaylist((prev) => {
+            const found = data.find((p: Playlist) => p.id === prev.id);
+            return found || data[0];
+          });
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const livePlaylists = allPlaylists.filter((p) => p.status === "live");
+  const displayedPlaylists = filterMode === "live" ? livePlaylists : allPlaylists;
 
   const handleShare = (url: string) => {
     if (navigator.clipboard) {
@@ -38,23 +54,23 @@ export function SpotifySection() {
 
   return (
     <section id="spotify" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full scroll-mt-28">
-      <div className="rounded-3xl glass-panel p-6 sm:p-10 lg:p-12 relative overflow-hidden border border-white/10 shadow-2xl">
-        {/* Glow backdrop */}
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-[140px] pointer-events-none" />
-        <div className="absolute bottom-0 left-10 w-80 h-80 bg-amber-500/10 rounded-full blur-[130px] pointer-events-none" />
+      <div className="rounded-3xl glass-panel p-6 sm:p-10 lg:p-12 relative overflow-hidden border border-pink-500/20 shadow-2xl">
+        {/* Glow backdrop - Purple & Pink */}
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-purple-600/15 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute bottom-0 left-10 w-80 h-80 bg-pink-500/15 rounded-full blur-[130px] pointer-events-none" />
 
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-white/10">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold tracking-widest uppercase mb-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/15 border border-pink-500/30 text-pink-400 text-xs font-mono font-bold tracking-widest uppercase mb-3">
               <Headphones className="w-3.5 h-3.5" />
-              <span>Official Soundwaves & Fanbase Order</span>
+              <span>Official Soundwaves • Curated By Afreqa</span>
             </div>
-            <h2 className="font-display font-black text-3xl sm:text-5xl text-chrome tracking-tight">
-              CURATED SPOTIFY PLAYLISTS
+            <h2 className="font-display font-black text-3xl sm:text-5xl text-white tracking-tight">
+              CURATED <span className="text-festival-gradient">SPOTIFY PLAYLISTS</span>
             </h2>
             <p className="mt-2 text-zinc-400 text-sm sm:text-base max-w-xl font-normal leading-relaxed">
-              Ordered strictly by dancefloor popularity and fanbase size: #1 Progressive EDM (Tomorrowland anthems), #2 Big Room, #3 African Tech, #4 Techno, #5 Hardstyle, #6 Drum &amp; Bass, and #7 Dubstep.
+              Curated anthems ordered strictly by dancefloor popularity and fanbase size: Progressive EDM, Big Room, Melodic Techno, Techno, Hardstyle, Drum &amp; Bass, and Dubstep.
             </p>
           </div>
 
@@ -65,21 +81,21 @@ export function SpotifySection() {
                 onClick={() => setFilterMode("all")}
                 className={`px-3.5 py-1.5 rounded-full transition ${
                   filterMode === "all"
-                    ? "bg-emerald-500 text-black font-bold shadow"
+                    ? "bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold shadow-glow-pink"
                     : "text-zinc-400 hover:text-white"
                 }`}
               >
-                All 7 Pillars ({PLAYLISTS.length})
+                All Curations ({allPlaylists.length})
               </button>
               <button
                 onClick={() => setFilterMode("live")}
                 className={`px-3.5 py-1.5 rounded-full transition ${
                   filterMode === "live"
-                    ? "bg-emerald-500 text-black font-bold shadow"
+                    ? "bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold shadow-glow-pink"
                     : "text-zinc-400 hover:text-white"
                 }`}
               >
-                Live on Spotify ({LIVE_PLAYLISTS.length})
+                Live on Spotify ({livePlaylists.length})
               </button>
             </div>
 
@@ -124,7 +140,7 @@ export function SpotifySection() {
                   <div className="flex items-start justify-between gap-3">
                     <div className="space-y-1">
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-bold px-2 py-0.5 rounded-md bg-amber-500/10 border border-amber-500/20">
+                        <span className="text-[10px] font-mono uppercase tracking-wider text-pink-400 font-bold px-2 py-0.5 rounded-md bg-pink-500/10 border border-pink-500/20">
                           {pl.fanbaseRank.split("•")[0].trim()}
                         </span>
                         {isLive ? (
@@ -223,10 +239,10 @@ export function SpotifySection() {
                 />
               </div>
             ) : (
-              <div className="my-4 rounded-xl overflow-hidden bg-gradient-to-br from-[#0e141a] via-[#10131d] to-[#0c0d12] border border-amber-500/30 p-6 sm:p-8 flex flex-col justify-between min-h-[352px] shadow-inner space-y-4">
+              <div className="my-4 rounded-xl overflow-hidden bg-gradient-to-br from-[#0e141a] via-[#10131d] to-[#0c0d12] border border-pink-500/20 p-6 sm:p-8 flex flex-col justify-between min-h-[352px] shadow-inner space-y-4">
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-amber-400 font-bold px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-pink-400 font-bold px-2.5 py-1 rounded-full bg-pink-500/10 border border-pink-500/20">
                       Resident Curation Drop • Coming to Spotify
                     </span>
                     <span className="text-xs font-mono text-zinc-400">
@@ -249,7 +265,7 @@ export function SpotifySection() {
 
                   {activePlaylist.soundReferences && (
                     <div className="p-3.5 rounded-xl bg-black/50 border border-white/10 text-xs font-mono space-y-1">
-                      <span className="text-amber-400 font-bold uppercase tracking-wider block">
+                      <span className="text-pink-400 font-bold uppercase tracking-wider block">
                         Sonic Blueprint & Key References:
                       </span>
                       <p className="text-zinc-300">
@@ -261,11 +277,11 @@ export function SpotifySection() {
 
                 <div className="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
                   <span className="text-zinc-400">
-                    Are you a producer or DJ with an authentic African Tech, D&B or Dubstep track?
+                    Are you a producer or DJ with an authentic Melodic Techno, D&B or Dubstep track?
                   </span>
                   <Link
                     href="/contact?subject=ARTIST_SUBMISSION"
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs uppercase tracking-wider transition active:scale-95"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-extrabold text-xs uppercase tracking-wider transition active:scale-95 shadow-md shadow-pink-950/30"
                   >
                     <span>Submit Demo / Track</span>
                     <ArrowUpRight className="w-3.5 h-3.5" />
@@ -277,7 +293,7 @@ export function SpotifySection() {
             {/* Bottom Footer Info */}
             <div className="pt-3 border-t border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs font-mono text-zinc-400">
               <span className="flex items-center gap-1.5">
-                <Flame className="w-3.5 h-3.5 text-amber-400" />
+                <Flame className="w-3.5 h-3.5 text-pink-400" />
                 <span>{activePlaylist.fanbaseRank}</span>
               </span>
               <a

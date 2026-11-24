@@ -19,7 +19,7 @@ import {
 export const metadata = {
   title: "About AFREQA | Nairobi's Tomorrowland Experience & Rave Culture",
   description:
-    "Discover AFREQA Nairobi: A Tomorrowland XP. Kenya's premier festival movement playing anthemic Progressive EDM, Big Room, African Tech, Techno, Hardstyle, Drum & Bass, and Dubstep. Learn about our 3 official social media channels, sonic manifesto, and rave ethos.",
+    "Discover AFREQA Nairobi: A Tomorrowland XP. Kenya's premier festival movement playing anthemic Progressive EDM, Big Room, Melodic Techno, Techno, Hardstyle, Drum & Bass, and Dubstep. Learn about our 3 official social media channels, sonic manifesto, and rave ethos.",
 };
 
 const SOCIAL_PROFILES = [
@@ -29,7 +29,7 @@ const SOCIAL_PROFILES = [
     url: "https://instagram.com/afreqa_",
     role: "The Visual Chronicle & Edition Portal",
     badge: "Official Gallery & Drops",
-    color: "from-pink-500/20 via-purple-500/20 to-amber-500/20",
+    color: "from-pink-500/20 via-purple-500/10 to-rose-500/20",
     border: "border-pink-500/30",
     textColor: "text-pink-400",
     description:
@@ -57,7 +57,7 @@ const SOCIAL_PROFILES = [
     url: "https://x.com/afreqa_",
     role: "The Real-Time Frequency Wire",
     badge: "Live Bulletins & Track IDs",
-    color: "from-white/10 via-zinc-500/10 to-amber-500/10",
+    color: "from-white/10 via-zinc-500/10 to-cyan-500/10",
     border: "border-white/20",
     textColor: "text-white",
     description:
@@ -76,9 +76,9 @@ const SONIC_PILLARS = [
     reference: "Avicii, Martin Garrix, Alesso, Third Party, Swedish House Mafia, Matisse & Sadko",
     description:
       "The #1 sound and largest fanbase of AFREQA. Drawing directly from the golden era of Tomorrowland mainstages, our selectors engineer massive sing-along crescendos that unite thousands of voices into one harmonic frequency under illuminated stage arches.",
-    accent: "text-amber-400",
-    border: "border-amber-500/30",
-    bg: "bg-amber-500/10",
+    accent: "text-pink-400",
+    border: "border-pink-500/30",
+    bg: "bg-pink-500/10",
   },
   {
     title: "Big Room & Stadium Electro",
@@ -88,21 +88,21 @@ const SONIC_PILLARS = [
     reference: "Hardwell, Dimitri Vegas & Like Mike, Blasterjaxx, KSHMR, W&W",
     description:
       "Stadium-filling architectural electronic music designed for colossal sound rigs. Every drop is crafted to create earth-shaking synchronized jumps across the venue, matching the pyrotechnic bursts and synchronized cryogenic smoke sweeps.",
-    accent: "text-amber-300",
-    border: "border-amber-400/30",
-    bg: "bg-amber-400/10",
+    accent: "text-purple-400",
+    border: "border-purple-500/30",
+    bg: "bg-purple-500/10",
   },
   {
-    title: "African Tech",
-    bpm: "122 – 126 BPM",
-    fanbase: "#3 Fanbase • Organic African Pulse",
-    flavor: "Deep percussive polyrhythms, authentic African electronics, and driving B2B sets",
-    reference: "Coco Kahi, Mike Muema, Nayäkaze, Shock, Ryte, Z4V3",
+    title: "Melodic Techno & Progressive",
+    bpm: "124 – 128 BPM",
+    fanbase: "#3 Fanbase • Nocturnal Fantasy",
+    flavor: "Hypnotic synth arpeggios, driving progressive basslines, and transcendent builds",
+    reference: "Tale of Us, ARTBAT, CamelPhat, Anyma, Stephan Bodzin, Mind Against",
     description:
-      "Nairobi's own organic electronic muscle. Deep polyrhythmic percussion, authentic African electronic rhythms, and driving B2B sets — strictly authentic, percussive electronic groove.",
-    accent: "text-emerald-400",
-    border: "border-emerald-500/30",
-    bg: "bg-emerald-500/10",
+      "Deep, emotive, and atmospheric. Blending rolling melodic bass with ethereal synth arpeggios that transport ravers into an unearthly sonic trance as night falls across Nairobi.",
+    accent: "text-violet-400",
+    border: "border-purple-500/30",
+    bg: "bg-purple-500/10",
   },
   {
     title: "Techno (Acid • Hard • Industrial)",
@@ -148,9 +148,9 @@ const SONIC_PILLARS = [
     reference: "Excision, Subtronics, Virtual Riot, Ray Volpe, Wooli",
     description:
       "Colossal bass impact designed to rattle sound rigs and shake foundations. Unapologetic mechanical growls, riddim chops, and bone-shattering low frequencies.",
-    accent: "text-yellow-400",
-    border: "border-yellow-500/30",
-    bg: "bg-yellow-500/10",
+    accent: "text-cyan-400",
+    border: "border-cyan-500/30",
+    bg: "bg-cyan-500/10",
   },
 ];
 
@@ -159,7 +159,7 @@ export default function AboutPage() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-20">
       {/* 1. HERO HEADER */}
       <div className="text-center space-y-6">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full glass-panel border border-amber-500/30 text-amber-400 text-xs font-mono font-bold uppercase tracking-widest shadow">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full glass-panel border border-pink-500/30 text-pink-400 text-xs font-mono font-bold uppercase tracking-widest shadow">
           <Sparkles className="w-3.5 h-3.5" />
           <span>A Tomorrowland XP in Nairobi</span>
         </div>
@@ -176,7 +176,7 @@ export default function AboutPage() {
       {/* 2. THE THREE SOCIAL PROFILES SECTION */}
       <section className="space-y-8">
         <div className="text-center max-w-2xl mx-auto space-y-2">
-          <div className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase text-amber-400 tracking-widest">
+          <div className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase text-pink-400 tracking-widest">
             <Radio className="w-3.5 h-3.5 animate-pulse" />
             <span>Digital Channels & Community</span>
           </div>
@@ -207,10 +207,10 @@ export default function AboutPage() {
                 </div>
 
                 <div>
-                  <h3 className="font-display font-extrabold text-2xl text-white group-hover:text-amber-400 transition-colors">
+                  <h3 className="font-display font-extrabold text-2xl text-white group-hover:text-pink-400 transition-colors">
                     {prof.platform}
                   </h3>
-                  <p className="text-xs font-mono text-amber-400/90 mt-0.5 font-bold">
+                  <p className="text-xs font-mono text-pink-400/90 mt-0.5 font-bold">
                     {prof.role}
                   </p>
                 </div>
@@ -229,10 +229,10 @@ export default function AboutPage() {
                   href={prof.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-white font-mono text-xs font-bold uppercase tracking-wider transition group-hover:border-amber-500/40"
+                  className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-white font-mono text-xs font-bold uppercase tracking-wider transition group-hover:border-pink-500/40"
                 >
                   <span>{prof.action}</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-amber-400" />
+                  <ArrowUpRight className="w-3.5 h-3.5 text-pink-400" />
                 </a>
               </div>
             </div>
@@ -262,7 +262,7 @@ export default function AboutPage() {
               href="/music"
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-white border border-white/10 transition"
             >
-              <Music className="w-3.5 h-3.5 text-amber-400" />
+              <Music className="w-3.5 h-3.5 text-pink-400" />
               <span>Spotify Hub</span>
             </Link>
           </div>
@@ -272,8 +272,8 @@ export default function AboutPage() {
       {/* 3. WHAT AFREQA PLAYS: THE 7 SONIC PILLARS */}
       <section className="space-y-8">
         <div className="text-center max-w-2xl mx-auto space-y-2">
-          <div className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase text-amber-400 tracking-widest">
-            <Volume2 className="w-4 h-4 text-amber-400" />
+          <div className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase text-pink-400 tracking-widest">
+            <Volume2 className="w-4 h-4 text-pink-400" />
             <span>The Sonic Manifesto • Fanbase Ranking</span>
           </div>
           <h2 className="font-display font-black text-3xl sm:text-4xl text-white">
@@ -288,7 +288,7 @@ export default function AboutPage() {
           {SONIC_PILLARS.map((pillar, i) => (
             <div
               key={pillar.title}
-              className={`rounded-3xl bg-[#0f1117]/85 backdrop-blur-md p-6 sm:p-8 border ${pillar.border} flex flex-col justify-between space-y-4 hover:border-amber-400/40 transition-all shadow-xl`}
+              className={`rounded-3xl bg-[#0f1117]/85 backdrop-blur-md p-6 sm:p-8 border ${pillar.border} flex flex-col justify-between space-y-4 hover:border-pink-500/40 transition-all shadow-xl`}
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
@@ -296,7 +296,7 @@ export default function AboutPage() {
                     <span className={`text-[10px] font-mono font-bold px-2.5 py-1 rounded-full ${pillar.bg} ${pillar.accent} border ${pillar.border}`}>
                       {pillar.bpm}
                     </span>
-                    <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-amber-300">
+                    <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-pink-300">
                       {pillar.fanbase.split("•")[0].trim()}
                     </span>
                   </div>
@@ -309,7 +309,7 @@ export default function AboutPage() {
                   {pillar.title}
                 </h3>
 
-                <p className="text-xs font-mono text-amber-400/90 leading-snug">
+                <p className="text-xs font-mono text-pink-400/90 leading-snug">
                   {pillar.flavor}
                 </p>
 
@@ -326,9 +326,9 @@ export default function AboutPage() {
           ))}
 
           {/* Quick link to listen on Spotify */}
-          <div className="rounded-3xl bg-gradient-to-br from-emerald-500/15 via-black/80 to-[#0f1117] p-6 sm:p-8 border border-emerald-500/30 flex flex-col justify-between space-y-4 shadow-xl">
+          <div className="rounded-3xl bg-gradient-to-br from-purple-900/20 via-black/80 to-[#0f1117] p-6 sm:p-8 border border-pink-500/30 flex flex-col justify-between space-y-4 shadow-xl">
             <div className="space-y-3">
-              <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 uppercase tracking-widest">
+              <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-pink-500/20 text-pink-400 border border-pink-500/40 uppercase tracking-widest">
                 Listen Online
               </span>
               <h3 className="font-display font-extrabold text-2xl text-white">
@@ -341,10 +341,10 @@ export default function AboutPage() {
 
             <Link
               href="/music"
-              className="inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs uppercase tracking-wider transition shadow-lg hover:shadow-emerald-500/25 active:scale-95"
+              className="inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-extrabold text-xs uppercase tracking-wider transition shadow-lg shadow-pink-950/30 active:scale-95"
             >
               <span>Explore Spotify Playlists</span>
-              <ArrowUpRight className="w-4 h-4" />
+              <ArrowUpRight className="w-4 h-4 text-white" />
             </Link>
           </div>
         </div>
@@ -352,11 +352,11 @@ export default function AboutPage() {
 
       {/* 4. WHAT AFREQA STANDS FOR: THE RAVE ETHOS */}
       <section className="rounded-3xl glass-panel p-8 sm:p-12 border border-white/10 relative overflow-hidden shadow-2xl space-y-8">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-purple-900/15 rounded-full blur-[140px] pointer-events-none" />
 
         <div className="max-w-3xl space-y-4">
-          <div className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase text-amber-400 tracking-widest">
-            <Flame className="w-4 h-4 text-amber-400" />
+          <div className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase text-pink-400 tracking-widest">
+            <Flame className="w-4 h-4 text-pink-400" />
             <span>The Tomorrowland Fantasy in Nairobi</span>
           </div>
           <h2 className="font-display font-black text-3xl sm:text-5xl text-white tracking-tight">
@@ -369,7 +369,7 @@ export default function AboutPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
           <div className="rounded-2xl bg-black/50 p-6 border border-white/10 space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20">
+            <div className="w-10 h-10 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center border border-pink-500/20">
               <Zap className="w-5 h-5" />
             </div>
             <h3 className="font-display font-bold text-lg text-white">Monumental Stage Craft</h3>
@@ -379,7 +379,7 @@ export default function AboutPage() {
           </div>
 
           <div className="rounded-2xl bg-black/50 p-6 border border-white/10 space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20">
+            <div className="w-10 h-10 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center border border-pink-500/20">
               <Heart className="w-5 h-5" />
             </div>
             <h3 className="font-display font-bold text-lg text-white">Creative Costume & PLUR</h3>
@@ -389,7 +389,7 @@ export default function AboutPage() {
           </div>
 
           <div className="rounded-2xl bg-black/50 p-6 border border-white/10 space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20">
+            <div className="w-10 h-10 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center border border-pink-500/20">
               <Radio className="w-5 h-5" />
             </div>
             <h3 className="font-display font-bold text-lg text-white">7PM to 6AM Continuous Journey</h3>
@@ -402,8 +402,8 @@ export default function AboutPage() {
 
       {/* 5. VENDORS & PARTNERS PORTALS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <div className="rounded-3xl glass-panel p-8 border border-white/10 space-y-4 hover:border-amber-400/30 transition-all shadow-xl">
-          <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 uppercase tracking-widest">
+        <div className="rounded-3xl glass-panel p-8 border border-white/10 space-y-4 hover:border-pink-500/30 transition-all shadow-xl">
+          <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-pink-500/10 text-pink-400 border border-pink-500/20 uppercase tracking-widest">
             Merchant Portal
           </span>
           <h3 className="font-display font-black text-2xl text-white">
@@ -415,7 +415,7 @@ export default function AboutPage() {
           <div className="pt-2">
             <Link
               href="/vendors"
-              className="inline-flex items-center gap-1.5 text-xs font-mono text-amber-400 hover:text-white font-bold transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs font-mono text-pink-400 hover:text-white font-bold transition-colors"
             >
               <span>Explore Vendor Applications</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
@@ -423,8 +423,8 @@ export default function AboutPage() {
           </div>
         </div>
 
-        <div className="rounded-3xl glass-panel p-8 border border-white/10 space-y-4 hover:border-amber-400/30 transition-all shadow-xl">
-          <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 uppercase tracking-widest">
+        <div className="rounded-3xl glass-panel p-8 border border-white/10 space-y-4 hover:border-cyan-400/30 transition-all shadow-xl">
+          <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 uppercase tracking-widest">
             Commercial Alliances
           </span>
           <h3 className="font-display font-black text-2xl text-white">
@@ -436,7 +436,7 @@ export default function AboutPage() {
           <div className="pt-2">
             <Link
               href="/partners"
-              className="inline-flex items-center gap-1.5 text-xs font-mono text-amber-400 hover:text-white font-bold transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs font-mono text-cyan-400 hover:text-white font-bold transition-colors"
             >
               <span>View Brand Partnerships</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
@@ -456,10 +456,10 @@ export default function AboutPage() {
         <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
             href="/events"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs uppercase tracking-wider shadow-lg hover:scale-105 active:scale-95 transition-all"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-pink-950/30 hover:scale-105 active:scale-95 transition-all"
           >
             <span>Browse Festival Editions</span>
-            <ArrowUpRight className="w-4 h-4 text-black" />
+            <ArrowUpRight className="w-4 h-4 text-white" />
           </Link>
           <a
             href="https://instagram.com/afreqa_"

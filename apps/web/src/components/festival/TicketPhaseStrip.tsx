@@ -39,7 +39,7 @@ export function TicketPhaseStrip({ phases, eventSlug, stampVariant = "solid" }: 
               key={phase.id}
               className={`relative rounded-2xl p-5 flex flex-col justify-between transition-all duration-300 overflow-hidden ${
                 isOnSale
-                  ? "glass-panel border-amber-500/30 shadow-2xl hover:border-amber-400 hover:-translate-y-1"
+                  ? "glass-panel border-pink-500/30 shadow-2xl hover:border-pink-400 hover:-translate-y-1"
                   : isSoldOut
                   ? "bg-black/60 border border-red-500/20 shadow-inner"
                   : "glass-panel border-white/10 opacity-80"
@@ -75,7 +75,7 @@ export function TicketPhaseStrip({ phases, eventSlug, stampVariant = "solid" }: 
                     Tier
                   </span>
                   {isOnSale && (
-                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/15 text-amber-400 border border-amber-500/30">
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-pink-500/15 text-pink-400 border border-pink-500/30">
                       <CheckCircle2 className="w-3 h-3" />
                       <span>ON SALE</span>
                     </span>
@@ -129,11 +129,11 @@ export function TicketPhaseStrip({ phases, eventSlug, stampVariant = "solid" }: 
                       href={`/go/tickets/${eventSlug}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-1.5 w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs uppercase tracking-wider transition-all shadow-md active:scale-95"
+                      className="flex items-center justify-center gap-1.5 w-full py-2.5 rounded-xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-500 hover:from-purple-500 hover:via-fuchsia-500 hover:to-pink-400 text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-md shadow-pink-950/40 active:scale-95"
                     >
-                      <Ticket className="w-3.5 h-3.5 text-black" />
+                      <Ticket className="w-3.5 h-3.5 text-white" />
                       <span>Get Ticket</span>
-                      <ArrowUpRight className="w-3.5 h-3.5 text-black" />
+                      <ArrowUpRight className="w-3.5 h-3.5 text-white" />
                     </a>
                   ) : (
                     <button
@@ -153,7 +153,7 @@ export function TicketPhaseStrip({ phases, eventSlug, stampVariant = "solid" }: 
       {/* Disclaimers & Security note */}
       <div className="mt-4 flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono text-zinc-400 gap-2 px-2">
         <p className="flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+          <span className="w-1.5 h-1.5 rounded-full bg-pink-500" />
           <span>Tickets powered officially by HustleSasa. Strict 18+ ID check at gate.</span>
         </p>
         <p>No paper or physical wristbands sold outside official gate.</p>

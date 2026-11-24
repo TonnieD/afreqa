@@ -99,7 +99,7 @@ export function VideoPlayer({
 
       {/* Cinema Play button */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-amber-500/20 border border-amber-400/60 flex items-center justify-center backdrop-blur-md group-hover:scale-110 group-hover:bg-amber-500 group-hover:text-black text-amber-400 transition duration-300 shadow-xl shadow-amber-500/10">
+        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-pink-500/20 border border-pink-400/60 flex items-center justify-center backdrop-blur-md group-hover:scale-110 group-hover:bg-gradient-to-r group-hover:from-pink-600 group-hover:to-rose-600 group-hover:text-white text-pink-400 transition duration-300 shadow-xl shadow-pink-500/15">
           <Play className="w-7 h-7 sm:w-8 sm:h-8 fill-current ml-1" />
         </div>
       </div>
@@ -109,7 +109,7 @@ export function VideoPlayer({
         <span className="font-bold text-xs sm:text-sm text-white truncate max-w-md">
           {title}
         </span>
-        <span className="text-[10px] font-mono uppercase tracking-widest text-amber-400 px-2 py-0.5 rounded bg-black/60 border border-amber-400/30">
+        <span className="text-[10px] font-mono uppercase tracking-widest text-pink-400 px-2 py-0.5 rounded bg-black/60 border border-pink-500/30">
           HD Transcoded
         </span>
       </div>

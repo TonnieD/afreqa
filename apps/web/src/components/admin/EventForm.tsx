@@ -22,6 +22,8 @@ import {
   Wine,
 } from "lucide-react";
 import { parseEventMetadata, buildEventDescription } from "@/lib/event-metadata";
+import { parseArtistFraming, serializeArtistFraming, DEFAULT_FRAMING } from "@/lib/artist-framing";
+import { ArtistPortraitPlaceholder } from "@/components/admin/ArtistPortraitPlaceholder";
 
 export interface TicketPhaseInput {
   id?: string;
@@ -44,6 +46,7 @@ export interface LineupSlotInput {
     name: string;
     genres?: string[];
     photoUrl?: string | null;
+    bio?: string | null;
   };
 }
 
@@ -53,6 +56,7 @@ export interface ArtistOption {
   slug: string;
   genres: string[];
   photoUrl?: string | null;
+  bio?: string | null;
 }
 
 export interface EventData {
@@ -99,7 +103,7 @@ export function EventForm({
   const [photosUrl, setPhotosUrl] = useState(parsedMeta.rawPhotosUrl || "");
   const [tableBookingSpecified, setTableBookingSpecified] = useState(parsedMeta.hasTableBooking);
   const [tableBookingContact, setTableBookingContact] = useState(
-    parsedMeta.tableBookingContact || "+254 743 836 164"
+    parsedMeta.tableBookingContact || "tables@afreqa.com"
   );
   const [posterUrl, setPosterUrl] = useState(initialData?.posterUrl || "");
 
@@ -157,9 +161,10 @@ export function EventForm({
   // Quick Inline Artist Creator Modal
   const [showNewArtistModal, setShowNewArtistModal] = useState(false);
   const [newArtistName, setNewArtistName] = useState("");
-  const [newArtistGenres, setNewArtistGenres] = useState("Afro-Tech, Melodic Techno");
+  const [newArtistGenres, setNewArtistGenres] = useState("Melodic Techno, Progressive House");
   const [newArtistBio, setNewArtistBio] = useState("");
   const [newArtistPhoto, setNewArtistPhoto] = useState("");
+  const [newArtistEventsCount, setNewArtistEventsCount] = useState<number>(1);
   const [creatingArtist, setCreatingArtist] = useState(false);
   const [targetSlotIndexForNewArtist, setTargetSlotIndexForNewArtist] = useState<number | null>(null);
 
@@ -308,6 +313,12 @@ export function EventForm({
       .map((g) => g.trim())
       .filter(Boolean);
 
+    // Embed performed events count into bio metadata
+    const finalBio = serializeArtistFraming(newArtistBio.trim(), {
+      ...DEFAULT_FRAMING,
+      performedEventsCount: newArtistEventsCount,
+    });
+
     try {
       const res = await fetch("/api/admin/artists", {
         method: "POST",
@@ -316,7 +327,7 @@ export function EventForm({
           name: newArtistName.trim(),
           slug: generatedSlug,
           genres: genresArray,
-          bio: newArtistBio.trim() || undefined,
+          bio: finalBio,
           photoUrl: newArtistPhoto.trim() || undefined,
           isFictional: false,
         }),
@@ -380,7 +391,7 @@ export function EventForm({
       lineupDroppingSoon,
       photosUrl: photosUrl.trim() || null,
       tableBookingSpecified,
-      tableBookingContact: tableBookingContact.trim() || "+254 743 836 164",
+      tableBookingContact: tableBookingContact.trim() || "tables@afreqa.com",
       phaseDescriptions,
     });
 
@@ -537,7 +548,7 @@ export function EventForm({
             onChange={(e) =>
               setStatus(e.target.value as "DRAFT" | "PUBLISHED" | "ARCHIVED")
             }
-            className="w-full sm:w-80 px-3.5 py-2.5 rounded-xl bg-afreqa-shadow border border-afreqa-chrome-high/20 text-afreqa-chrome-high text-sm focus:outline-none focus:border-amber-400 transition font-mono font-bold"
+            className="w-full sm:w-80 px-3.5 py-2.5 rounded-xl bg-afreqa-shadow border border-afreqa-chrome-high/20 text-afreqa-chrome-high text-sm focus:outline-none focus:border-pink-500 transition font-mono font-bold"
           >
             <option value="PUBLISHED">PUBLISHED (Upcoming Live Gathering)</option>
             <option value="ARCHIVED">PASSED (Concluded Gathering / Past Chronicle)</option>
@@ -621,7 +632,7 @@ export function EventForm({
       <div className="rounded-2xl bg-afreqa-stage/70 border border-afreqa-chrome-high/10 p-6 space-y-4">
         <div className="border-b border-afreqa-chrome-high/10 pb-3">
           <h3 className="font-bold text-base text-afreqa-chrome-high flex items-center gap-2">
-            <Calendar className="w-4 h-4 text-amber-400" />
+            <Calendar className="w-4 h-4 text-pink-400" />
             <span>3. Calendar Date & Operating Times</span>
           </h3>
           <p className="text-xs text-afreqa-silver-mid mt-0.5">
@@ -639,7 +650,7 @@ export function EventForm({
               required
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-afreqa-shadow border border-afreqa-chrome-high/15 text-afreqa-chrome-high text-sm focus:outline-none focus:border-amber-400 transition font-mono"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-afreqa-shadow border border-afreqa-chrome-high/15 text-afreqa-chrome-high text-sm focus:outline-none focus:border-pink-500 transition font-mono"
             />
             <span className="text-[10px] text-afreqa-silver-mid font-mono mt-1 block">
               Day of the gathering (YYYY-MM-DD)
@@ -727,7 +738,7 @@ export function EventForm({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-afreqa-chrome-high/10 pb-4">
           <div>
             <h3 className="font-bold text-base text-afreqa-chrome-high flex items-center gap-2">
-              <Music className="w-4 h-4 text-amber-400" />
+              <Music className="w-4 h-4 text-pink-400" />
               <span>4. Festival Lineup & Stage Programming</span>
             </h3>
             <p className="text-xs text-afreqa-silver-mid mt-0.5">
@@ -744,14 +755,14 @@ export function EventForm({
               }}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-300 text-xs font-mono transition border border-white/10"
             >
-              <UserPlus className="w-3.5 h-3.5 text-amber-400" />
+              <UserPlus className="w-3.5 h-3.5 text-pink-400" />
               <span>+ New Artist</span>
             </button>
 
             <button
               type="button"
               onClick={addLineupSlot}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold font-mono uppercase transition shadow"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white text-xs font-bold font-mono uppercase transition shadow shadow-pink-950/30"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add Lineup Slot</span>
@@ -764,7 +775,7 @@ export function EventForm({
           onClick={() => setLineupDroppingSoon(!lineupDroppingSoon)}
           className={`p-4 rounded-xl border cursor-pointer transition-all flex items-start sm:items-center justify-between gap-4 select-none ${
             lineupDroppingSoon
-              ? "bg-amber-500/10 border-amber-500/40 shadow-glow-amber"
+              ? "bg-pink-500/10 border-pink-500/40 shadow-glow-pink"
               : "bg-black/40 border-white/10 hover:border-white/20"
           }`}
         >
@@ -772,7 +783,7 @@ export function EventForm({
             <div
               className={`p-2 rounded-xl mt-0.5 sm:mt-0 ${
                 lineupDroppingSoon
-                  ? "bg-amber-500 text-black font-bold"
+                  ? "bg-pink-500 text-white font-bold"
                   : "bg-white/5 text-zinc-400"
               }`}
             >
@@ -786,7 +797,7 @@ export function EventForm({
                 <span
                   className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full ${
                     lineupDroppingSoon
-                      ? "bg-amber-500/20 text-amber-400 border border-amber-500/30"
+                      ? "bg-pink-500/20 text-pink-400 border border-pink-500/30"
                       : "bg-zinc-800 text-zinc-400"
                   }`}
                 >
@@ -803,7 +814,7 @@ export function EventForm({
 
           <div
             className={`w-12 h-6 rounded-full p-1 transition-colors shrink-0 ${
-              lineupDroppingSoon ? "bg-amber-500" : "bg-zinc-700"
+              lineupDroppingSoon ? "bg-pink-500" : "bg-zinc-700"
             }`}
           >
             <div
@@ -835,7 +846,7 @@ export function EventForm({
                 >
                   {/* Slot order badge */}
                   <div className="flex items-center gap-1 shrink-0">
-                    <span className="w-6 h-6 rounded-lg bg-black/60 border border-white/10 flex items-center justify-center font-mono font-bold text-amber-400 text-[11px]">
+                    <span className="w-6 h-6 rounded-lg bg-black/60 border border-white/10 flex items-center justify-center font-mono font-bold text-pink-400 text-[11px]">
                       {idx + 1}
                     </span>
                     <div className="flex flex-col">
@@ -860,37 +871,78 @@ export function EventForm({
                     </div>
                   </div>
 
-                  {/* Artist Select */}
-                  <div className="flex-1 w-full min-w-[200px]">
-                    <label className="block text-[10px] font-mono uppercase text-afreqa-silver-mid mb-1">
-                      Artist
-                    </label>
-                    <div className="flex gap-2">
-                      <select
-                        value={slot.artistId}
-                        onChange={(e) => updateLineupSlot(idx, { artistId: e.target.value })}
-                        className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/10 text-white font-semibold text-xs focus:border-amber-400 outline-none"
-                      >
-                        {artists.map((a) => (
-                          <option key={a.id} value={a.id}>
-                            {a.name} {a.genres?.length ? `(${a.genres.join(", ")})` : ""}
-                          </option>
-                        ))}
-                      </select>
+                  {/* Artist Select & Portrait Thumbnail */}
+                  {(() => {
+                    const selArtist = artists.find((a) => a.id === slot.artistId);
+                    const { framing } = parseArtistFraming(selArtist?.bio);
+                    const appearancesCount =
+                      framing.performedEventsCount !== undefined ? framing.performedEventsCount : 1;
 
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setTargetSlotIndexForNewArtist(idx);
-                          setShowNewArtistModal(true);
-                        }}
-                        className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-amber-400 border border-white/10 shrink-0"
-                        title="Create New Artist"
-                      >
-                        <Plus className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
+                    return (
+                      <div className="flex-1 w-full min-w-[200px]">
+                        <label className="block text-[10px] font-mono uppercase text-afreqa-silver-mid mb-1">
+                          Artist
+                        </label>
+                        <div className="flex items-center gap-2.5">
+                          {/* Portrait Thumbnail or Default Cutout Placeholder */}
+                          <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl overflow-hidden shrink-0 border border-white/10 bg-black shadow">
+                            {selArtist?.photoUrl ? (
+                              <Image
+                                src={selArtist.photoUrl}
+                                alt={selArtist.name}
+                                fill
+                                sizes="40px"
+                                className="object-cover"
+                                style={{
+                                  objectPosition: `${framing.focalX}% ${framing.focalY}%`,
+                                }}
+                              />
+                            ) : (
+                              <ArtistPortraitPlaceholder size="sm" showLabel={false} />
+                            )}
+                          </div>
+
+                          <div className="flex-1 flex gap-2">
+                            <select
+                              value={slot.artistId}
+                              onChange={(e) => updateLineupSlot(idx, { artistId: e.target.value })}
+                              className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/10 text-white font-semibold text-xs focus:border-pink-500 outline-none"
+                            >
+                              {artists.map((a) => (
+                                <option key={a.id} value={a.id}>
+                                  {a.name} {a.genres?.length ? `(${a.genres.join(", ")})` : ""}
+                                </option>
+                              ))}
+                            </select>
+
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setTargetSlotIndexForNewArtist(idx);
+                                setShowNewArtistModal(true);
+                              }}
+                              className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-pink-400 border border-white/10 shrink-0"
+                              title="Create New Artist"
+                            >
+                              <Plus className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Performed Events Count Indicator */}
+                        <div className="flex items-center gap-2 mt-1 pl-12 text-[10px] font-mono text-zinc-400">
+                          <span className="text-pink-400 font-bold">
+                            {appearancesCount} {appearancesCount === 1 ? "festival appearance" : "festival appearances"}
+                          </span>
+                          {selArtist?.genres?.length ? (
+                            <span className="truncate max-w-[150px]">
+                              • {selArtist.genres.slice(0, 2).join(", ")}
+                            </span>
+                          ) : null}
+                        </div>
+                      </div>
+                    );
+                  })()}
 
                   {/* Stage Name */}
                   <div className="w-full md:w-56">
@@ -902,7 +954,7 @@ export function EventForm({
                       value={slot.stageName}
                       onChange={(e) => updateLineupSlot(idx, { stageName: e.target.value })}
                       placeholder="e.g. Main Stage"
-                      className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/10 text-white text-xs focus:border-amber-400 outline-none"
+                      className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/10 text-white text-xs focus:border-pink-500 outline-none"
                     />
                   </div>
 
@@ -916,7 +968,7 @@ export function EventForm({
                       value={slot.setStartTime}
                       onChange={(e) => updateLineupSlot(idx, { setStartTime: e.target.value })}
                       placeholder="22:00"
-                      className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/10 text-white font-mono text-xs focus:border-amber-400 outline-none"
+                      className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/10 text-white font-mono text-xs focus:border-pink-500 outline-none"
                     />
                   </div>
 
@@ -930,7 +982,7 @@ export function EventForm({
                       value={slot.setEndTime}
                       onChange={(e) => updateLineupSlot(idx, { setEndTime: e.target.value })}
                       placeholder="00:00"
-                      className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/10 text-white font-mono text-xs focus:border-amber-400 outline-none"
+                      className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/10 text-white font-mono text-xs focus:border-pink-500 outline-none"
                     />
                   </div>
 
@@ -1057,7 +1109,7 @@ export function EventForm({
       <div className="rounded-2xl bg-afreqa-stage/70 border border-afreqa-chrome-high/10 p-6 space-y-6">
         <div className="border-b border-afreqa-chrome-high/10 pb-3">
           <h3 className="font-bold text-base text-afreqa-chrome-high flex items-center gap-2">
-            <Camera className="w-4 h-4 text-amber-400" />
+            <Camera className="w-4 h-4 text-pink-400" />
             <span>6. Photography Vault & VIP Table Booking Options</span>
           </h3>
           <p className="text-xs text-afreqa-silver-mid mt-0.5">
@@ -1076,7 +1128,7 @@ export function EventForm({
             value={photosUrl}
             onChange={(e) => setPhotosUrl(e.target.value)}
             placeholder="https://drive.google.com/drive/folders/... or cloud storage URL"
-            className="w-full px-3.5 py-2.5 rounded-xl bg-afreqa-shadow border border-afreqa-chrome-high/15 text-afreqa-chrome-high text-sm focus:outline-none focus:border-amber-400 transition font-mono"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-afreqa-shadow border border-afreqa-chrome-high/15 text-afreqa-chrome-high text-sm focus:outline-none focus:border-pink-500 transition font-mono"
           />
           <p className="text-[11px] text-zinc-400 font-mono leading-relaxed">
             📸 <strong>Visibility Rule:</strong> The Night Photos button and photo vault section will <em>only</em> appear on the public event page if this link has been added AND the event has taken place (past date or Concluded/Passed status). For upcoming gatherings, photo options remain hidden.
@@ -1089,7 +1141,7 @@ export function EventForm({
             onClick={() => setTableBookingSpecified(!tableBookingSpecified)}
             className={`p-4 rounded-xl border cursor-pointer transition-all flex items-start sm:items-center justify-between gap-4 select-none ${
               tableBookingSpecified
-                ? "bg-amber-500/10 border-amber-500/40"
+                ? "bg-pink-500/10 border-pink-500/40"
                 : "bg-black/40 border-white/10 hover:border-white/20"
             }`}
           >
@@ -1097,7 +1149,7 @@ export function EventForm({
               <div
                 className={`p-2 rounded-xl mt-0.5 sm:mt-0 ${
                   tableBookingSpecified
-                    ? "bg-amber-500 text-black font-bold"
+                    ? "bg-pink-500 text-white font-bold"
                     : "bg-white/5 text-zinc-400"
                 }`}
               >
@@ -1111,7 +1163,7 @@ export function EventForm({
                   <span
                     className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full ${
                       tableBookingSpecified
-                        ? "bg-amber-500/20 text-amber-400 border border-amber-500/30"
+                        ? "bg-pink-500/20 text-pink-400 border border-pink-500/30"
                         : "bg-zinc-800 text-zinc-400"
                     }`}
                   >
@@ -1128,7 +1180,7 @@ export function EventForm({
 
             <div
               className={`w-12 h-6 rounded-full p-1 transition-colors shrink-0 ${
-                tableBookingSpecified ? "bg-amber-500" : "bg-zinc-700"
+                tableBookingSpecified ? "bg-pink-500" : "bg-zinc-700"
               }`}
             >
               <div
@@ -1140,19 +1192,19 @@ export function EventForm({
           </div>
 
           {tableBookingSpecified && (
-            <div className="p-4 rounded-xl bg-black/40 border border-amber-500/20 space-y-2">
-              <label className="block text-xs font-mono uppercase text-amber-300">
-                VIP Concierge Direct Contact Number / WhatsApp
+            <div className="p-4 rounded-xl bg-black/40 border border-pink-500/30 space-y-2">
+              <label className="block text-xs font-mono uppercase text-pink-300">
+                VIP Concierge Direct Contact / Email
               </label>
               <input
                 type="text"
                 value={tableBookingContact}
                 onChange={(e) => setTableBookingContact(e.target.value)}
-                placeholder="+254 743 836 164"
-                className="w-full sm:w-80 px-3.5 py-2.5 rounded-xl bg-afreqa-shadow border border-afreqa-chrome-high/20 text-white text-sm focus:outline-none focus:border-amber-400 transition font-mono"
+                placeholder="tables@afreqa.com"
+                className="w-full sm:w-80 px-3.5 py-2.5 rounded-xl bg-afreqa-shadow border border-afreqa-chrome-high/20 text-white text-sm focus:outline-none focus:border-pink-400 transition font-mono"
               />
               <p className="text-[10px] text-zinc-400 font-mono">
-                Official AFREQA VIP Concierge hotline: +254 743 836 164
+                Official AFREQA VIP Concierge desk: tables@afreqa.com
               </p>
             </div>
           )}
@@ -1172,7 +1224,7 @@ export function EventForm({
         <button
           type="submit"
           disabled={submitting}
-          className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs uppercase tracking-widest shadow-lg hover:shadow-amber-500/20 active:scale-95 transition-all disabled:opacity-50"
+          className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-extrabold text-xs uppercase tracking-widest shadow-lg shadow-pink-950/30 active:scale-95 transition-all disabled:opacity-50"
         >
           <Save className="w-4 h-4" />
           <span>
@@ -1191,7 +1243,7 @@ export function EventForm({
           <div className="w-full max-w-md bg-[#161922] border border-white/15 rounded-3xl p-6 shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
               <h4 className="font-display font-extrabold text-lg text-white flex items-center gap-2">
-                <UserPlus className="w-5 h-5 text-amber-400" />
+                <UserPlus className="w-5 h-5 text-pink-400" />
                 <span>Quick Add Artist</span>
               </h4>
               <button
@@ -1214,7 +1266,7 @@ export function EventForm({
                   value={newArtistName}
                   onChange={(e) => setNewArtistName(e.target.value)}
                   placeholder="e.g. Nayäkaze or Coco Kahi"
-                  className="w-full px-3 py-2 rounded-xl bg-black/50 border border-white/15 text-white text-xs focus:border-amber-400 outline-none"
+                  className="w-full px-3 py-2 rounded-xl bg-black/50 border border-white/15 text-white text-xs focus:border-pink-500 outline-none"
                 />
               </div>
 
@@ -1226,8 +1278,8 @@ export function EventForm({
                   type="text"
                   value={newArtistGenres}
                   onChange={(e) => setNewArtistGenres(e.target.value)}
-                  placeholder="Afro-Tech, Melodic Techno, Amapiano"
-                  className="w-full px-3 py-2 rounded-xl bg-black/50 border border-white/15 text-white text-xs focus:border-amber-400 outline-none font-mono"
+                  placeholder="Melodic Techno, Progressive House, Hardstyle"
+                  className="w-full px-3 py-2 rounded-xl bg-black/50 border border-white/15 text-white text-xs focus:border-pink-500 outline-none font-mono"
                 />
               </div>
 
@@ -1240,7 +1292,22 @@ export function EventForm({
                   value={newArtistPhoto}
                   onChange={(e) => setNewArtistPhoto(e.target.value)}
                   placeholder="/images/artist-photo.jpg or https://..."
-                  className="w-full px-3 py-2 rounded-xl bg-black/50 border border-white/15 text-white text-xs focus:border-amber-400 outline-none font-mono"
+                  className="w-full px-3 py-2 rounded-xl bg-black/50 border border-white/15 text-white text-xs focus:border-pink-500 outline-none font-mono"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-mono uppercase text-zinc-400 mb-1 flex items-center justify-between">
+                  <span>Number of Events Performed</span>
+                  <span className="text-[10px] text-pink-400 font-normal">Past AFREQA sets</span>
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  value={newArtistEventsCount}
+                  onChange={(e) => setNewArtistEventsCount(Math.max(0, parseInt(e.target.value) || 0))}
+                  placeholder="e.g. 1"
+                  className="w-full px-3 py-2 rounded-xl bg-black/50 border border-white/15 text-white text-xs focus:border-pink-500 outline-none font-mono"
                 />
               </div>
 
@@ -1253,7 +1320,7 @@ export function EventForm({
                   value={newArtistBio}
                   onChange={(e) => setNewArtistBio(e.target.value)}
                   placeholder="Atmospheric melodies and driving percussive electronics..."
-                  className="w-full px-3 py-2 rounded-xl bg-black/50 border border-white/15 text-white text-xs focus:border-amber-400 outline-none"
+                  className="w-full px-3 py-2 rounded-xl bg-black/50 border border-white/15 text-white text-xs focus:border-pink-500 outline-none"
                 />
               </div>
             </div>
@@ -1270,7 +1337,7 @@ export function EventForm({
                 type="button"
                 disabled={creatingArtist || !newArtistName.trim()}
                 onClick={handleCreateArtist}
-                className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs uppercase font-mono tracking-wider disabled:opacity-50 transition"
+                className="px-5 py-2 rounded-xl bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-extrabold text-xs uppercase font-mono tracking-wider disabled:opacity-50 transition shadow-md shadow-pink-950/30"
               >
                 {creatingArtist ? "Creating..." : "Save & Assign"}
               </button>

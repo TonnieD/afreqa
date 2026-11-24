@@ -35,7 +35,7 @@ const SAMPLE_ALBUMS = [
     id: "alb-solstice-02",
     title: "Summer Solstice Underground",
     slug: "solstice-underground",
-    description: "Sunset Amapiano and Afro-Tech vibrations transitioning into nocturnal synth fantasy.",
+    description: "Sunset melodic vibes and progressive energy transitioning into nocturnal synth fantasy.",
     coverUrl: "/images/afreqa-live-crowd.jpg",
     photoCount: 36,
     videoCount: 1,
@@ -85,12 +85,12 @@ export default async function GalleryPage() {
     <div className="space-y-16 pb-24">
       {/* 1. Gallery Header */}
       <section className="text-center px-4 max-w-4xl mx-auto pt-8">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-amber-400 text-xs font-mono font-bold tracking-widest uppercase mb-4">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-pink-400 text-xs font-mono font-bold tracking-widest uppercase mb-4">
           <Sparkles className="w-3.5 h-3.5" />
           <span>Visual Archive</span>
         </div>
         <h1 className="font-display font-extrabold text-3xl sm:text-5xl text-white uppercase tracking-tight">
-          Captured In The Frequency
+          CAPTURED IN <span className="text-festival-gradient">THE FREQUENCY</span>
         </h1>
         <p className="text-sm sm:text-base text-zinc-300 max-w-2xl mx-auto mt-4 leading-relaxed font-normal">
           Relive the euphoria. A sensory catalog of stage designs, transcendent crowd moments, and official after-movies recorded across Nairobi.
@@ -101,7 +101,7 @@ export default async function GalleryPage() {
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Film className="w-4 h-4 text-amber-400" />
+            <Film className="w-4 h-4 text-pink-400" />
             <h2 className="font-display font-bold text-lg text-white uppercase tracking-wide">
               Featured Festival Teaser
             </h2>
@@ -121,7 +121,7 @@ export default async function GalleryPage() {
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8 border-b border-white/10 pb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Camera className="w-4 h-4 text-amber-400" />
+            <Camera className="w-4 h-4 text-pink-400" />
             <h2 className="font-display font-bold text-xl text-white uppercase tracking-wide">
               Official Edition Albums
             </h2>
@@ -136,7 +136,7 @@ export default async function GalleryPage() {
             <Link
               key={album.id}
               href={`/gallery/${album.slug}`}
-              className="group rounded-3xl bg-[#0f1117]/80 backdrop-blur-md border border-white/10 overflow-hidden hover:border-amber-400/40 transition-all duration-300 shadow-xl hover:-translate-y-1"
+              className="group rounded-3xl bg-[#0f1117]/80 backdrop-blur-md border border-white/10 overflow-hidden hover:border-pink-500/40 transition-all duration-300 shadow-xl hover:-translate-y-1"
             >
               <div className="relative aspect-[4/3] w-full bg-black overflow-hidden">
                 <Image
@@ -149,7 +149,7 @@ export default async function GalleryPage() {
 
                 <div className="absolute top-3 right-3 flex items-center gap-2">
                   {album.slug === "halloween-alloy" && (
-                    <span className="px-2 py-0.5 rounded-full bg-amber-500/25 border border-amber-500/40 text-amber-300 text-[10px] font-mono font-bold backdrop-blur-md">
+                    <span className="px-2 py-0.5 rounded-full bg-pink-500/20 border border-pink-500/30 text-pink-300 text-[10px] font-mono font-bold backdrop-blur-md">
                       Drive Vault
                     </span>
                   )}
@@ -160,7 +160,7 @@ export default async function GalleryPage() {
 
                 <div className="absolute bottom-3 left-3 flex items-center gap-2 text-[11px] font-mono text-zinc-300">
                   <span className="flex items-center gap-1 bg-black/60 px-2 py-0.5 rounded">
-                    <Camera className="w-3 h-3 text-amber-400" />
+                    <Camera className="w-3 h-3 text-pink-400" />
                     <span>{album.photoCount} photos</span>
                   </span>
                   <span className="flex items-center gap-1 bg-black/60 px-2 py-0.5 rounded">
@@ -172,10 +172,10 @@ export default async function GalleryPage() {
 
               <div className="p-6 space-y-2">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-display font-bold text-lg text-white group-hover:text-amber-400 transition-colors">
+                  <h3 className="font-display font-bold text-lg text-white group-hover:text-pink-400 transition-colors">
                     {album.title}
                   </h3>
-                  <ArrowUpRight className="w-4 h-4 text-zinc-400 group-hover:text-amber-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition" />
+                  <ArrowUpRight className="w-4 h-4 text-zinc-400 group-hover:text-pink-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition" />
                 </div>
                 <p className="text-xs text-zinc-400 line-clamp-2 leading-relaxed">
                   {album.description}

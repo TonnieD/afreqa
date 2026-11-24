@@ -154,12 +154,12 @@ export default async function AdminDashboardPage() {
         <div className="rounded-2xl bg-afreqa-stage/80 border border-afreqa-chrome-high/10 p-5 backdrop-blur-sm">
           <div className="flex items-center justify-between text-afreqa-silver-mid mb-3">
             <span className="text-xs font-mono uppercase tracking-wider">Active Editions</span>
-            <Calendar className="w-4 h-4 text-amber-400" />
+            <Calendar className="w-4 h-4 text-pink-400" />
           </div>
           <div className="text-3xl font-extrabold text-afreqa-chrome-high font-display">
             {activeEventsCount}
           </div>
-          <div className="text-xs text-amber-400 mt-1 font-mono">
+          <div className="text-xs text-pink-400 mt-1 font-mono">
             Published on live portal
           </div>
         </div>

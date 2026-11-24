@@ -51,7 +51,7 @@ export default function ChangePasswordPage() {
     <div className="min-h-screen bg-afreqa-shadow flex flex-col justify-center items-center px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="w-12 h-12 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto mb-3 text-amber-400">
+          <div className="w-12 h-12 rounded-full bg-pink-500/10 border border-pink-500/30 flex items-center justify-center mx-auto mb-3 text-pink-400">
             <ShieldAlert className="w-6 h-6" />
           </div>
           <h1 className="font-display font-extrabold text-2xl text-afreqa-chrome-high tracking-wider uppercase">

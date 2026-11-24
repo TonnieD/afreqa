@@ -98,7 +98,7 @@ export default function PrivacyPolicyPage() {
             <br />
             <strong className="text-afreqa-chrome-high font-mono">Email: privacy@afreqa.com</strong>
             <br />
-            Address: Afreqa Productions Ltd., Nairobi, Kenya
+            Address: Afreqa Productions Ltd., 00200, City Estate, Nairobi, Kenya 00200
           </p>
         </section>
       </div>

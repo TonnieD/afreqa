@@ -165,7 +165,7 @@ model Artist {
   bio           String?
   photoUrl      String?
   photoBlur     String?
-  genres        String[]      // e.g. ["Afro-Tech", "Melodic House", "Amapiano"]
+  genres        String[]      // e.g. ["Melodic Techno", "Progressive House", "Hardstyle"]
   instagramUrl  String?
   soundcloudUrl String?
   spotifyUrl    String?

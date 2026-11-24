@@ -13,35 +13,44 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         afreqa: {
-          midnight: "#0F1117", // Deep night sky
-          shadow: "#070709",   // Deep obsidian black base
-          stage: "#15161E",    // Refined stage dark neutral
-          surface: "#1C1D26",  // Elevated card surface
-          bevel: "#22232E",    // Subtle bevel
+          midnight: "#0d081d", // Deep cosmic violet night sky (from poster)
+          shadow: "#07040d",   // Deep obsidian violet void
+          stage: "#140c2a",    // Dark stage neutral with violet undertones
+          surface: "#1a1036",  // Elevated purple-tinted card surface
+          bevel: "#26174d",    // Cosmic bevel
           chrome: {
             high: "#FFFFFF",   // Pure specular highlight
             mid: "#D4D4D8",    // Brushed titanium silver
             dark: "#52525B",   // Dark metallic
           },
           silver: "#A1A1AA",   // Clean secondary neutral
-          // Stage lights & warm ember palette (from real concert photography)
-          gold: "#F59E0B",     // Warm stage amber / golden tungsten
-          amber: "#D97706",    // Deep stage ember
-          accent: "#E58A3C",   // Primary warm stage accent
-          blue: "#3B82F6",     // Subtle concert blue wash
-          crimson: "#991B1B",  // Deep stage crimson
-          // Gracefully remap legacy neon tokens to warm stage tones:
-          teal: "#E58A3C",     // Remapped from neon cyan to warm stage amber
-          violet: "#D97706",   // Remapped from neon violet to deep stage ember
-          flare: "#F59E0B",    // Remapped from neon pink to warm amber flare
+          // Official AFREQA Brand Palette (Purple & Pink from official poster + Turquoise lasers)
+          pink: "#ec4899",     // Vibrant neon fuchsia
+          hotpink: "#ff2e93",  // Pinpoint neon pink from poster ribbon
+          magenta: "#d946ef",  // Electric orchid / magenta
+          purple: "#a855f7",   // Rich festival purple
+          violet: "#c084fc",   // Lavender / lilac title glow
+          deepviolet: "#7c3aed",
+          turquoise: "#06b6d4",// Electric cyan / turquoise fireworks
+          cyan: "#22d3ee",     // Bright turquoise laser
+          blue: "#38bdf8",     // Sky laser
+          crimson: "#e11d48",  // Neon crimson
+          // Aliased tokens for backward compatibility
+          teal: "#06b6d4",     // Electric turquoise blue
+          accent: "#ec4899",   // Vibrant festival pink
+          gold: "#f472b6",     // Soft pink accent
+          amber: "#d946ef",    // Electric magenta
+          flare: "#ec4899",
         },
       },
       boxShadow: {
-        "glow-amber": "0 8px 30px -4px rgba(229, 138, 60, 0.25)",
-        "glow-teal": "0 8px 30px -4px rgba(229, 138, 60, 0.2)",
-        "glow-violet": "0 8px 30px -4px rgba(217, 119, 6, 0.2)",
-        "glow-gold": "0 8px 30px -4px rgba(245, 158, 11, 0.25)",
-        "glow-crimson": "0 8px 30px -4px rgba(153, 27, 27, 0.25)",
+        "glow-pink": "0 8px 32px -4px rgba(236, 72, 153, 0.45)",
+        "glow-purple": "0 8px 32px -4px rgba(168, 85, 247, 0.4)",
+        "glow-turquoise": "0 8px 32px -4px rgba(6, 182, 212, 0.4)",
+        "glow-teal": "0 8px 32px -4px rgba(6, 182, 212, 0.35)",
+        "glow-gold": "0 8px 32px -4px rgba(236, 72, 153, 0.35)",
+        "glow-amber": "0 8px 32px -4px rgba(217, 70, 239, 0.35)",
+        "glow-crimson": "0 8px 32px -4px rgba(225, 29, 72, 0.4)",
         "metallic": "0 8px 32px 0 rgba(0, 0, 0, 0.6), inset 0 1px 1px 0 rgba(255, 255, 255, 0.08)",
         "metallic-hover": "0 12px 40px 0 rgba(0, 0, 0, 0.7), inset 0 1px 1px 0 rgba(255, 255, 255, 0.15)",
       },

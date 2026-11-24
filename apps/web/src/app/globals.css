@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --background: #070709;
+  --background: #07040d;
   --foreground: #f4f4f6;
   --font-display: "Syne", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -15,8 +15,8 @@ body {
   font-family: var(--font-sans);
   overflow-x: hidden;
   min-height: 100vh;
-  selection-background-color: #f59e0b;
-  selection-color: #070709;
+  selection-background-color: #ec4899;
+  selection-color: #ffffff;
 }
 
 /* Specular Chrome Typography Gradient */
@@ -26,43 +26,64 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-/* Warm Stage Amber Gradient (Replaced harsh neon gradient) */
+/* Official Purple-to-Pink Festival Gradient (Directly matching AFREQA Poster) */
 .text-festival-gradient {
-  background: linear-gradient(135deg, #ffffff 0%, #f59e0b 50%, #d97706 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #e879f9 35%, #ec4899 75%, #f43f5e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Electric Turquoise Blue Gradient */
+.text-turquoise-gradient {
+  background: linear-gradient(135deg, #ffffff 0%, #a5f3fc 30%, #22d3ee 70%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Neon Pink Gradient */
+.text-pink-gradient {
+  background: linear-gradient(135deg, #ffffff 0%, #fda4af 30%, #f43f5e 75%, #e11d48 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Cosmic Purple Gradient */
+.text-purple-gradient {
+  background: linear-gradient(135deg, #ffffff 0%, #e9d5ff 30%, #c084fc 65%, #9333ea 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 /* Refined Dark Glassmorphism */
 .glass-panel {
-  background: rgba(15, 17, 23, 0.78);
+  background: rgba(18, 12, 38, 0.78);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(236, 72, 153, 0.15);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
 }
 
 .glass-panel-hover:hover {
-  background: rgba(21, 23, 32, 0.88);
-  border-color: rgba(245, 158, 11, 0.35);
-  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.7);
+  background: rgba(26, 16, 54, 0.88);
+  border-color: rgba(236, 72, 153, 0.45);
+  box-shadow: 0 12px 40px 0 rgba(236, 72, 153, 0.25);
   transform: translateY(-2px);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Subtle Stage Ember Border */
-.glow-border-amber {
+/* Subtle Festival Pink Glow Border */
+.glow-border-pink {
   position: relative;
 }
-.glow-border-amber::after {
+.glow-border-pink::after {
   content: "";
   position: absolute;
   inset: -1px;
-  background: linear-gradient(90deg, rgba(245, 158, 11, 0.4), rgba(217, 119, 6, 0.2));
+  background: linear-gradient(90deg, rgba(236, 72, 153, 0.5), rgba(168, 85, 247, 0.3));
   border-radius: inherit;
   z-index: -1;
-  opacity: 0.5;
-  filter: blur(6px);
+  opacity: 0.6;
+  filter: blur(8px);
 }
 
 /* Custom Scrollbar */
@@ -70,15 +91,15 @@ body {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #070709;
+  background: #07040d;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1c1d26;
+  background: #1a1036;
   border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(236, 72, 153, 0.15);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #f59e0b;
+  background: #ec4899;
 }
 
 /* Reduced motion accessibility */

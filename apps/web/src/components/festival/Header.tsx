@@ -47,7 +47,7 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden border border-white/20 group-hover:border-amber-400 transition-all duration-300 shadow-lg">
+          <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden border border-white/20 group-hover:border-pink-500 transition-all duration-300 shadow-lg">
             <Image
               src="/brand/logo.jpg"
               alt="Afreqa Logo"
@@ -58,7 +58,7 @@ export function Header() {
             />
           </div>
           <div className="flex flex-col">
-            <span className="font-display font-extrabold text-lg sm:text-xl tracking-wider text-white group-hover:text-amber-400 transition-colors">
+            <span className="font-display font-extrabold text-lg sm:text-xl tracking-wider text-white group-hover:text-pink-400 transition-colors">
               AFREQA
             </span>
             <span className="text-[9px] uppercase tracking-[0.25em] text-zinc-400 font-mono -mt-1">
@@ -75,9 +75,9 @@ export function Header() {
               <Link
                 key={link.label}
                 href={link.href}
-                className={`text-sm font-medium transition-all hover:text-amber-400 ${
+                className={`text-sm font-medium transition-all hover:text-pink-400 ${
                   isActive
-                    ? "text-amber-400 font-semibold"
+                    ? "text-pink-400 font-semibold"
                     : "text-zinc-300"
                 }`}
               >
@@ -96,17 +96,17 @@ export function Header() {
             href="/go/tickets/tomorrowland-nye"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs tracking-wider uppercase shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 hidden sm:inline-flex"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-extrabold text-xs tracking-wider uppercase shadow-lg shadow-pink-950/30 hover:scale-105 active:scale-95 transition-all duration-300 hidden sm:inline-flex"
           >
-            <Ticket className="w-4 h-4 text-black" />
+            <Ticket className="w-4 h-4 text-white" />
             <span>Get Tickets</span>
-            <ArrowUpRight className="w-3.5 h-3.5 text-black" />
+            <ArrowUpRight className="w-3.5 h-3.5 text-white" />
           </a>
 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-xl glass-panel text-white hover:text-amber-400 transition-colors"
+            className="md:hidden p-2 rounded-xl glass-panel text-white hover:text-pink-400 transition-colors"
             aria-label="Toggle Navigation Menu"
             aria-expanded={mobileMenuOpen}
           >
@@ -130,7 +130,7 @@ export function Header() {
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="text-base font-medium text-white hover:text-amber-400 transition-colors py-2 border-b border-white/5"
+                  className="text-base font-medium text-white hover:text-pink-400 transition-colors py-2 border-b border-white/5"
                 >
                   {link.label}
                 </Link>
@@ -140,11 +140,11 @@ export function Header() {
                 href="/go/tickets/tomorrowland-nye"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 flex items-center justify-center gap-2 w-full py-3 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-sm uppercase tracking-wider shadow-lg"
+                className="mt-4 flex items-center justify-center gap-2 w-full py-3 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-extrabold text-sm uppercase tracking-wider shadow-lg shadow-pink-950/30"
               >
-                <Ticket className="w-4 h-4 text-black" />
+                <Ticket className="w-4 h-4 text-white" />
                 <span>Get Tickets Now</span>
-                <ArrowUpRight className="w-4 h-4 text-black" />
+                <ArrowUpRight className="w-4 h-4 text-white" />
               </a>
             </nav>
           </motion.div>

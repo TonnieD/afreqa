@@ -18,7 +18,7 @@ export default async function VerifyEmailPage({ searchParams }: VerifyPageProps)
     return (
       <div className="py-24 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto text-center">
         <div className="bg-canvas/60 border border-white/10 rounded-2xl p-8 backdrop-blur-md">
-          <div className="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto mb-6">
+          <div className="w-16 h-16 rounded-full bg-pink-500/10 border border-pink-500/30 flex items-center justify-center mx-auto mb-6">
             <span className="text-2xl">⚠️</span>
           </div>
           <h1 className="text-2xl font-black text-chrome uppercase tracking-wider mb-3">

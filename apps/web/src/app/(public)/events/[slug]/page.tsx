@@ -20,6 +20,7 @@ import { db } from "@afreqa/core";
 import { CountdownTimer } from "@/components/festival/CountdownTimer";
 import { TicketPhaseStrip } from "@/components/festival/TicketPhaseStrip";
 import { parseEventMetadata } from "@/lib/event-metadata";
+import { parseArtistFraming } from "@/lib/artist-framing";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -47,7 +48,7 @@ export async function generateMetadata({ params }: EventDetailPageProps) {
 
   return {
     title: "Afreqa: Resonance",
-    description: "Where African Electronic Frequencies Meet Festival Fantasy in Nairobi.",
+    description: "Where Electronic Festival Fantasy Meets Nairobi.",
   };
 }
 
@@ -144,8 +145,8 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
           setEndTime: "23:30",
           artist: {
             name: "Special Guest Headliner",
-            genres: ["African Tech", "Techno"],
-            bio: "Peak-hour high-tempo techno and progressive African basslines.",
+            genres: ["Melodic Techno", "Techno"],
+            bio: "Peak-hour high-tempo techno and progressive basslines.",
             photoUrl: "/images/afreqa-nye-banner.jpg",
           },
         },
@@ -156,7 +157,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
           setEndTime: "21:30",
           artist: {
             name: "Nairobi Raves Collective",
-            genres: ["Uptempo", "Amapiano EDM Fusion"],
+            genres: ["Uptempo", "Hardstyle"],
             bio: "Setting the frequency as dancers enter the festival grounds.",
             photoUrl: "/images/afreqa-nye-banner.jpg",
           },
@@ -191,7 +192,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
           setEndTime: "04:00",
           artist: {
             name: "Coco Kahi B2B Mike Muema",
-            genres: ["Afro-Tech", "Melodic Techno"],
+            genres: ["Melodic Techno", "Progressive House"],
             bio: "Headline B2B set weaving hypnotic synthesizer progressions with heavy club kicks.",
             photoUrl: "/images/afreqa-halloween-alloy.jpg",
           },
@@ -227,8 +228,8 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
           setEndTime: "23:00",
           artist: {
             name: "Z4V3 B2B Alex Gvng Gvng",
-            genres: ["Amapiano / EDM Fusion"],
-            bio: "Heavy log-drum polyrhythms fused with mainstage festival energy.",
+            genres: ["Peak-Time EDM", "Electro"],
+            bio: "Heavy sub-bass drops fused with mainstage festival energy.",
             photoUrl: "/images/afreqa-halloween-alloy.jpg",
           },
         },
@@ -306,15 +307,15 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
         </div>
 
         {/* Warm Stage Embers */}
-        <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-amber-500/10 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-purple-900/15 rounded-full blur-[120px] pointer-events-none" />
 
         <div className="relative z-10 flex flex-col items-center text-center max-w-4xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 text-amber-400 border border-amber-400/30 text-xs font-mono font-bold tracking-widest uppercase mb-4 backdrop-blur-md">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 text-pink-400 border border-pink-500/30 text-xs font-mono font-bold tracking-widest uppercase mb-4 backdrop-blur-md">
             <span>Official Festival Gathering</span>
           </div>
 
           <h1 className="font-display font-black text-3xl sm:text-6xl text-white tracking-tight">
-            {event.title}
+            <span className="text-festival-gradient">{event.title}</span>
           </h1>
 
           {event.tagline && (
@@ -326,11 +327,11 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
           {/* Meta strip */}
           <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 mt-6 font-mono text-xs sm:text-sm text-zinc-300">
             <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/60 border border-white/10">
-              <Calendar className="w-4 h-4 text-amber-400" />
+              <Calendar className="w-4 h-4 text-pink-400" />
               <span>{new Date(event.date).toLocaleDateString("en-KE", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}</span>
             </span>
             <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/60 border border-white/10">
-              <Clock className="w-4 h-4 text-amber-400" />
+              <Clock className="w-4 h-4 text-pink-400" />
               <span>Doors: {event.doorsOpen || "18:00 EAT"}</span>
             </span>
             <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/60 border border-white/10">
@@ -350,7 +351,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
               href={`/go/tickets/${event.slug}?placement=event_detail`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-8 py-3.5 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-sm uppercase tracking-wider shadow-lg hover:shadow-amber-500/20 active:scale-95 transition-all"
+              className="flex items-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-extrabold text-sm uppercase tracking-wider shadow-lg shadow-pink-950/30 active:scale-95 transition-all"
             >
               <Ticket className="w-4 h-4" />
               <span>Get Tickets via HustleSasa</span>
@@ -361,7 +362,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
               href={`/events/${event.slug}/calendar.ics`}
               className="flex items-center gap-2 px-5 py-3.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-mono font-semibold uppercase tracking-wider transition-all"
             >
-              <Download className="w-4 h-4 text-amber-400" />
+              <Download className="w-4 h-4 text-white" />
               <span>Add to Calendar (.ics)</span>
             </a>
 
@@ -377,10 +378,14 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
 
             {meta.hasTableBooking && meta.tableBookingContact && (
               <a
-                href={`tel:${meta.tableBookingContact.replace(/[^0-9+]/g, "")}`}
-                className="flex items-center gap-2 px-5 py-3.5 rounded-full bg-white/10 hover:bg-white/15 border border-white/20 text-amber-400 font-bold text-xs uppercase tracking-wider transition-all"
+                href={
+                  meta.tableBookingContact.includes("@")
+                    ? `mailto:${meta.tableBookingContact}`
+                    : `/contact?subject=BOOKING`
+                }
+                className="flex items-center gap-2 px-5 py-3.5 rounded-full bg-white/10 hover:bg-white/15 border border-white/20 text-pink-400 font-bold text-xs uppercase tracking-wider transition-all"
               >
-                <span>📞 VIP & Tables: {meta.tableBookingContact}</span>
+                <span>✉️ VIP & Tables: {meta.tableBookingContact}</span>
               </a>
             )}
           </div>
@@ -402,7 +407,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
               </div>
             </div>
             <div className="md:col-span-8 lg:col-span-9 space-y-4">
-              <span className="text-[10px] font-mono uppercase tracking-widest text-amber-400 font-bold px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-pink-400 font-bold px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/20">
                 Official Edition Poster & Visual Identity
               </span>
               <h2 className="font-display font-extrabold text-2xl sm:text-3xl text-white">
@@ -416,7 +421,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                   href={event.posterUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-mono text-amber-400 font-bold transition"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-mono text-pink-400 font-bold transition"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>View High-Res Poster</span>
@@ -430,9 +435,9 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
 
       {/* 2.5 OFFICIAL PHOTO ARCHIVE SECTION (ONLY WHEN LINK TO PHOTOS HAS BEEN ADDED) */}
       {meta.photosUrl && (
-        <section className="rounded-3xl bg-gradient-to-r from-[#0f1117] via-[#141926] to-[#0f1117] border border-amber-500/40 p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shadow-2xl">
+        <section className="rounded-3xl bg-gradient-to-r from-[#0f1117] via-[#141926] to-[#0f1117] border border-pink-500/30 p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shadow-2xl">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/30 shadow-inner">
+            <div className="w-12 h-12 rounded-2xl bg-pink-500/15 text-pink-400 flex items-center justify-center shrink-0 border border-pink-500/30 shadow-inner">
               <Camera className="w-6 h-6" />
             </div>
             <div className="space-y-1">
@@ -440,7 +445,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                 <h3 className="font-display font-bold text-xl text-white">
                   Official Night Photography Vault
                 </h3>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-pink-500/20 text-pink-300 border border-pink-500/30">
                   Live Photos
                 </span>
               </div>
@@ -453,7 +458,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
             href={meta.photosUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs uppercase tracking-wider shadow-lg hover:shadow-amber-500/20 transition-all shrink-0 active:scale-95"
+            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-pink-950/30 transition-all shrink-0 active:scale-95"
           >
             <Download className="w-4 h-4" />
             <span>Open Night Photos Vault</span>
@@ -493,12 +498,12 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
         </div>
 
         {isLineupDroppingSoon ? (
-          <div className="rounded-3xl bg-[#0f1117]/90 border border-amber-500/30 p-8 sm:p-12 relative overflow-hidden text-center shadow-2xl backdrop-blur-md">
-            {/* Ambient golden stage glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-amber-500/10 rounded-full blur-[140px] pointer-events-none" />
+          <div className="rounded-3xl bg-[#0f1117]/90 border border-pink-500/30 p-8 sm:p-12 relative overflow-hidden text-center shadow-2xl backdrop-blur-md">
+            {/* Ambient festival glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-purple-900/15 rounded-full blur-[140px] pointer-events-none" />
 
             <div className="relative z-10 max-w-2xl mx-auto space-y-6">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-mono font-bold tracking-widest uppercase shadow">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pink-500/15 border border-pink-500/30 text-pink-400 text-xs font-mono font-bold tracking-widest uppercase shadow">
                 <Sparkles className="w-3.5 h-3.5 animate-spin" />
                 <span>Lineup Dropping Soon</span>
               </div>
@@ -509,7 +514,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                   <span
                     key={i}
                     style={{ height: `${h * 0.4}px` }}
-                    className="w-1.5 rounded-full bg-gradient-to-t from-amber-600 to-amber-300 animate-pulse"
+                    className="w-1.5 rounded-full bg-gradient-to-t from-pink-600 to-rose-400 animate-pulse"
                   />
                 ))}
               </div>
@@ -540,7 +545,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                   rel="noopener noreferrer"
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-xs uppercase tracking-wider transition active:scale-95"
                 >
-                  <Ticket className="w-4 h-4 text-amber-400" />
+                  <Ticket className="w-4 h-4 text-pink-400" />
                   <span>Secure Early Pass</span>
                 </a>
               </div>
@@ -551,21 +556,33 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
             {(event.lineup || []).map((slot) => (
               <div
                 key={slot.id}
-                className="rounded-2xl bg-[#0f1117]/80 backdrop-blur-md p-6 border border-white/10 flex flex-col sm:flex-row items-start sm:items-center gap-6 group hover:border-amber-400/40 transition-all"
+                className="rounded-2xl bg-[#0f1117]/80 backdrop-blur-md p-6 border border-white/10 flex flex-col sm:flex-row items-start sm:items-center gap-6 group hover:border-pink-500/40 transition-all"
               >
-                <div className="relative w-24 h-24 rounded-xl overflow-hidden border border-white/10 flex-shrink-0">
-                  <Image
-                    src={slot.artist?.photoUrl || "/brand/logo.jpg"}
-                    alt={slot.artist?.name || "Artist"}
-                    fill
-                    sizes="96px"
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
+                {(() => {
+                  const { framing } = parseArtistFraming(slot.artist?.bio);
+                  return (
+                    <div className="relative w-24 h-24 rounded-xl overflow-hidden border border-white/10 flex-shrink-0 bg-black">
+                      <Image
+                        src={slot.artist?.photoUrl || "/brand/logo.jpg"}
+                        alt={slot.artist?.name || "Artist"}
+                        fill
+                        sizes="96px"
+                        className={`${
+                          framing.fit === "contain" ? "object-contain" : "object-cover"
+                        } group-hover:scale-105 transition-transform duration-300`}
+                        style={{
+                          objectPosition: `${framing.focalX}% ${framing.focalY}%`,
+                          transform: framing.fit === "cover" ? `scale(${framing.zoom})` : undefined,
+                          transformOrigin: `${framing.focalX}% ${framing.focalY}%`,
+                        }}
+                      />
+                    </div>
+                  );
+                })()}
 
                 <div className="flex-1 space-y-1">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-black/60 text-amber-400 border border-amber-400/30">
+                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-black/60 text-pink-400 border border-pink-500/30">
                       {slot.stageName || "Main Stage"}
                     </span>
                     <span className="text-xs font-mono text-zinc-400">
@@ -573,11 +590,11 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                     </span>
                   </div>
 
-                  <h3 className="font-display font-bold text-xl text-white group-hover:text-amber-400 transition-colors">
+                  <h3 className="font-display font-bold text-xl text-white group-hover:text-pink-400 transition-colors">
                     {slot.artist?.name}
                   </h3>
 
-                  <p className="text-xs font-mono text-amber-400/90">
+                  <p className="text-xs font-mono text-pink-400/90">
                     {(slot.artist?.genres || []).join(" • ")}
                   </p>
 
@@ -597,7 +614,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
       <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Venue Info */}
         <div className="rounded-3xl bg-[#0f1117]/80 backdrop-blur-md p-8 border border-white/10 space-y-4 shadow-xl">
-          <div className="flex items-center gap-2 text-amber-400 font-mono text-xs uppercase font-bold tracking-wider">
+          <div className="flex items-center gap-2 text-cyan-400 font-mono text-xs uppercase font-bold tracking-wider">
             <MapPin className="w-4 h-4" />
             <span>Venue & Transport</span>
           </div>
@@ -612,7 +629,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
               href={mapSearchUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs font-mono text-amber-400 hover:underline font-semibold"
+              className="inline-flex items-center gap-1.5 text-xs font-mono text-cyan-400 hover:underline font-semibold"
             >
               <span>Open in Google Maps Navigation</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
@@ -622,7 +639,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
 
         {/* Gate Policy Checklist */}
         <div className="rounded-3xl bg-[#0f1117]/80 backdrop-blur-md p-8 border border-white/10 space-y-4 shadow-xl">
-          <div className="flex items-center gap-2 text-amber-400 font-mono text-xs uppercase font-bold tracking-wider">
+          <div className="flex items-center gap-2 text-pink-400 font-mono text-xs uppercase font-bold tracking-wider">
             <ShieldCheck className="w-4 h-4" />
             <span>Essential Gate Protocol</span>
           </div>
@@ -631,15 +648,15 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
           </h3>
           <ul className="space-y-2.5 text-xs sm:text-sm text-zinc-300 font-normal">
             <li className="flex items-start gap-2">
-              <span className="text-amber-400 font-bold">•</span>
+              <span className="text-pink-400 font-bold">•</span>
               <span><strong>Strict 18+ Age Limit:</strong> Original physical ID, passport, or driving license required.</span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="text-amber-400 font-bold">•</span>
+              <span className="text-pink-400 font-bold">•</span>
               <span><strong>No Pass-Outs:</strong> Re-entry is not permitted once scanned inside.</span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="text-amber-400 font-bold">•</span>
+              <span className="text-pink-400 font-bold">•</span>
               <span><strong>Prohibited Items:</strong> No outside food, drinks, weapons, or illegal substances. Full security pat-down and metal detection at turnstiles.</span>
             </li>
           </ul>

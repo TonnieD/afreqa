@@ -26,7 +26,7 @@ export function LaserBeams() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_10%,#070709_85%)] opacity-75" />
 
       {/* Organic Warm Stage Lighting Embers (Sampled from real stage photo) */}
-      <div className="absolute -top-32 left-1/4 w-[600px] h-[400px] bg-afreqa-amber/15 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute -top-32 left-1/4 w-[600px] h-[400px] bg-purple-900/15 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute top-[25%] -right-[150px] w-[500px] h-[500px] bg-afreqa-blue/10 rounded-full blur-[160px] pointer-events-none" />
 
       {/* Subtle Analog Grain / Texture */}

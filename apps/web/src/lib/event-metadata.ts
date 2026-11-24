@@ -53,7 +53,7 @@ export function parseEventMetadata(
   // Table Booking: only show if explicitly specified
   const tableMatch = rawDescription.match(/<!--\s*TABLE_BOOKING(?::\s*(.*?))?\s*-->/);
   const hasTableBooking = !!tableMatch;
-  const tableBookingContact = tableMatch && tableMatch[1]?.trim() ? tableMatch[1].trim() : "+254 743 836 164";
+  const tableBookingContact = tableMatch && tableMatch[1]?.trim() ? tableMatch[1].trim() : "tables@afreqa.com";
 
   // Phase Descriptions
   const phaseDescMatch = rawDescription.match(/<!--\s*PHASE_DESCRIPTIONS:\s*(.*?)\s*-->/);
@@ -112,7 +112,7 @@ export function buildEventDescription(params: {
   }
 
   if (params.tableBookingSpecified) {
-    const contact = (params.tableBookingContact && params.tableBookingContact.trim()) || "+254 743 836 164";
+    const contact = (params.tableBookingContact && params.tableBookingContact.trim()) || "tables@afreqa.com";
     result += `\n\n<!-- TABLE_BOOKING: ${contact} -->`;
   }
 

@@ -131,7 +131,7 @@ export default async function AdminEventsPage() {
                             ? "bg-emerald-500/15 border border-emerald-500/30 text-emerald-400"
                             : event.status === "ARCHIVED"
                             ? "bg-purple-500/15 border border-purple-500/30 text-purple-300"
-                            : "bg-amber-500/15 border border-amber-500/30 text-amber-400"
+                            : "bg-pink-500/15 border border-pink-500/30 text-pink-400"
                         }`}
                       >
                         {event.status === "ARCHIVED" ? "PASSED" : event.status}

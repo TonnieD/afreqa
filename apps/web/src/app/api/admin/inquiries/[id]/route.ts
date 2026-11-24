@@ -43,3 +43,31 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
   }
 }
 
+export async function DELETE(req: NextRequest, { params }: RouteParams) {
+  const user = await getSessionUser();
+  if (!user || !hasPermission(user.role, "inquiries:manage")) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { id } = await params;
+
+  try {
+    await db.contactMessage.delete({
+      where: { id },
+    });
+
+    await recordAuditLog({
+      userId: user.id,
+      userEmail: user.email,
+      action: "INQUIRY_DELETE",
+      resource: "ContactMessage",
+      resourceId: id,
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : "Failed to delete inquiry";
+    return NextResponse.json({ error: msg }, { status: 500 });
+  }
+}
+

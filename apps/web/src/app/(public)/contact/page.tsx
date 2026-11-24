@@ -61,12 +61,12 @@ export default function ContactPage() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
       {/* Header */}
       <div className="text-center space-y-4 max-w-3xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/5 border border-white/10 text-amber-400 text-xs font-mono font-bold uppercase tracking-widest">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/5 border border-white/10 text-pink-400 text-xs font-mono font-bold uppercase tracking-widest">
           <Mail className="w-3.5 h-3.5" />
           <span>Direct Lines</span>
         </div>
         <h1 className="font-display font-black text-4xl sm:text-6xl text-white tracking-tight">
-          CONTACT & BOOKINGS
+          CONTACT & <span className="text-festival-gradient">BOOKINGS</span>
         </h1>
         <p className="text-sm sm:text-base text-zinc-300">
           Whether you are an electronic music producer, potential brand partner, press representative, or festival attendee, we welcome your inquiry.
@@ -77,47 +77,42 @@ export default function ContactPage() {
         {/* Left Column: Direct Communication Cards */}
         <div className="space-y-6 lg:col-span-1">
           {/* Direct Line & WhatsApp Card */}
-          <div className="rounded-3xl bg-[#0f1117]/80 backdrop-blur-md p-6 sm:p-8 border border-emerald-500/30 space-y-4 shadow-xl relative overflow-hidden">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
-              <Phone className="w-5 h-5" />
+          {/* Digital Concierge & Support */}
+          <div className="rounded-3xl bg-[#0f1117]/80 backdrop-blur-md p-6 sm:p-8 border border-pink-500/30 space-y-4 shadow-xl relative overflow-hidden">
+            <div className="w-10 h-10 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center border border-pink-500/20">
+              <MessageCircle className="w-5 h-5" />
             </div>
             <div>
               <h3 className="font-display font-bold text-xl text-white">
-                Direct Line & WhatsApp
+                Official Digital Concierge
               </h3>
-              <a
-                href="tel:+254743836164"
-                className="font-mono font-bold text-lg text-emerald-400 hover:text-emerald-300 transition-colors inline-block mt-1"
-              >
-                +254 743 836 164
-              </a>
+              <p className="font-mono font-bold text-sm text-pink-400 mt-1">
+                Fast Direct Response
+              </p>
             </div>
             <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed font-normal">
-              Direct hotline for urgent ticketing inquiries, VIP table reservations, partnerships, or gate access questions.
+              Direct desk for ticketing inquiries, VIP table reservations, artist press, or gate access questions. Messages reflect directly on our internal ops inbox.
             </p>
             <div className="pt-2 flex flex-wrap items-center gap-3">
               <a
-                href={`https://wa.me/254743836164?text=${whatsappMessage}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs uppercase tracking-wider transition-colors shadow-lg shadow-emerald-950/40"
+                href="#contact-form"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-white font-extrabold text-xs uppercase tracking-wider transition-colors shadow-lg shadow-pink-950/40"
               >
-                <MessageCircle className="w-3.5 h-3.5" />
-                <span>Chat on WhatsApp</span>
-                <ArrowUpRight className="w-3.5 h-3.5" />
+                <Send className="w-3.5 h-3.5" />
+                <span>Send Direct Message</span>
               </a>
               <a
-                href="tel:+254743836164"
+                href="mailto:hello@afreqa.com"
                 className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-mono text-xs font-bold transition-colors"
               >
-                <span>Call Hotline</span>
+                <span>hello@afreqa.com</span>
               </a>
             </div>
           </div>
 
           {/* Email Info */}
           <div className="rounded-3xl bg-[#0f1117]/80 backdrop-blur-md p-6 sm:p-8 border border-white/10 space-y-3 shadow-lg">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20">
+            <div className="w-10 h-10 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center border border-pink-500/20">
               <Mail className="w-5 h-5" />
             </div>
             <h3 className="font-display font-bold text-lg text-white">
@@ -144,7 +139,7 @@ export default function ContactPage() {
             </h3>
             <p className="text-xs text-zinc-400 font-normal leading-relaxed">
               Afreqa Productions Ltd.<br />
-              Kilimani / Karen, Nairobi, Kenya
+              00200, City Estate, Nairobi, Kenya 00200
             </p>
           </div>
         </div>
@@ -205,7 +200,7 @@ export default function ContactPage() {
                     placeholder="e.g. Amani Mwangi"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-pink-500 focus:ring-1 focus:ring-pink-500/30 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-colors"
                   />
                 </div>
 
@@ -220,7 +215,7 @@ export default function ContactPage() {
                     placeholder="you@domain.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-pink-500 focus:ring-1 focus:ring-pink-500/30 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-colors"
                   />
                 </div>
               </div>
@@ -236,7 +231,7 @@ export default function ContactPage() {
                     placeholder="+254 7XX XXX XXX"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-pink-500 focus:ring-1 focus:ring-pink-500/30 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-colors"
                   />
                 </div>
 
@@ -248,7 +243,7 @@ export default function ContactPage() {
                   <select
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-[#141721] border border-white/10 focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 text-white text-sm focus:outline-none transition-colors cursor-pointer"
+                    className="w-full px-4 py-3 rounded-xl bg-[#141721] border border-white/10 focus:border-pink-500 focus:ring-1 focus:ring-pink-500/30 text-white text-sm focus:outline-none transition-colors cursor-pointer"
                   >
                     <option value="GENERAL">General Inquiries & Gate Info</option>
                     <option value="SPONSORSHIP">Sponsorship & Brand Activations</option>
@@ -270,7 +265,7 @@ export default function ContactPage() {
                   placeholder="Detail your inquiry, proposal, or question..."
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-colors resize-none"
+                  className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-pink-500 focus:ring-1 focus:ring-pink-500/30 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-colors resize-none"
                 />
               </div>
 
@@ -279,7 +274,7 @@ export default function ContactPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-sm uppercase tracking-wider shadow-lg hover:shadow-amber-500/20 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-extrabold text-sm uppercase tracking-wider shadow-lg shadow-pink-950/30 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Send className="w-4 h-4" />
                   <span>{loading ? "Sending..." : "Send Message"}</span>

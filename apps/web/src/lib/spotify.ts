@@ -18,7 +18,7 @@ export interface Playlist {
  * Ordered strictly by frequency of play at AFREQA and fanbase size:
  * 1. Progressive EDM (Tomorrowland anthems)
  * 2. Big Room
- * 3. African Tech
+ * 3. Melodic Techno & Progressive
  * 4. Techno (From Acid to Hard to Industrial)
  * 5. Hardstyle and everything that falls under hardstyle (Uptempo, jumpstyle, rawstyle)
  * 6. Drum & Bass
@@ -58,20 +58,20 @@ export const PLAYLISTS: Playlist[] = [
     tracksCount: "Stadium Festival Bangers",
   },
   {
-    id: "pl-african-tech",
-    title: "AFRICAN TECH",
-    curator: "Afreqa Resident Selectors (Nairobi B2B Hub)",
+    id: "pl-melodic-techno",
+    title: "MELODIC TECHNO & PROGRESSIVE",
+    curator: "Afreqa Nocturnal Curators",
     tagline:
-      "Deep polyrhythmic percussion, authentic African electronic rhythms, and driving B2B power sets. Strictly authentic organic percussive groove powered by Nairobi's own resident selectors.",
-    genre: "African Tech • Organic Percussive Electronic",
-    bpm: "122 – 126 BPM",
-    fanbaseRank: "#3 Most Played • Organic African Energy",
+      "Hypnotic synth arpeggios, driving rolling basslines, and euphoric nocturnal builds engineered for deep late-night festival trance.",
+    genre: "Melodic Techno • Progressive Electronic",
+    bpm: "124 – 128 BPM",
+    fanbaseRank: "#3 Most Played • Deep Nocturnal Journey",
     status: "curating",
     soundReferences:
-      "Coco Kahi, Mike Muema, Nayäkaze, Shock, Ryte, Z4V3 • Deep organic percussion & tribal synthesis",
+      "Tale of Us, ARTBAT, CamelPhat, Anyma, Stephan Bodzin, Mind Against",
     spotifyUri: "playlist/1W4N8V5MXS6Zzr10EYeF4t", // Fallback URI
     spotifyUrl: "https://open.spotify.com",
-    tracksCount: "Resident B2B Curation Drop",
+    tracksCount: "Nocturnal Melodic Selection",
   },
   {
     id: "pl-hard-techno",

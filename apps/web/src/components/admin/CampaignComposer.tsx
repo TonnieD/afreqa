@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Send, Mail, CheckCircle2, AlertCircle } from "lucide-react";
+import { AdminConfirmModal } from "@/components/admin/AdminConfirmModal";
 
 interface CampaignItem {
   id: string;
@@ -26,6 +27,7 @@ export function CampaignComposer({ initialCampaigns }: { initialCampaigns: Campa
   const [sending, setSending] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   const toggleInterest = (tag: string) => {
     setSelectedInterests((prev) =>
@@ -33,13 +35,16 @@ export function CampaignComposer({ initialCampaigns }: { initialCampaigns: Campa
     );
   };
 
-  const handleDispatch = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!confirm("Are you ready to dispatch this broadcast to active subscribers?")) return;
+    setConfirmOpen(true);
+  };
 
+  const executeDispatch = async () => {
     setSending(true);
     setStatusMessage(null);
     setError(null);
+    setConfirmOpen(false);
 
     try {
       const res = await fetch("/api/admin/campaigns", {
@@ -90,7 +95,7 @@ export function CampaignComposer({ initialCampaigns }: { initialCampaigns: Campa
           </div>
         )}
 
-        <form onSubmit={handleDispatch} className="space-y-4 text-xs">
+        <form onSubmit={handleSubmit} className="space-y-4 text-xs">
           <div>
             <label className="block font-mono uppercase text-afreqa-silver mb-1">
               Internal Campaign Title *
@@ -221,6 +226,18 @@ export function CampaignComposer({ initialCampaigns }: { initialCampaigns: Campa
           </div>
         </div>
       </div>
+
+      {/* System Confirmation Dialog (Replaces native browser confirm) */}
+      <AdminConfirmModal
+        isOpen={confirmOpen}
+        title="Broadcast Dispatch Confirmation"
+        description={`Are you sure you want to dispatch campaign "${title || subject || "Untitled"}"? This will immediately queue automated email dispatches to all selected subscribers and record an audit log in the database.`}
+        confirmText="Dispatch Broadcast"
+        variant="primary"
+        isLoading={sending}
+        onConfirm={executeDispatch}
+        onCancel={() => setConfirmOpen(false)}
+      />
     </div>
   );
 }

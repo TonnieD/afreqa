@@ -155,7 +155,7 @@ export default async function AlbumDetailPage({ params }: AlbumPageProps) {
           {
             id: "p2",
             originalUrl: "/images/afreqa-live-crowd.jpg",
-            caption: "Crowd Euphoria during Afro-Tech Peak Time",
+            caption: "Crowd Euphoria during Melodic Peak Time",
             photographerCredit: "Afreqa Media Team",
           },
         ],
@@ -178,7 +178,7 @@ export default async function AlbumDetailPage({ params }: AlbumPageProps) {
       <div>
         <Link
           href="/gallery"
-          className="inline-flex items-center gap-1.5 text-xs font-mono text-zinc-400 hover:text-amber-400 transition mb-6"
+          className="inline-flex items-center gap-1.5 text-xs font-mono text-zinc-400 hover:text-pink-400 transition mb-6"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to All Albums</span>
@@ -186,8 +186,8 @@ export default async function AlbumDetailPage({ params }: AlbumPageProps) {
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-6">
           <div>
-            <h1 className="font-display font-extrabold text-3xl sm:text-4xl text-white uppercase tracking-wide">
-              {albumData.title}
+            <h1 className="font-display font-extrabold text-3xl sm:text-4xl uppercase tracking-wide">
+              <span className="text-turquoise-gradient">{albumData.title}</span>
             </h1>
             {albumData.description && (
               <p className="text-sm text-zinc-300 mt-2 max-w-2xl leading-relaxed">
@@ -197,7 +197,7 @@ export default async function AlbumDetailPage({ params }: AlbumPageProps) {
           </div>
 
           {albumData.downloadProtection === "DETERRENT" && (
-            <div className="shrink-0 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono">
+            <div className="shrink-0 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-400 text-xs font-mono">
               <ShieldAlert className="w-3.5 h-3.5" />
               <span>Right-Click & Drag Deterred</span>
             </div>
@@ -206,9 +206,9 @@ export default async function AlbumDetailPage({ params }: AlbumPageProps) {
 
         {/* External High-Res Drive / Cloud Photos Vault - Only when photos link has been added */}
         {photosUrl && (
-          <div className="mt-6 rounded-2xl bg-gradient-to-r from-[#0f1117] via-[#151926] to-[#0f1117] border border-amber-500/40 p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 shadow-2xl">
+          <div className="mt-6 rounded-2xl bg-gradient-to-r from-[#0f1117] via-[#151926] to-[#0f1117] border border-pink-500/30 p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 shadow-2xl">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/30 shadow-inner">
+              <div className="w-12 h-12 rounded-2xl bg-pink-500/15 text-pink-400 flex items-center justify-center shrink-0 border border-pink-500/30 shadow-inner">
                 <FolderHeart className="w-6 h-6" />
               </div>
               <div className="space-y-1">
@@ -216,7 +216,7 @@ export default async function AlbumDetailPage({ params }: AlbumPageProps) {
                   <h4 className="font-display font-bold text-base sm:text-lg text-white">
                     Official Night Photography Vault
                   </h4>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-pink-500/20 text-pink-300 border border-pink-500/30">
                     Live Photos
                   </span>
                 </div>
@@ -229,7 +229,7 @@ export default async function AlbumDetailPage({ params }: AlbumPageProps) {
               href={photosUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-black font-extrabold text-xs uppercase tracking-wider shadow-lg hover:shadow-amber-500/30 transition-all shrink-0 active:scale-95"
+              className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-pink-950/30 transition-all shrink-0 active:scale-95"
             >
               <DownloadCloud className="w-4 h-4" />
               <span>Open Photo Vault</span>
@@ -243,7 +243,7 @@ export default async function AlbumDetailPage({ params }: AlbumPageProps) {
       {albumData.videos.length > 0 && (
         <section className="space-y-4">
           <div className="flex items-center gap-2">
-            <Film className="w-4 h-4 text-amber-400" />
+            <Film className="w-4 h-4 text-pink-400" />
             <h2 className="font-display font-bold text-lg text-white uppercase tracking-wide">
               Official Video Recap
             </h2>
@@ -266,7 +266,7 @@ export default async function AlbumDetailPage({ params }: AlbumPageProps) {
       {/* Photos Section */}
       <section className="space-y-6">
         <div className="flex items-center gap-2">
-          <Camera className="w-4 h-4 text-amber-400" />
+          <Camera className="w-4 h-4 text-pink-400" />
           <h2 className="font-display font-bold text-lg text-white uppercase tracking-wide">
             Photo Archive Highlights ({albumData.photos.length} Featured)
           </h2>
@@ -283,7 +283,7 @@ export default async function AlbumDetailPage({ params }: AlbumPageProps) {
         <section className="space-y-4 pt-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-3">
             <div className="flex items-center gap-2">
-              <FolderHeart className="w-5 h-5 text-amber-400" />
+              <FolderHeart className="w-5 h-5 text-pink-400" />
               <div>
                 <h2 className="font-display font-bold text-lg text-white uppercase tracking-wide">
                   Google Drive Live Vault Explorer
@@ -297,7 +297,7 @@ export default async function AlbumDetailPage({ params }: AlbumPageProps) {
               href={process.env.NEXT_PUBLIC_HALLOWEEN_PHOTOS_URL || "https://drive.google.com/drive/folders/1EKHSU4PsGTeNACb7GM6ST-mGbslRuiKA"}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-mono text-amber-400 transition"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-mono text-pink-400 transition"
             >
               <span>Open in Full Google Drive</span>
               <ArrowUpRight className="w-3.5 h-3.5" />

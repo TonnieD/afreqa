@@ -17,15 +17,15 @@ export function TrackOfTheWeek() {
   };
 
   return (
-    <div className="rounded-3xl glass-panel p-6 sm:p-10 lg:p-12 relative overflow-hidden border border-amber-500/30 shadow-2xl bg-gradient-to-br from-[#0c0d13] via-[#121622] to-[#0c0d13]">
-      {/* Ambient warm stage glow */}
-      <div className="absolute top-0 right-1/3 w-80 h-80 bg-amber-500/10 rounded-full blur-[130px] pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-[150px] pointer-events-none" />
+    <div className="rounded-3xl glass-panel p-6 sm:p-10 lg:p-12 relative overflow-hidden border border-pink-500/30 shadow-2xl bg-gradient-to-br from-[#0c0d13] via-[#121622] to-[#0c0d13]">
+      {/* Ambient stage glow */}
+      <div className="absolute top-0 right-1/3 w-80 h-80 bg-purple-900/15 rounded-full blur-[130px] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-pink-900/10 rounded-full blur-[150px] pointer-events-none" />
 
       {/* Header Tag */}
       <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-white/10">
-        <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-mono font-bold tracking-widest uppercase">
-          <Flame className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+        <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-pink-500/15 border border-pink-500/30 text-pink-300 text-xs font-mono font-bold tracking-widest uppercase">
+          <Flame className="w-3.5 h-3.5 text-pink-400 animate-pulse" />
           <span>AFREQA TRACK OF THE WEEK</span>
         </div>
 
@@ -67,7 +67,7 @@ export function TrackOfTheWeek() {
           {/* Technical Audio Specs Pill Strip */}
           <div className="flex flex-wrap items-center gap-2.5 text-xs font-mono">
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/60 border border-white/10 text-zinc-300">
-              <Gauge className="w-3.5 h-3.5 text-amber-400" />
+              <Gauge className="w-3.5 h-3.5 text-pink-400" />
               <span>{track.bpm} BPM</span>
             </div>
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/60 border border-white/10 text-zinc-300">
@@ -84,7 +84,7 @@ export function TrackOfTheWeek() {
           {/* Curator Analysis Note */}
           <div className="rounded-2xl bg-black/40 border border-white/10 p-5 space-y-2">
             <div className="flex items-center justify-between text-[11px] font-mono text-zinc-400">
-              <span className="text-amber-400 font-bold uppercase tracking-wider">
+              <span className="text-pink-400 font-bold uppercase tracking-wider">
                 Sound Assessment
               </span>
               <span>{track.curator}</span>
