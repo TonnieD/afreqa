@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { requireAuth } from "@/lib/auth";
+import { formatEatDateTime, formatEatTime } from "@/lib/date";
 import { db } from "@afreqa/core";
 import {
   Users,
@@ -8,6 +9,7 @@ import {
   Calendar,
   ArrowUpRight,
   ShieldCheck,
+  UserCheck,
   Plus,
   ExternalLink,
 } from "lucide-react";
@@ -103,6 +105,15 @@ export default async function AdminDashboardPage() {
           >
             <span>Audience CRM</span>
           </Link>
+          {user.role === "SUPER_ADMIN" && (
+            <Link
+              href="/admin/users"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-fuchsia-500/10 hover:bg-fuchsia-500/20 text-fuchsia-300 font-bold text-xs uppercase tracking-wider transition border border-fuchsia-500/30"
+            >
+              <UserCheck className="w-4 h-4" />
+              <span>Manage Admins</span>
+            </Link>
+          )}
         </div>
       </div>
 
@@ -196,9 +207,14 @@ export default async function AdminDashboardPage() {
                       {click.phaseName ? ` • ${click.phaseName}` : ""}
                     </div>
                   </div>
-                  <span className="text-afreqa-silver-mid font-mono text-[11px] shrink-0">
-                    {new Date(click.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                  </span>
+                  <div className="text-right shrink-0 font-mono">
+                    <div className="text-[11px] text-afreqa-silver">
+                      {formatEatTime(click.createdAt)}
+                    </div>
+                    <div className="text-[9px] text-afreqa-fuchsia font-semibold">
+                      EAT 24h
+                    </div>
+                  </div>
                 </div>
               ))
             )}
@@ -210,7 +226,7 @@ export default async function AdminDashboardPage() {
           <div className="flex items-center justify-between mb-4">
             <div>
               <h3 className="font-bold text-base text-afreqa-chrome-high">Security & Audit Activity</h3>
-              <p className="text-xs text-afreqa-silver-mid">Append-only administrative operations</p>
+              <p className="text-xs text-afreqa-silver-mid">Append-only administrative operations (EAT UTC+3, 24-Hour System)</p>
             </div>
             <Link
               href="/admin/audit"
@@ -238,9 +254,14 @@ export default async function AdminDashboardPage() {
                       By: {log.userEmail || "System"}
                     </div>
                   </div>
-                  <span className="text-afreqa-silver-mid font-mono text-[11px] shrink-0">
-                    {new Date(log.createdAt).toLocaleDateString([], { month: "short", day: "numeric" })}
-                  </span>
+                  <div className="text-right shrink-0 font-mono">
+                    <div className="text-[11px] text-afreqa-silver">
+                      {formatEatDateTime(log.createdAt, { includeSeconds: false })}
+                    </div>
+                    <div className="text-[9px] text-afreqa-fuchsia font-semibold">
+                      EAT 24h
+                    </div>
+                  </div>
                 </div>
               ))
             )}

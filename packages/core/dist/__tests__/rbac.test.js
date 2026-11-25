@@ -49,5 +49,11 @@ const index_js_1 = require("../index.js");
         (0, vitest_1.expect)((0, index_js_1.hasPermission)("SUPPORT", "audit:view")).toBe(false);
         (0, vitest_1.expect)((0, index_js_1.canExportSubscribers)("SUPPORT")).toBe(false);
     });
+    (0, vitest_1.it)("strictly enforces users:manage exclusively for SUPER_ADMIN", () => {
+        (0, vitest_1.expect)((0, index_js_1.hasPermission)("SUPER_ADMIN", "users:manage")).toBe(true);
+        (0, vitest_1.expect)((0, index_js_1.hasPermission)("ADMIN", "users:manage")).toBe(false);
+        (0, vitest_1.expect)((0, index_js_1.hasPermission)("EDITOR", "users:manage")).toBe(false);
+        (0, vitest_1.expect)((0, index_js_1.hasPermission)("SUPPORT", "users:manage")).toBe(false);
+    });
 });
 //# sourceMappingURL=rbac.test.js.map

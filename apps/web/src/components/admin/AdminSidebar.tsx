@@ -14,6 +14,7 @@ import {
   Image as ImageIcon,
   ShoppingBag,
   ShieldAlert,
+  UserCheck,
   ArrowUpRight,
   LogOut,
 } from "lucide-react";
@@ -34,6 +35,7 @@ const NAV_ITEMS = [
   { label: "Email Campaigns", href: "/admin/campaigns", icon: Mail, minRole: ["SUPER_ADMIN", "ADMIN"] },
   { label: "Media & Gallery", href: "/admin/gallery", icon: ImageIcon },
   { label: "Merch & Orders", href: "/admin/shop", icon: ShoppingBag, minRole: ["SUPER_ADMIN", "ADMIN", "SUPPORT"] },
+  { label: "Admins & Staff", href: "/admin/users", icon: UserCheck, minRole: ["SUPER_ADMIN"] },
   { label: "Audit Log Trail", href: "/admin/audit", icon: ShieldAlert, minRole: ["SUPER_ADMIN", "ADMIN"] },
 ];
 

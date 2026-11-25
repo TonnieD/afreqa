@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { Mail, Check, MessageSquare, Clock, Search, Trash2, Eye, EyeOff, Store, Handshake, Calendar, Sparkles } from "lucide-react";
 import { AdminConfirmModal } from "@/components/admin/AdminConfirmModal";
 import { AdminToast, type ToastMessage } from "@/components/admin/AdminToast";
+import { formatEatDateTime } from "@/lib/date";
 
 export interface InquiryItem {
   id: string;
@@ -274,7 +275,7 @@ export function InquiriesInbox({ initialInquiries }: { initialInquiries: Inquiry
                     )}
 
                     <span className="text-[11px] font-mono text-zinc-500 pl-2">
-                      {new Date(inq.createdAt).toLocaleString([], { dateStyle: "short", timeStyle: "short" })}
+                      {formatEatDateTime(inq.createdAt)} EAT (24h)
                     </span>
                   </div>
                 </div>

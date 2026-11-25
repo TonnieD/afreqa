@@ -54,5 +54,12 @@ describe("Role-Based Access Control (RBAC) Matrix", () => {
     expect(hasPermission("SUPPORT", "audit:view")).toBe(false);
     expect(canExportSubscribers("SUPPORT")).toBe(false);
   });
+
+  it("strictly enforces users:manage exclusively for SUPER_ADMIN", () => {
+    expect(hasPermission("SUPER_ADMIN", "users:manage")).toBe(true);
+    expect(hasPermission("ADMIN", "users:manage")).toBe(false);
+    expect(hasPermission("EDITOR", "users:manage")).toBe(false);
+    expect(hasPermission("SUPPORT", "users:manage")).toBe(false);
+  });
 });
 

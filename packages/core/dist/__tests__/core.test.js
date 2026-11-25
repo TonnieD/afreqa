@@ -4,6 +4,7 @@ const vitest_1 = require("vitest");
 const forms_js_1 = require("../validation/forms.js");
 const audit_js_1 = require("../auth/audit.js");
 const password_js_1 = require("../auth/password.js");
+const logger_js_1 = require("../logger.js");
 (0, vitest_1.describe)("Phone Validation & Normalization (libphonenumber-js)", () => {
     (0, vitest_1.it)("normalizes Kenyan mobile number with leading 0 to E.164", () => {
         const result = (0, forms_js_1.normalizeAndValidatePhone)("0712345678", "KE");
@@ -78,6 +79,34 @@ const password_js_1 = require("../auth/password.js");
         (0, vitest_1.expect)(valid).toBe(true);
         const invalid = await (0, password_js_1.verifyPassword)("WrongPassword!", hash);
         (0, vitest_1.expect)(invalid).toBe(false);
+    });
+});
+(0, vitest_1.describe)("East Africa Time (EAT +3, 24h System) Log Timestamps", () => {
+    (0, vitest_1.it)("formats ISO string with +03:00 timezone offset", () => {
+        // 2026-11-24T18:20:53.000Z in UTC is 21:20:53 in EAT (+3)
+        const testDate = new Date("2026-11-24T18:20:53.000Z");
+        const eatIso = (0, logger_js_1.getEatIsoString)(testDate);
+        (0, vitest_1.expect)(eatIso).toBe("2026-11-24T21:20:53.000+03:00");
+    });
+    (0, vitest_1.it)("strictly enforces 24-hour system without AM/PM for evening times", () => {
+        const eveningDate = new Date("2026-11-24T18:20:53.000Z");
+        const formatted = (0, logger_js_1.formatEatTimestamp)(eveningDate);
+        (0, vitest_1.expect)(formatted).toContain("EAT (24h)");
+        (0, vitest_1.expect)(formatted).toContain("21:20:53");
+        (0, vitest_1.expect)(formatted).not.toMatch(/am|pm/i);
+    });
+    (0, vitest_1.it)("strictly enforces 24-hour system without AM/PM for morning times", () => {
+        const morningDate = new Date("2026-11-24T06:05:09.000Z");
+        const formatted = (0, logger_js_1.formatEatTimestamp)(morningDate);
+        (0, vitest_1.expect)(formatted).toContain("09:05:09");
+        (0, vitest_1.expect)(formatted).not.toMatch(/am|pm/i);
+    });
+    (0, vitest_1.it)("formats EAT timestamp with explicit 24h (+03:00) offset", () => {
+        const testDate = new Date("2026-11-24T18:20:53.000Z");
+        const formatted = (0, logger_js_1.formatEatTimestamp)(testDate, { includeOffset: true });
+        (0, vitest_1.expect)(formatted).toContain("EAT (24h UTC+3)");
+        (0, vitest_1.expect)(formatted).toContain("21:20:53");
+        (0, vitest_1.expect)(formatted).not.toMatch(/am|pm/i);
     });
 });
 //# sourceMappingURL=core.test.js.map

@@ -1,4 +1,5 @@
 import { requireAuth } from "@/lib/auth";
+import { formatEatDate } from "@/lib/date";
 import { db, canExportSubscribers } from "@afreqa/core";
 import { Download, Mail, MessageCircle, ShieldCheck, CheckCircle2, Clock, XCircle } from "lucide-react";
 
@@ -199,7 +200,7 @@ export default async function AdminSubscribersPage({ searchParams }: Subscribers
                     </td>
 
                     <td className="py-3.5 px-4 font-mono text-[11px] text-afreqa-silver-mid">
-                      {new Date(sub.createdAt).toLocaleDateString([], { dateStyle: "short" })}
+                      {formatEatDate(sub.createdAt)}
                     </td>
                   </tr>
                 ))}

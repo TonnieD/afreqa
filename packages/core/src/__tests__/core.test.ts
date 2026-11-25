@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { normalizeAndValidatePhone, sanitizeCsvField } from "../validation/forms.js";
 import { sanitizeAuditPayload } from "../auth/audit.js";
 import { hashPassword, verifyPassword } from "../auth/password.js";
+import { getEatIsoString, formatEatTimestamp } from "../logger.js";
 
 describe("Phone Validation & Normalization (libphonenumber-js)", () => {
   it("normalizes Kenyan mobile number with leading 0 to E.164", () => {
@@ -89,5 +90,37 @@ describe("@node-rs/argon2 Password Hashing", () => {
 
     const invalid = await verifyPassword("WrongPassword!", hash);
     expect(invalid).toBe(false);
+  });
+});
+
+describe("East Africa Time (EAT +3, 24h System) Log Timestamps", () => {
+  it("formats ISO string with +03:00 timezone offset", () => {
+    // 2026-11-24T18:20:53.000Z in UTC is 21:20:53 in EAT (+3)
+    const testDate = new Date("2026-11-24T18:20:53.000Z");
+    const eatIso = getEatIsoString(testDate);
+    expect(eatIso).toBe("2026-11-24T21:20:53.000+03:00");
+  });
+
+  it("strictly enforces 24-hour system without AM/PM for evening times", () => {
+    const eveningDate = new Date("2026-11-24T18:20:53.000Z");
+    const formatted = formatEatTimestamp(eveningDate);
+    expect(formatted).toContain("EAT (24h)");
+    expect(formatted).toContain("21:20:53");
+    expect(formatted).not.toMatch(/am|pm/i);
+  });
+
+  it("strictly enforces 24-hour system without AM/PM for morning times", () => {
+    const morningDate = new Date("2026-11-24T06:05:09.000Z");
+    const formatted = formatEatTimestamp(morningDate);
+    expect(formatted).toContain("09:05:09");
+    expect(formatted).not.toMatch(/am|pm/i);
+  });
+
+  it("formats EAT timestamp with explicit 24h (+03:00) offset", () => {
+    const testDate = new Date("2026-11-24T18:20:53.000Z");
+    const formatted = formatEatTimestamp(testDate, { includeOffset: true });
+    expect(formatted).toContain("EAT (24h UTC+3)");
+    expect(formatted).toContain("21:20:53");
+    expect(formatted).not.toMatch(/am|pm/i);
   });
 });
