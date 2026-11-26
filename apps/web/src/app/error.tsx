@@ -12,7 +12,11 @@ export default function ErrorBoundary({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Log the error for internal diagnostics
+    // If it's a Next.js redirect or not-found, handle gracefully
+    if (error?.digest?.startsWith("NEXT_REDIRECT") || error?.message?.includes("NEXT_REDIRECT")) {
+      window.location.reload();
+      return;
+    }
     console.error("Application error boundary triggered:", error);
   }, [error]);
 
@@ -33,6 +37,14 @@ export default function ErrorBoundary({
         <p className="text-sm sm:text-base text-afreqa-silver leading-relaxed font-light">
           An unexpected technical resonance occurred while rendering this view. Our stage engineers have been notified.
         </p>
+
+        {error?.message && !error.message.includes("NEXT_REDIRECT") && (
+          <div className="p-3.5 bg-black/50 border border-white/10 rounded-2xl text-left text-xs font-mono text-zinc-300 max-h-36 overflow-auto">
+            <span className="font-bold text-red-400 block mb-0.5">Diagnostic Notice:</span>
+            <span className="text-zinc-300 break-words">{error.message}</span>
+            {error.digest && <span className="text-[10px] text-zinc-500 block mt-1">Digest: {error.digest}</span>}
+          </div>
+        )}
 
         <div className="flex items-center justify-center gap-4 pt-4">
           <button
@@ -55,4 +67,3 @@ export default function ErrorBoundary({
     </div>
   );
 }
-

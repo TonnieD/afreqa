@@ -7,7 +7,7 @@ interface RouteParams {
 }
 
 export async function PUT(req: NextRequest, { params }: RouteParams) {
-  const user = await getSessionUser();
+  const user = await getSessionUser(req);
   if (!user || !hasPermission(user.role, "inquiries:manage")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -44,7 +44,7 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
 }
 
 export async function DELETE(req: NextRequest, { params }: RouteParams) {
-  const user = await getSessionUser();
+  const user = await getSessionUser(req);
   if (!user || !hasPermission(user.role, "inquiries:manage")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -70,4 +70,3 @@ export async function DELETE(req: NextRequest, { params }: RouteParams) {
     return NextResponse.json({ error: msg }, { status: 500 });
   }
 }
-

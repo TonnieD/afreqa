@@ -2,6 +2,8 @@ import { requireAuth } from "@/lib/auth";
 import { db } from "@afreqa/core";
 import { InquiriesInbox } from "@/components/admin/InquiriesInbox";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminInquiriesPage() {
   await requireAuth("inquiries:read");
 
@@ -13,7 +15,7 @@ export default async function AdminInquiriesPage() {
     message: string;
     isRead: boolean;
     isReplied: boolean;
-    createdAt: Date;
+    createdAt: string;
   }> = [];
 
   try {
@@ -25,14 +27,18 @@ export default async function AdminInquiriesPage() {
       id: item.id,
       name: item.name,
       email: item.email,
-      topic: item.topic,
+      topic: String(item.topic),
       message: item.message,
-      isRead: item.isRead,
-      isReplied: item.isReplied,
-      createdAt: item.createdAt.toISOString() as unknown as Date,
+      isRead: Boolean(item.isRead),
+      isReplied: Boolean(item.isReplied),
+      createdAt:
+        item.createdAt instanceof Date
+          ? item.createdAt.toISOString()
+          : new Date(item.createdAt || Date.now()).toISOString(),
     }));
   } catch {
-    // If DB offline
+    // If DB offline, maintain empty inbox rather than crashing
+    inquiries = [];
   }
 
   return (
@@ -50,4 +56,3 @@ export default async function AdminInquiriesPage() {
     </div>
   );
 }
-

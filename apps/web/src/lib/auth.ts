@@ -39,8 +39,12 @@ export async function getSessionUser(req?: NextRequest): Promise<AuthUser | null
 
   if (!token) return null;
 
-  const result = await validateSession(token);
-  return result ? result.user : null;
+  try {
+    const result = await validateSession(token);
+    return result ? result.user : null;
+  } catch {
+    return null;
+  }
 }
 
 export async function requireAuth(requiredPermission?: Permission): Promise<AuthUser> {

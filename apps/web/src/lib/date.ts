@@ -3,12 +3,24 @@
  * AFREQA official operations base: Nairobi, Kenya (UTC+3, 24-hour military clock)
  */
 
+function parseSafeDate(date: unknown): Date | null {
+  if (date === null || date === undefined || date === "") return null;
+  if (date instanceof Date) {
+    return isNaN(date.getTime()) ? null : date;
+  }
+  if (typeof date === "string" || typeof date === "number") {
+    const d = new Date(date);
+    return isNaN(d.getTime()) ? null : d;
+  }
+  return null;
+}
+
 export function formatEatTimestamp(
-  date: Date | string | number,
+  date: unknown,
   options?: { includeSeconds?: boolean; includeOffset?: boolean }
 ): string {
-  const d = typeof date === "string" || typeof date === "number" ? new Date(date) : date;
-  if (isNaN(d.getTime())) return "Invalid Date";
+  const d = parseSafeDate(date);
+  if (!d) return "—";
 
   const formatted = new Intl.DateTimeFormat("en-GB", {
     timeZone: "Africa/Nairobi",
@@ -26,11 +38,11 @@ export function formatEatTimestamp(
 }
 
 export function formatEatDateTime(
-  date: Date | string | number,
+  date: unknown,
   options?: { includeSeconds?: boolean }
 ): string {
-  const d = typeof date === "string" || typeof date === "number" ? new Date(date) : date;
-  if (isNaN(d.getTime())) return "—";
+  const d = parseSafeDate(date);
+  if (!d) return "—";
 
   return new Intl.DateTimeFormat("en-GB", {
     timeZone: "Africa/Nairobi",
@@ -46,11 +58,11 @@ export function formatEatDateTime(
 }
 
 export function formatEatTime(
-  date: Date | string | number,
+  date: unknown,
   options?: { includeSeconds?: boolean }
 ): string {
-  const d = typeof date === "string" || typeof date === "number" ? new Date(date) : date;
-  if (isNaN(d.getTime())) return "—";
+  const d = parseSafeDate(date);
+  if (!d) return "—";
 
   return new Intl.DateTimeFormat("en-GB", {
     timeZone: "Africa/Nairobi",
@@ -62,9 +74,9 @@ export function formatEatTime(
   }).format(d);
 }
 
-export function formatEatDate(date: Date | string | number): string {
-  const d = typeof date === "string" || typeof date === "number" ? new Date(date) : date;
-  if (isNaN(d.getTime())) return "—";
+export function formatEatDate(date: unknown): string {
+  const d = parseSafeDate(date);
+  if (!d) return "—";
 
   return new Intl.DateTimeFormat("en-GB", {
     timeZone: "Africa/Nairobi",
