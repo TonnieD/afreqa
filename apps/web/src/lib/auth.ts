@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import type { NextRequest } from "next/server";
 import { redirect } from "next/navigation";
 import {
   validateSession,
@@ -9,9 +10,33 @@ import {
   type Role,
 } from "@afreqa/core";
 
-export async function getSessionUser(): Promise<AuthUser | null> {
-  const cookieStore = await cookies();
-  const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+export async function getSessionUser(req?: NextRequest): Promise<AuthUser | null> {
+  let token: string | undefined;
+
+  // 1. Direct retrieval from incoming NextRequest in Route Handlers
+  if (req) {
+    token = req.cookies.get(SESSION_COOKIE_NAME)?.value;
+    if (!token) {
+      const cookieHeader = req.headers.get("cookie");
+      if (cookieHeader) {
+        const match = cookieHeader.match(new RegExp(`(?:^|;\\s*)${SESSION_COOKIE_NAME}=([^;]*)`));
+        if (match && match[1]) {
+          token = decodeURIComponent(match[1]);
+        }
+      }
+    }
+  }
+
+  // 2. Next.js server component / server action cookies() store
+  if (!token) {
+    try {
+      const cookieStore = await cookies();
+      token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+    } catch {
+      // Ignore if outside cookie context
+    }
+  }
+
   if (!token) return null;
 
   const result = await validateSession(token);

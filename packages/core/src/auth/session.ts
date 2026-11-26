@@ -88,6 +88,18 @@ export async function validateSession(
       .catch((err) => logger.warn("Could not extend session expiry", { error: String(err) }));
   }
 
+  // Auto-heal initial seeded admin to SUPER_ADMIN if needed
+  const seedEmail = (process.env.SEED_ADMIN_EMAIL || "admin@afreqa.local").toLowerCase();
+  if (session.user.email.toLowerCase() === seedEmail && session.user.role !== "SUPER_ADMIN") {
+    await db.user
+      .update({
+        where: { id: session.user.id },
+        data: { role: "SUPER_ADMIN" as Role },
+      })
+      .catch(() => {});
+    session.user.role = "SUPER_ADMIN" as Role;
+  }
+
   return {
     session,
     user: session.user,

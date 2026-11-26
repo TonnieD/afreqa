@@ -26,10 +26,13 @@ function generateSecurePassword(length = 12): string {
   return result.split("").sort(() => 0.5 - Math.random()).join("");
 }
 
-export async function GET() {
-  const user = await getSessionUser();
-  if (!user || !hasPermission(user.role, "users:manage")) {
-    return NextResponse.json({ error: "Unauthorized: Super Admin access required" }, { status: 403 });
+export async function GET(req: NextRequest) {
+  const user = await getSessionUser(req);
+  if (!user) {
+    return NextResponse.json({ error: "Session expired or authentication missing. Please log in again." }, { status: 401 });
+  }
+  if (!hasPermission(user.role, "users:manage")) {
+    return NextResponse.json({ error: "Unauthorized: Administrator access required" }, { status: 403 });
   }
 
   try {
@@ -60,9 +63,12 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const user = await getSessionUser();
-  if (!user || !hasPermission(user.role, "users:manage")) {
-    return NextResponse.json({ error: "Unauthorized: Super Admin access required" }, { status: 403 });
+  const user = await getSessionUser(req);
+  if (!user) {
+    return NextResponse.json({ error: "Session expired or authentication missing. Please log in again." }, { status: 401 });
+  }
+  if (!hasPermission(user.role, "users:manage")) {
+    return NextResponse.json({ error: "Unauthorized: Administrator access required" }, { status: 403 });
   }
 
   try {

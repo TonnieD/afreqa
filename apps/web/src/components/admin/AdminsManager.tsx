@@ -142,6 +142,7 @@ export function AdminsManager({ currentUser, initialUsers }: AdminsManagerProps)
       const res = await fetch("/api/admin/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({
           name: addName.trim(),
           email: addEmail.trim(),
@@ -195,6 +196,7 @@ export function AdminsManager({ currentUser, initialUsers }: AdminsManagerProps)
       const res = await fetch(`/api/admin/users/${targetUser.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ role: newRole }),
       });
 
@@ -231,6 +233,7 @@ export function AdminsManager({ currentUser, initialUsers }: AdminsManagerProps)
       const res = await fetch(`/api/admin/users/${selectedUserForReset.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({
           newPassword: pwd,
           forcePasswordReset: resetForcePassword,
@@ -281,6 +284,7 @@ export function AdminsManager({ currentUser, initialUsers }: AdminsManagerProps)
     try {
       const res = await fetch(`/api/admin/users/${userToDelete.id}`, {
         method: "DELETE",
+        credentials: "include",
       });
 
       const data = await res.json();

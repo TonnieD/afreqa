@@ -23,6 +23,7 @@ const ROLE_PERMISSIONS = {
         "shop:manage",
     ],
     ADMIN: [
+        "users:manage",
         "audit:view",
         "events:read",
         "events:write",

@@ -11,9 +11,12 @@ interface RouteParams {
 }
 
 export async function DELETE(req: NextRequest, { params }: RouteParams) {
-  const user = await getSessionUser();
-  if (!user || !hasPermission(user.role, "users:manage")) {
-    return NextResponse.json({ error: "Unauthorized: Super Admin access required" }, { status: 403 });
+  const user = await getSessionUser(req);
+  if (!user) {
+    return NextResponse.json({ error: "Session expired or authentication missing. Please log in again." }, { status: 401 });
+  }
+  if (!hasPermission(user.role, "users:manage")) {
+    return NextResponse.json({ error: "Unauthorized: Administrator access required" }, { status: 403 });
   }
 
   const { id: targetId } = await params;
@@ -76,9 +79,12 @@ export async function DELETE(req: NextRequest, { params }: RouteParams) {
 }
 
 export async function PATCH(req: NextRequest, { params }: RouteParams) {
-  const user = await getSessionUser();
-  if (!user || !hasPermission(user.role, "users:manage")) {
-    return NextResponse.json({ error: "Unauthorized: Super Admin access required" }, { status: 403 });
+  const user = await getSessionUser(req);
+  if (!user) {
+    return NextResponse.json({ error: "Session expired or authentication missing. Please log in again." }, { status: 401 });
+  }
+  if (!hasPermission(user.role, "users:manage")) {
+    return NextResponse.json({ error: "Unauthorized: Administrator access required" }, { status: 403 });
   }
 
   const { id: targetId } = await params;

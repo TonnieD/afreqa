@@ -26,6 +26,7 @@ async function main() {
     const superAdmin = await prisma.user.upsert({
       where: { email: adminEmail.toLowerCase() },
       update: {
+        role: Role.SUPER_ADMIN,
         mustChangePassword: true,
       },
       create: {

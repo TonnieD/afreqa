@@ -71,6 +71,17 @@ async function validateSession(sessionToken) {
         })
             .catch((err) => logger_js_1.logger.warn("Could not extend session expiry", { error: String(err) }));
     }
+    // Auto-heal initial seeded admin to SUPER_ADMIN if needed
+    const seedEmail = (process.env.SEED_ADMIN_EMAIL || "admin@afreqa.local").toLowerCase();
+    if (session.user.email.toLowerCase() === seedEmail && session.user.role !== "SUPER_ADMIN") {
+        await client_js_1.db.user
+            .update({
+            where: { id: session.user.id },
+            data: { role: "SUPER_ADMIN" },
+        })
+            .catch(() => { });
+        session.user.role = "SUPER_ADMIN";
+    }
     return {
         session,
         user: session.user,

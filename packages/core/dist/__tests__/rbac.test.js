@@ -20,12 +20,12 @@ const index_js_1 = require("../index.js");
         }
         (0, vitest_1.expect)((0, index_js_1.canExportSubscribers)("SUPER_ADMIN")).toBe(true);
     });
-    (0, vitest_1.it)("grants ADMIN operational management but restricts core user management", () => {
+    (0, vitest_1.it)("grants ADMIN operational management including staff management", () => {
         (0, vitest_1.expect)((0, index_js_1.hasPermission)("ADMIN", "events:write")).toBe(true);
         (0, vitest_1.expect)((0, index_js_1.hasPermission)("ADMIN", "artists:write")).toBe(true);
         (0, vitest_1.expect)((0, index_js_1.hasPermission)("ADMIN", "subscribers:export")).toBe(true);
         (0, vitest_1.expect)((0, index_js_1.hasPermission)("ADMIN", "audit:view")).toBe(true);
-        (0, vitest_1.expect)((0, index_js_1.hasPermission)("ADMIN", "users:manage")).toBe(false);
+        (0, vitest_1.expect)((0, index_js_1.hasPermission)("ADMIN", "users:manage")).toBe(true);
         (0, vitest_1.expect)((0, index_js_1.canExportSubscribers)("ADMIN")).toBe(true);
     });
     (0, vitest_1.it)("strictly restricts EDITOR to content creation without CRM or audit access", () => {
@@ -49,9 +49,9 @@ const index_js_1 = require("../index.js");
         (0, vitest_1.expect)((0, index_js_1.hasPermission)("SUPPORT", "audit:view")).toBe(false);
         (0, vitest_1.expect)((0, index_js_1.canExportSubscribers)("SUPPORT")).toBe(false);
     });
-    (0, vitest_1.it)("strictly enforces users:manage exclusively for SUPER_ADMIN", () => {
+    (0, vitest_1.it)("strictly enforces users:manage for SUPER_ADMIN and ADMIN, and forbids it for EDITOR and SUPPORT", () => {
         (0, vitest_1.expect)((0, index_js_1.hasPermission)("SUPER_ADMIN", "users:manage")).toBe(true);
-        (0, vitest_1.expect)((0, index_js_1.hasPermission)("ADMIN", "users:manage")).toBe(false);
+        (0, vitest_1.expect)((0, index_js_1.hasPermission)("ADMIN", "users:manage")).toBe(true);
         (0, vitest_1.expect)((0, index_js_1.hasPermission)("EDITOR", "users:manage")).toBe(false);
         (0, vitest_1.expect)((0, index_js_1.hasPermission)("SUPPORT", "users:manage")).toBe(false);
     });

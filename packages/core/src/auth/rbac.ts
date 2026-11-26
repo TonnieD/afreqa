@@ -40,6 +40,7 @@ const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
     "shop:manage",
   ],
   ADMIN: [
+    "users:manage",
     "audit:view",
     "events:read",
     "events:write",

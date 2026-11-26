@@ -21,12 +21,12 @@ describe("Role-Based Access Control (RBAC) Matrix", () => {
     expect(canExportSubscribers("SUPER_ADMIN")).toBe(true);
   });
 
-  it("grants ADMIN operational management but restricts core user management", () => {
+  it("grants ADMIN operational management including staff management", () => {
     expect(hasPermission("ADMIN", "events:write")).toBe(true);
     expect(hasPermission("ADMIN", "artists:write")).toBe(true);
     expect(hasPermission("ADMIN", "subscribers:export")).toBe(true);
     expect(hasPermission("ADMIN", "audit:view")).toBe(true);
-    expect(hasPermission("ADMIN", "users:manage")).toBe(false);
+    expect(hasPermission("ADMIN", "users:manage")).toBe(true);
     expect(canExportSubscribers("ADMIN")).toBe(true);
   });
 
@@ -55,9 +55,9 @@ describe("Role-Based Access Control (RBAC) Matrix", () => {
     expect(canExportSubscribers("SUPPORT")).toBe(false);
   });
 
-  it("strictly enforces users:manage exclusively for SUPER_ADMIN", () => {
+  it("strictly enforces users:manage for SUPER_ADMIN and ADMIN, and forbids it for EDITOR and SUPPORT", () => {
     expect(hasPermission("SUPER_ADMIN", "users:manage")).toBe(true);
-    expect(hasPermission("ADMIN", "users:manage")).toBe(false);
+    expect(hasPermission("ADMIN", "users:manage")).toBe(true);
     expect(hasPermission("EDITOR", "users:manage")).toBe(false);
     expect(hasPermission("SUPPORT", "users:manage")).toBe(false);
   });
