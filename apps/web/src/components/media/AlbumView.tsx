@@ -28,7 +28,7 @@ export function AlbumView({ photos, downloadProtection }: AlbumViewProps) {
         onContextMenu={isDeterrent ? (e) => e.preventDefault() : undefined}
       >
         {photos.map((photo, idx) => {
-          const thumbUrl = photo.responsiveUrls?.medium || photo.responsiveUrls?.thumb || photo.originalUrl;
+          const thumbUrl = photo.responsiveUrls?.thumb || photo.originalUrl;
 
           return (
             <div
@@ -40,6 +40,7 @@ export function AlbumView({ photos, downloadProtection }: AlbumViewProps) {
                 src={thumbUrl}
                 alt={photo.caption || `Festival moment ${idx + 1}`}
                 fill
+                unoptimized
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 onDragStart={isDeterrent ? (e) => e.preventDefault() : undefined}
                 className="object-cover group-hover:scale-105 transition duration-500 select-none"

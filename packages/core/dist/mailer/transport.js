@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.mailTransporter = void 0;
+exports.isEmailAllowed = isEmailAllowed;
 exports.sendEmail = sendEmail;
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const logger_js_1 = require("../logger.js");
@@ -12,7 +13,24 @@ const smtpHost = process.env.SMTP_HOST || "localhost";
 const smtpPort = parseInt(process.env.SMTP_PORT || "1025", 10);
 const smtpUser = process.env.SMTP_USER;
 const smtpPass = process.env.SMTP_PASS;
-const defaultFrom = process.env.EMAIL_FROM || "Afreqa Nairobi <frequencies@afreqa.com>";
+const defaultFrom = process.env.SMTP_FROM || process.env.EMAIL_FROM || "Afreqa Nairobi <hello@afreqa.com>";
+/**
+ * Checks whether a recipient address is permitted by the optional EMAIL_ALLOWLIST env var.
+ * If EMAIL_ALLOWLIST is unset or empty, all valid recipients are allowed.
+ */
+function isEmailAllowed(to, allowlistEnv = process.env.EMAIL_ALLOWLIST) {
+    if (!allowlistEnv || !allowlistEnv.trim()) {
+        return true;
+    }
+    const allowed = allowlistEnv
+        .split(",")
+        .map((e) => e.trim().toLowerCase())
+        .filter(Boolean);
+    if (allowed.length === 0) {
+        return true;
+    }
+    return allowed.includes(to.trim().toLowerCase());
+}
 exports.mailTransporter = nodemailer_1.default.createTransport({
     host: smtpHost,
     port: smtpPort,
@@ -23,6 +41,17 @@ exports.mailTransporter = nodemailer_1.default.createTransport({
     },
 });
 async function sendEmail(options) {
+    if (!isEmailAllowed(options.to)) {
+        logger_js_1.logger.info("Email skipped: recipient not in EMAIL_ALLOWLIST", {
+            to: options.to,
+            subject: options.subject,
+        });
+        return {
+            messageId: "skipped-allowlist",
+            accepted: [],
+            skippedAllowlist: true,
+        };
+    }
     try {
         const info = await exports.mailTransporter.sendMail({
             from: options.from || defaultFrom,

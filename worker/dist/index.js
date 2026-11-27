@@ -97,7 +97,17 @@ async function runWorker() {
             }
         }
     });
-    // 4. Scheduled Cleanup Worker (expired rate limit entries & unverified subscribers after 30 days)
+    // 4. Fallback Admin Contact Notification Worker
+    await boss.work(core_1.QUEUE_NAMES.EMAIL_CONTACT_ADMIN, async (jobs) => {
+        for (const job of jobs) {
+            await (0, core_1.sendEmail)({
+                to: job.data.to,
+                subject: job.data.subject,
+                html: job.data.html,
+            });
+        }
+    });
+    // 5. Scheduled Cleanup Worker (expired rate limit entries & unverified subscribers after 30 days)
     await boss.work(core_1.QUEUE_NAMES.CLEANUP_HOURLY, async () => {
         core_1.logger.info("Running periodic cleanup worker...");
         try {

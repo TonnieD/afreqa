@@ -5,6 +5,7 @@ import {
   VerificationEmailPayload,
   WelcomeEmailPayload,
   CampaignEmailPayload,
+  AdminContactEmailPayload,
   sendEmail,
   renderVerificationEmail,
   renderWelcomeEmail,
@@ -120,7 +121,18 @@ async function runWorker() {
     }
   });
 
-  // 4. Scheduled Cleanup Worker (expired rate limit entries & unverified subscribers after 30 days)
+  // 4. Fallback Admin Contact Notification Worker
+  await boss.work<AdminContactEmailPayload>(QUEUE_NAMES.EMAIL_CONTACT_ADMIN, async (jobs) => {
+    for (const job of jobs) {
+      await sendEmail({
+        to: job.data.to,
+        subject: job.data.subject,
+        html: job.data.html,
+      });
+    }
+  });
+
+  // 5. Scheduled Cleanup Worker (expired rate limit entries & unverified subscribers after 30 days)
   await boss.work(QUEUE_NAMES.CLEANUP_HOURLY, async () => {
     logger.info("Running periodic cleanup worker...");
     try {

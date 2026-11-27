@@ -1,55 +1,88 @@
+import {
+  db,
+  getGalleryCapStatus,
+  getStorageDriverName,
+  resolveMediaUrl,
+} from "@afreqa/core";
 import { requireAuth } from "@/lib/auth";
-import { db } from "@afreqa/core";
-import { Image as ImageIcon, Plus, Shield } from "lucide-react";
+import { GalleryUploader } from "@/components/admin/GalleryUploader";
+
+export const dynamic = "force-dynamic";
 
 export default async function AdminGalleryPage() {
-  await requireAuth("gallery:read");
+  await requireAuth("gallery:write");
 
-  let albums: Array<{
-    id: string;
-    title: string;
-    slug: string;
-    visibility: string;
-    downloadProtection: string;
-    _count: { media: number };
-  }> = [];
-
-  try {
-    albums = await db.album.findMany({
+  const [photoCount, albumCount, albums, recentAssets] = await Promise.all([
+    db.mediaAsset.count({ where: { type: "PHOTO" } }),
+    db.album.count(),
+    db.album.findMany({
+      select: { id: true, title: true },
+      orderBy: { sortOrder: "asc" },
+    }),
+    db.mediaAsset.findMany({
+      where: { type: "PHOTO", status: "READY" },
       orderBy: { createdAt: "desc" },
-      include: {
-        _count: { select: { media: true } },
+      take: 12,
+      select: {
+        id: true,
+        filename: true,
+        originalUrl: true,
+        responsiveUrls: true,
+        caption: true,
       },
-    });
-  } catch {
-    // If DB offline
-  }
+    }),
+  ]);
+
+  const cap = getGalleryCapStatus(photoCount);
+  const driver = getStorageDriverName();
+  const videoUploadEnabled = process.env.VIDEO_UPLOAD_ENABLED === "true";
+
+  const initialPhotos = recentAssets.map((asset) => {
+    const resp = asset.responsiveUrls as { thumb?: string } | null;
+    return {
+      id: asset.id,
+      filename: asset.filename || "photo",
+      thumbUrl: resolveMediaUrl(resp?.thumb || asset.originalUrl),
+      caption: asset.caption,
+    };
+  });
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-afreqa-chrome-high/10">
-        <div>
-          <h1 className="font-display font-extrabold text-2xl text-afreqa-chrome-high uppercase tracking-wide">
-            Media & Festival Gallery
-          </h1>
-          <p className="text-xs text-afreqa-silver-mid mt-1 font-mono">
-            Manage festival photo albums, photographer credits, and right-click deterrent protection
-          </p>
+    <div className="space-y-8">
+      <div>
+        <h1 className="font-display font-bold text-3xl text-afreqa-chrome-high">
+          Media &amp; Gallery Management
+        </h1>
+        <p className="text-sm text-afreqa-silver-mid mt-1">
+          Manage photo albums and upload optimized WebP variants (400w, 1200w, 2400w + LQIP).
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="p-6 rounded-xl bg-afreqa-void border border-afreqa-chrome-high/10">
+          <div className="text-xs font-mono uppercase text-afreqa-silver-mid">Total Albums</div>
+          <div className="text-3xl font-bold text-afreqa-chrome-high mt-2">{albumCount}</div>
+        </div>
+        <div className="p-6 rounded-xl bg-afreqa-void border border-afreqa-chrome-high/10">
+          <div className="text-xs font-mono uppercase text-afreqa-silver-mid">Photo Pipeline</div>
+          <div className="text-sm font-semibold text-afreqa-teal mt-2">
+            WebP Variants Only ({driver})
+          </div>
+        </div>
+        <div className="p-6 rounded-xl bg-afreqa-void border border-afreqa-chrome-high/10">
+          <div className="text-xs font-mono uppercase text-afreqa-silver-mid">Video Hosting</div>
+          <div className="text-sm font-semibold text-afreqa-silver-mid mt-2">
+            {videoUploadEnabled ? "Direct Upload Enabled" : "Embeds Only (YouTube / Vimeo)"}
+          </div>
         </div>
       </div>
 
-      <div className="rounded-2xl bg-afreqa-stage/70 border border-afreqa-chrome-high/10 p-8 text-center">
-        <ImageIcon className="w-12 h-12 text-afreqa-teal mx-auto mb-3 opacity-80" />
-        <h3 className="font-bold text-base text-afreqa-chrome-high">Festival Albums & Media Engine</h3>
-        <p className="text-xs text-afreqa-silver-mid max-w-md mx-auto mt-1 mb-4 leading-relaxed">
-          The basic image uploader is active (`/api/uploads/images`). Full multi-photo album upload, ffmpeg video transcoding, and tus resumable chunking will be managed here in Phase 4.
-        </p>
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-afreqa-teal/10 border border-afreqa-teal/30 text-afreqa-teal text-xs font-mono font-bold uppercase">
-          <Shield className="w-3.5 h-3.5" />
-          <span>Storage Volume & Sharp Pipeline Ready</span>
-        </span>
-      </div>
+      <GalleryUploader
+        initialCap={cap}
+        driver={driver}
+        albums={albums}
+        initialPhotos={initialPhotos}
+      />
     </div>
   );
 }
-

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { db } from "@afreqa/core";
+import { db, resolveMediaUrl } from "@afreqa/core";
 import { ShieldAlert, ArrowLeft, Camera, Film, ArrowUpRight, FolderHeart, DownloadCloud } from "lucide-react";
 import { AlbumView } from "@/components/media/AlbumView";
 import { VideoPlayer } from "@/components/media/VideoPlayer";
@@ -47,6 +47,8 @@ export default async function AlbumDetailPage({ params }: AlbumPageProps) {
   } | null = null;
 
   let photosUrl: string | null = null;
+  const isDemoOrPublicBlob =
+    process.env.DEMO_BANNER === "true" || process.env.STORAGE_DRIVER === "vercel-blob";
 
   try {
     const dbAlbum = await db.album.findUnique({
@@ -72,13 +74,22 @@ export default async function AlbumDetailPage({ params }: AlbumPageProps) {
         downloadProtection: dbAlbum.downloadProtection as "DISABLED" | "DETERRENT",
         photos: dbAlbum.media
           .filter((m) => m.type === "PHOTO")
-          .map((m) => ({
-            id: m.id,
-            originalUrl: m.originalUrl,
-            responsiveUrls: m.responsiveUrls as { thumb?: string; medium?: string; full?: string } | null,
-            caption: m.caption,
-            photographerCredit: m.photographerCredit,
-          })),
+          .map((m) => {
+            const resp = m.responsiveUrls as { thumb?: string; medium?: string; full?: string } | null;
+            return {
+              id: m.id,
+              originalUrl: resolveMediaUrl(m.originalUrl),
+              responsiveUrls: resp
+                ? {
+                    thumb: resp.thumb ? resolveMediaUrl(resp.thumb) : undefined,
+                    medium: resp.medium ? resolveMediaUrl(resp.medium) : undefined,
+                    full: resp.full ? resolveMediaUrl(resp.full) : undefined,
+                  }
+                : null,
+              caption: m.caption,
+              photographerCredit: m.photographerCredit,
+            };
+          }),
         videos: dbAlbum.media
           .filter((m) => m.type === "VIDEO_UPLOAD" || m.type === "VIDEO_EMBED")
           .map((m) => ({
@@ -196,7 +207,7 @@ export default async function AlbumDetailPage({ params }: AlbumPageProps) {
             )}
           </div>
 
-          {albumData.downloadProtection === "DETERRENT" && (
+          {!isDemoOrPublicBlob && albumData.downloadProtection === "DETERRENT" && (
             <div className="shrink-0 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-400 text-xs font-mono">
               <ShieldAlert className="w-3.5 h-3.5" />
               <span>Right-Click & Drag Deterred</span>
@@ -274,7 +285,7 @@ export default async function AlbumDetailPage({ params }: AlbumPageProps) {
 
         <AlbumView
           photos={albumData.photos}
-          downloadProtection={albumData.downloadProtection}
+          downloadProtection={isDemoOrPublicBlob ? "DISABLED" : albumData.downloadProtection}
         />
       </section>
 

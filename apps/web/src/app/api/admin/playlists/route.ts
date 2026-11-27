@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { assertSameOrigin } from "@/lib/csrf";
 import { getSessionUser } from "@/lib/auth";
 import { db, hasPermission, recordAuditLog } from "@afreqa/core";
 import { PLAYLISTS, type Playlist } from "@/lib/spotify";
@@ -29,6 +30,8 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  const originError = assertSameOrigin(req);
+  if (originError) return originError;
   const user = await getSessionUser();
   if (!user || !hasPermission(user.role, "events:write")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -106,6 +109,8 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PUT(req: NextRequest) {
+  const originError = assertSameOrigin(req);
+  if (originError) return originError;
   const user = await getSessionUser();
   if (!user || !hasPermission(user.role, "events:write")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -191,6 +196,8 @@ export async function PUT(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+  const originError = assertSameOrigin(req);
+  if (originError) return originError;
   const user = await getSessionUser();
   if (!user || !hasPermission(user.role, "events:write")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

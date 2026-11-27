@@ -9,6 +9,7 @@ const promises_1 = __importDefault(require("node:fs/promises"));
 const node_fs_1 = require("node:fs");
 const node_path_1 = __importDefault(require("node:path"));
 class LocalStorageProvider {
+    driver = "local";
     baseDir;
     publicPrefix;
     constructor(baseDir, publicPrefix) {

@@ -2,9 +2,10 @@ import fs from "node:fs/promises";
 import { createReadStream, existsSync } from "node:fs";
 import path from "node:path";
 import { Readable } from "node:stream";
-import { StorageProvider, StorageUploadResult } from "./StorageProvider.js";
+import type { StorageDriverName, StorageProvider, StorageUploadResult } from "./StorageProvider.js";
 
 export class LocalStorageProvider implements StorageProvider {
+  readonly driver: StorageDriverName = "local";
   private baseDir: string;
   private publicPrefix: string;
 

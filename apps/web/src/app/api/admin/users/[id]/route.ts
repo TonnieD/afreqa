@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { assertSameOrigin } from "@/lib/csrf";
 import { getSessionUser } from "@/lib/auth";
 import { db, hasPermission, recordAuditLog, hashPassword, type Role } from "@afreqa/core";
 
@@ -11,6 +12,8 @@ interface RouteParams {
 }
 
 export async function DELETE(req: NextRequest, { params }: RouteParams) {
+  const originError = assertSameOrigin(req);
+  if (originError) return originError;
   const user = await getSessionUser(req);
   if (!user) {
     return NextResponse.json({ error: "Session expired or authentication missing. Please log in again." }, { status: 401 });
@@ -79,6 +82,8 @@ export async function DELETE(req: NextRequest, { params }: RouteParams) {
 }
 
 export async function PATCH(req: NextRequest, { params }: RouteParams) {
+  const originError = assertSameOrigin(req);
+  if (originError) return originError;
   const user = await getSessionUser(req);
   if (!user) {
     return NextResponse.json({ error: "Session expired or authentication missing. Please log in again." }, { status: 401 });

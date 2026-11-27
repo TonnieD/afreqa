@@ -6,10 +6,17 @@ import {
   normalizeAndValidatePhone,
   subscribeFormSchema,
   enqueueVerificationEmail,
+  sendEmail,
+  renderVerificationEmail,
   logger,
 } from "@afreqa/core";
+import { assertSameOrigin } from "@/lib/csrf";
+import { runAfterResponse } from "@/lib/host-adapter";
 
 export async function POST(req: NextRequest) {
+  const originError = assertSameOrigin(req);
+  if (originError) return originError;
+
   try {
     const rawIp =
       req.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
@@ -137,18 +144,35 @@ export async function POST(req: NextRequest) {
 
     const verifyUrl = `${origin}/verify-email?token=${verificationToken}`;
 
-    try {
-      await enqueueVerificationEmail({
-        subscriberId: subscriber.id,
-        email: subscriber.email,
-        firstName: subscriber.firstName,
-        verifyUrl,
-        tokenExpiresHours: 24,
-      });
-    } catch (queueErr) {
-      logger.error("Failed to enqueue verification email via pg-boss", queueErr);
-      // Even if queue fails, subscriber is persisted and can request resend or admin can verify
-    }
+    runAfterResponse("subscriber-verification-email", async () => {
+      try {
+        const html = renderVerificationEmail({
+          recipientName: subscriber.firstName,
+          verifyUrl,
+          tokenExpiresHours: 24,
+        });
+        await sendEmail({
+          to: subscriber.email,
+          subject: "Confirm your Afreqa Frequency [Verification Required]",
+          html,
+        });
+      } catch (sendErr) {
+        logger.warn("Direct verification email failed; falling back to pg-boss queue", {
+          error: String(sendErr),
+        });
+        try {
+          await enqueueVerificationEmail({
+            subscriberId: subscriber.id,
+            email: subscriber.email,
+            firstName: subscriber.firstName,
+            verifyUrl,
+            tokenExpiresHours: 24,
+          });
+        } catch (queueErr) {
+          logger.error("Failed to enqueue verification email via pg-boss", queueErr);
+        }
+      }
+    });
 
     return NextResponse.json({
       success: true,

@@ -3,32 +3,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.isVideoUploadEnabled = isVideoUploadEnabled;
 exports.checkDiskSpaceForUpload = checkDiskSpaceForUpload;
 exports.cleanAbandonedTusUploads = cleanAbandonedTusUploads;
-exports.createTusServer = createTusServer;
 const path_1 = __importDefault(require("path"));
 const promises_1 = __importDefault(require("fs/promises"));
-const server_1 = require("@tus/server");
-const file_store_1 = require("@tus/file-store");
 const logger_js_1 = require("../logger.js");
 const uploadBaseDir = process.env.UPLOAD_DIR || path_1.default.join(process.cwd(), "uploads");
 const tusDirectory = path_1.default.join(uploadBaseDir, "tus");
-// Ensure tus directory exists
-async function ensureTusDir() {
-    try {
-        await promises_1.default.mkdir(tusDirectory, { recursive: true });
-    }
-    catch (err) {
-        logger_js_1.logger.error("Failed to create tus uploads directory", err);
-    }
+function isVideoUploadEnabled() {
+    return process.env.VIDEO_UPLOAD_ENABLED === "true";
 }
-ensureTusDir().catch(() => { });
 /**
  * Checks if target directory has at least 3x the required file size in available disk space.
  */
 async function checkDiskSpaceForUpload(uploadSizeBytes) {
     const requiredBytes = uploadSizeBytes * 3;
     try {
+        await promises_1.default.mkdir(tusDirectory, { recursive: true });
         const stats = await promises_1.default.statfs(tusDirectory);
         const availableBytes = stats.bavail * stats.bsize;
         const allowed = availableBytes >= requiredBytes;
@@ -68,35 +60,9 @@ async function cleanAbandonedTusUploads(maxAgeHours = 24) {
             logger_js_1.logger.info(`Cleaned ${cleanedCount} abandoned Tus upload parts older than ${maxAgeHours}h`);
         }
     }
-    catch (err) {
-        logger_js_1.logger.error("Error cleaning abandoned Tus uploads", err);
+    catch {
+        // tusDirectory may not exist when VIDEO_UPLOAD_ENABLED=false
     }
     return cleanedCount;
-}
-function createTusServer(basePath = "/api/uploads/tus") {
-    return new server_1.Server({
-        path: basePath,
-        datastore: new file_store_1.FileStore({
-            directory: tusDirectory,
-        }),
-        respectForwardedHeaders: true,
-        async onUploadCreate(req, upload) {
-            const size = upload.size || 0;
-            if (size > 0) {
-                const space = await checkDiskSpaceForUpload(size);
-                if (!space.allowed) {
-                    throw { status_code: 507, body: "Insufficient server storage: 3x video space required." };
-                }
-            }
-            return { metadata: upload.metadata };
-        },
-        async onUploadFinish(req, upload) {
-            logger_js_1.logger.info(`Tus resumable upload completed successfully: ${upload.id}`, {
-                size: upload.size,
-                metadata: upload.metadata,
-            });
-            return { status_code: 200 };
-        },
-    });
 }
 //# sourceMappingURL=tus.js.map

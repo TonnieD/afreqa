@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { db } from "@afreqa/core";
+import { db, resolveMediaUrl } from "@afreqa/core";
 import { Camera, Film, ArrowUpRight, Sparkles } from "lucide-react";
 import { VideoPlayer } from "@/components/media/VideoPlayer";
 
@@ -71,7 +71,7 @@ export default async function GalleryPage() {
         title: a.title,
         slug: a.slug,
         description: a.description || "Festival edition visual archive",
-        coverUrl: a.coverUrl || "/images/afreqa-live-crowd.jpg",
+        coverUrl: resolveMediaUrl(a.coverUrl || "/images/afreqa-live-crowd.jpg"),
         photoCount: a._count.media,
         videoCount: 1,
         year: new Date(a.createdAt).getFullYear().toString(),
@@ -143,6 +143,7 @@ export default async function GalleryPage() {
                   src={album.coverUrl}
                   alt={album.title}
                   fill
+                  unoptimized
                   className="object-cover group-hover:scale-105 transition duration-500 filter brightness-95"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />

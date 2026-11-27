@@ -23,6 +23,7 @@ import type { AuthUser } from "@afreqa/core";
 interface AdminSidebarProps {
   user: AuthUser;
   initialUnreadCount?: number;
+  shopEnabled?: boolean;
 }
 
 const NAV_ITEMS = [
@@ -34,12 +35,12 @@ const NAV_ITEMS = [
   { label: "Subscribers & CRM", href: "/admin/subscribers", icon: Mail, minRole: ["SUPER_ADMIN", "ADMIN", "SUPPORT"] },
   { label: "Email Campaigns", href: "/admin/campaigns", icon: Mail, minRole: ["SUPER_ADMIN", "ADMIN"] },
   { label: "Media & Gallery", href: "/admin/gallery", icon: ImageIcon },
-  { label: "Merch & Orders", href: "/admin/shop", icon: ShoppingBag, minRole: ["SUPER_ADMIN", "ADMIN", "SUPPORT"] },
+  { label: "Merch & Orders", href: "/admin/shop", icon: ShoppingBag, minRole: ["SUPER_ADMIN", "ADMIN", "SUPPORT"], requiresShop: true },
   { label: "Admins & Staff", href: "/admin/users", icon: UserCheck, minRole: ["SUPER_ADMIN"] },
   { label: "Audit Log Trail", href: "/admin/audit", icon: ShieldAlert, minRole: ["SUPER_ADMIN", "ADMIN"] },
 ];
 
-export function AdminSidebar({ user, initialUnreadCount = 0 }: AdminSidebarProps) {
+export function AdminSidebar({ user, initialUnreadCount = 0, shopEnabled = false }: AdminSidebarProps) {
   const pathname = usePathname();
   const [unreadCount, setUnreadCount] = useState<number>(initialUnreadCount);
 
@@ -93,6 +94,9 @@ export function AdminSidebar({ user, initialUnreadCount = 0 }: AdminSidebarProps
         {/* Navigation list */}
         <nav className="p-4 space-y-1">
           {NAV_ITEMS.map((item) => {
+            if (item.requiresShop && !shopEnabled) {
+              return null;
+            }
             if (item.minRole && !item.minRole.includes(user.role)) {
               return null;
             }

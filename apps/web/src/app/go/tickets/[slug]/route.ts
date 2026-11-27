@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { db, checkRateLimit } from "@afreqa/core";
 import crypto from "crypto";
 
-const DEFAULT_TICKETS_URL = "https://afreqamusicfestival.hustlesasa.shop/";
+const getDefaultTicketsUrl = () =>
+  process.env.HUSTLESASA_STORE_URL || "https://afreqamusicfestival.hustlesasa.shop/";
 
 export async function GET(
   req: NextRequest,
@@ -44,20 +45,22 @@ export async function GET(
   const ipHash = crypto.createHash("sha256").update(ip).digest("hex").slice(0, 16);
 
   // 3. Find event and target ticket URL
-  let targetUrl = DEFAULT_TICKETS_URL;
+  let targetUrl = getDefaultTicketsUrl();
   let eventRecord = null;
 
   try {
-    eventRecord = await db.event.findFirst({
-      where: {
-        OR: [{ slug: slug }, { id: slug }],
-      },
-      select: {
-        id: true,
-        slug: true,
-        externalTicketUrl: true,
-      },
-    });
+    if (slug !== "store" && slug !== "official") {
+      eventRecord = await db.event.findFirst({
+        where: {
+          OR: [{ slug: slug }, { id: slug }],
+        },
+        select: {
+          id: true,
+          slug: true,
+          externalTicketUrl: true,
+        },
+      });
+    }
 
     if (eventRecord?.externalTicketUrl) {
       targetUrl = eventRecord.externalTicketUrl;
@@ -73,13 +76,8 @@ export async function GET(
       }
     }
   } catch {
-    // If DB read fails, fall back to default URL
-    targetUrl = DEFAULT_TICKETS_URL;
-  }
-
-  // Sanitize: Automatically normalize any deprecated afreqanairobi URL to the verified active shop
-  if (targetUrl.includes("afreqanairobi.hustlesasa.shop")) {
-    targetUrl = targetUrl.replace("afreqanairobi.hustlesasa.shop", "afreqamusicfestival.hustlesasa.shop");
+    // If DB read fails, fall back to env/default URL
+    targetUrl = getDefaultTicketsUrl();
   }
 
   // Construct final redirect URL with UTM query params appended

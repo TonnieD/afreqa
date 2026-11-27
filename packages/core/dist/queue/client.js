@@ -10,6 +10,13 @@ const logger_js_1 = require("../logger.js");
 let bossInstance = globalThis.__afreqa_boss__ || null;
 let isStarted = false;
 let startPromise = null;
+/**
+ * Serverless-safe pg-boss client for web functions (enqueue-only / cron-fetch).
+ * - Tiny connection pool (max: 2)
+ * - Disables automatic schema migration (`migrate: false`), background
+ *   supervision (`supervise: false`), and scheduling (`schedule: false`).
+ * - Schema & queues are provisioned separately by `afreqa_owner` via `queue:init`.
+ */
 function getBossClient() {
     if (bossInstance) {
         return bossInstance;
@@ -20,8 +27,11 @@ function getBossClient() {
     }
     bossInstance = new pg_boss_1.default({
         connectionString,
-        max: 10,
-        application_name: "afreqa-queue",
+        max: 2,
+        migrate: false,
+        supervise: false,
+        schedule: false,
+        application_name: "afreqa-web-enqueue",
     });
     bossInstance.on("error", (error) => {
         logger_js_1.logger.error("pg-boss client error", error);
@@ -41,21 +51,7 @@ async function getStartedBoss() {
         try {
             await boss.start();
             isStarted = true;
-            logger_js_1.logger.info("pg-boss connected and started successfully.");
-            const queues = [
-                "email:verification",
-                "email:welcome",
-                "email:campaign",
-                "cleanup:hourly",
-            ];
-            for (const q of queues) {
-                try {
-                    await boss.createQueue(q);
-                }
-                catch {
-                    // ignore if already created
-                }
-            }
+            logger_js_1.logger.info("pg-boss serverless client started (enqueue/cron mode).");
             return boss;
         }
         catch (err) {

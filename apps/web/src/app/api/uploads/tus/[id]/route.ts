@@ -21,6 +21,9 @@ interface RouteParams {
 }
 
 export async function OPTIONS() {
+  if (process.env.VIDEO_UPLOAD_ENABLED !== "true") {
+    return NextResponse.json({ error: "Video uploads are disabled. Use video embeds instead." }, { status: 404 });
+  }
   return new NextResponse(null, {
     status: 204,
     headers: TUS_HEADERS,
@@ -28,6 +31,9 @@ export async function OPTIONS() {
 }
 
 export async function HEAD(req: NextRequest, { params }: RouteParams) {
+  if (process.env.VIDEO_UPLOAD_ENABLED !== "true") {
+    return NextResponse.json({ error: "Video uploads are disabled. Use video embeds instead." }, { status: 404 });
+  }
   const { id } = await params;
   const filePath = path.join(tusDirectory, id);
   const infoPath = path.join(tusDirectory, `${id}.info`);
@@ -55,6 +61,9 @@ export async function HEAD(req: NextRequest, { params }: RouteParams) {
 }
 
 export async function PATCH(req: NextRequest, { params }: RouteParams) {
+  if (process.env.VIDEO_UPLOAD_ENABLED !== "true") {
+    return NextResponse.json({ error: "Video uploads are disabled. Use video embeds instead." }, { status: 404 });
+  }
   const user = await getSessionUser();
   if (!user || (user.role !== "SUPER_ADMIN" && user.role !== "ADMIN")) {
     return NextResponse.json({ error: "Unauthorized operator" }, { status: 403 });
@@ -100,6 +109,9 @@ export async function PATCH(req: NextRequest, { params }: RouteParams) {
 }
 
 export async function DELETE(req: NextRequest, { params }: RouteParams) {
+  if (process.env.VIDEO_UPLOAD_ENABLED !== "true") {
+    return NextResponse.json({ error: "Video uploads are disabled. Use video embeds instead." }, { status: 404 });
+  }
   const user = await getSessionUser();
   if (!user || (user.role !== "SUPER_ADMIN" && user.role !== "ADMIN")) {
     return NextResponse.json({ error: "Unauthorized operator" }, { status: 403 });

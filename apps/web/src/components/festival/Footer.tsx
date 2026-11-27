@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Instagram, Youtube, MessageCircle, ArrowUpRight, Shield, Heart } from "lucide-react";
 
-export function Footer() {
+export function Footer({ ticketHref = "/go/tickets/store" }: { ticketHref?: string }) {
   return (
     <footer className="relative bg-[#070709] border-t border-white/10 pt-16 pb-12 overflow-hidden z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -118,7 +118,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="/go/tickets/tomorrowland-nye"
+                  href={ticketHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-pink-400 hover:text-white transition-colors inline-flex items-center gap-1 font-semibold"

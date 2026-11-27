@@ -18,4 +18,6 @@ __exportStar(require("./password.js"), exports);
 __exportStar(require("./audit.js"), exports);
 __exportStar(require("./session.js"), exports);
 __exportStar(require("./rbac.js"), exports);
+__exportStar(require("./cron.js"), exports);
+__exportStar(require("./origin.js"), exports);
 //# sourceMappingURL=index.js.map

@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { db, enqueueWelcomeEmail, logger } from "@afreqa/core";
+import { db, enqueueWelcomeEmail, logger, renderWelcomeEmail, sendEmail } from "@afreqa/core";
+import { runAfterResponse } from "@/lib/host-adapter";
 
 export const metadata = {
   title: "Verify Frequency | Afreqa Nairobi",
@@ -90,18 +91,39 @@ export default async function VerifyEmailPage({ searchParams }: VerifyPageProps)
       },
     });
 
-    // Enqueue welcome email in background
-    try {
-      await enqueueWelcomeEmail({
-        subscriberId: subscriber.id,
-        email: subscriber.email,
-        firstName: subscriber.firstName,
-        vcardUrl: `${process.env.NEXT_PUBLIC_APP_URL || "https://afreqa.com"}/api/whatsapp/vcard`,
-        whatsappCommunityUrl: "https://chat.whatsapp.com/sample-afreqa-community",
-      });
-    } catch (err) {
-      logger.error("Failed to enqueue welcome email upon verification", err);
-    }
+    const vcardUrl = `${process.env.NEXT_PUBLIC_APP_URL || "https://afreqa.com"}/api/whatsapp/vcard`;
+    const whatsappCommunityUrl = "https://chat.whatsapp.com/sample-afreqa-community";
+
+    // Send welcome email directly via after() with pg-boss queue fallback
+    runAfterResponse("subscriber-welcome-email", async () => {
+      try {
+        const html = renderWelcomeEmail({
+          recipientName: subscriber.firstName,
+          whatsappCommunityUrl,
+          vcardUrl,
+        });
+        await sendEmail({
+          to: subscriber.email,
+          subject: "Welcome to Afreqa Nairobi — Your Frequency is Verified",
+          html,
+        });
+      } catch (sendErr) {
+        logger.warn("Direct welcome email failed; falling back to pg-boss queue", {
+          error: String(sendErr),
+        });
+        try {
+          await enqueueWelcomeEmail({
+            subscriberId: subscriber.id,
+            email: subscriber.email,
+            firstName: subscriber.firstName,
+            vcardUrl,
+            whatsappCommunityUrl,
+          });
+        } catch (queueErr) {
+          logger.error("Failed to enqueue welcome email upon verification", queueErr);
+        }
+      }
+    });
   }
 
   return (

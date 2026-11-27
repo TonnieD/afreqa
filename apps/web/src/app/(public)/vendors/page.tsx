@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   Store,
   Utensils,
@@ -42,24 +43,20 @@ export default function VendorsPage() {
     setSuccess(false);
 
     try {
-      const compiledMessage = `Vendor Business: ${formData.businessName}
-Category: ${formData.category}
-Instagram / Portfolio: ${formData.instagramHandle || "N/A"}
-Space Needs: ${formData.spaceNeeds}
-Power Requirements: ${formData.powerNeeds}
-
-Products & Concept Description:
-${formData.description}`;
-
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: `${formData.contactName} (${formData.businessName})`,
+          formType: "VENDOR",
+          businessName: formData.businessName,
+          contactName: formData.contactName,
           email: formData.email,
           phone: formData.phone,
-          subject: "VENDOR",
-          message: compiledMessage,
+          category: formData.category,
+          instagramHandle: formData.instagramHandle,
+          spaceNeeds: formData.spaceNeeds,
+          powerNeeds: formData.powerNeeds,
+          description: formData.description,
           website_url: formData.website_url,
         }),
       });
@@ -438,6 +435,14 @@ ${formData.description}`;
                   className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-pink-500 focus:ring-1 focus:ring-pink-500/30 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-colors resize-none"
                 />
               </div>
+
+              <p className="text-[11px] text-zinc-400 leading-relaxed">
+                By submitting this vendor application, you consent to AFREQA processing your contact and business details to evaluate your stall request in accordance with Kenya&apos;s Data Protection Act. Read our{" "}
+                <Link href="/legal/privacy" className="text-pink-400 hover:underline font-semibold">
+                  Privacy Policy
+                </Link>
+                .
+              </p>
 
               <div>
                 <button

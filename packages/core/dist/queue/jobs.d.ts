@@ -2,6 +2,7 @@ export declare const QUEUE_NAMES: {
     readonly EMAIL_VERIFICATION: "email:verification";
     readonly EMAIL_WELCOME: "email:welcome";
     readonly EMAIL_CAMPAIGN: "email:campaign";
+    readonly EMAIL_CONTACT_ADMIN: "email:contact-admin";
     readonly CLEANUP_HOURLY: "cleanup:hourly";
 };
 export interface VerificationEmailPayload {
@@ -25,6 +26,11 @@ export interface CampaignEmailPayload {
     subject: string;
     html: string;
 }
+export interface AdminContactEmailPayload {
+    to: string;
+    subject: string;
+    html: string;
+}
 /**
  * Enqueue a verification email with 3 automatic retries and exponential backoff
  */
@@ -37,4 +43,8 @@ export declare function enqueueWelcomeEmail(payload: WelcomeEmailPayload): Promi
  * Enqueue a batch of campaign emails
  */
 export declare function enqueueCampaignEmail(payload: CampaignEmailPayload): Promise<string | null>;
+/**
+ * Fallback queue for admin contact/vendor/partner notifications when direct send fails
+ */
+export declare function enqueueAdminContactNotification(payload: AdminContactEmailPayload): Promise<string | null>;
 //# sourceMappingURL=jobs.d.ts.map

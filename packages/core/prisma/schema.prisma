@@ -408,6 +408,18 @@ model MediaAsset {
   @@index([status])
 }
 
+model PendingUpload {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  userId    String
+  status    String   @default("PENDING") // PENDING | PROCESSING
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
 // ----------------------------------------------------
 // 7. CONTACT MESSAGES, FAQS & PARTNERS
 // ----------------------------------------------------
@@ -417,6 +429,7 @@ enum ContactTopic {
   SPONSORSHIP
   BOOKING
   PRESS
+  VENDOR
 }
 
 model ContactMessage {
@@ -425,6 +438,7 @@ model ContactMessage {
   email     String
   topic     ContactTopic @default(GENERAL)
   message   String
+  details   Json?
   isRead    Boolean      @default(false)
   isReplied Boolean      @default(false)
   repliedAt DateTime?

@@ -37,5 +37,18 @@ export interface OrderReceiptEmailOptions extends BaseEmailOptions {
     orderUrl?: string;
 }
 export declare function renderOrderReceiptEmail({ customerName, orderNumber, deliveryMethod, shippingAddress, items, subtotalKes, deliveryFeeKes, totalKes, orderUrl, unsubscribeUrl, }: OrderReceiptEmailOptions): string;
+/**
+ * Static confirmation email sent to Vendor / Partner / Contact applicants.
+ * Strictly contains NO user-supplied free text to prevent phishing/relay abuse.
+ */
+export declare function renderContactConfirmationEmail(inquiryCategory: "VENDOR" | "SPONSORSHIP" | "BOOKING" | "PRESS" | "GENERAL"): string;
+export declare function renderAdminContactNotificationEmail(opts: {
+    topic: string;
+    senderName: string;
+    senderEmail: string;
+    message: string;
+    details?: Record<string, unknown> | null;
+    submittedAtEat: string;
+}): string;
 export {};
 //# sourceMappingURL=templates.d.ts.map

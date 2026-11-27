@@ -277,3 +277,121 @@ export function renderOrderReceiptEmail({
   `.trim();
 }
 
+function escapeHtml(raw: string): string {
+  return raw
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+/**
+ * Static confirmation email sent to Vendor / Partner / Contact applicants.
+ * Strictly contains NO user-supplied free text to prevent phishing/relay abuse.
+ */
+export function renderContactConfirmationEmail(
+  inquiryCategory: "VENDOR" | "SPONSORSHIP" | "BOOKING" | "PRESS" | "GENERAL"
+): string {
+  const labelMap: Record<typeof inquiryCategory, string> = {
+    VENDOR: "Vendor Stall Application",
+    SPONSORSHIP: "Brand Partnership Inquiry",
+    BOOKING: "VIP Table & Booking Inquiry",
+    PRESS: "Media & Press Inquiry",
+    GENERAL: "General Inquiry",
+  };
+  const label = labelMap[inquiryCategory] || "Inquiry";
+
+  return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Inquiry Received — Afreqa Nairobi</title>
+  <style>${EMAIL_BASE_STYLES}</style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="container">
+      <div class="header">
+        <span class="logo-text">AFREQA</span>
+      </div>
+      <div class="content">
+        <span class="badge">${label}</span>
+        <h1 class="h1">We Received Your Submission</h1>
+        <p class="p">
+          Thank you for reaching out to AFREQA Nairobi. Our operations team has logged your ${label.toLowerCase()} and will review it shortly.
+        </p>
+        <p class="p">
+          If your inquiry is urgent, you can reply directly to our operations desk or check our official website for updates.
+        </p>
+      </div>
+      <div class="footer">
+        <p>© ${new Date().getFullYear()} Afreqa Productions Ltd. • Nairobi, Kenya</p>
+        <p>In full compliance with Kenya Data Protection Act, 2019.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+  `.trim();
+}
+
+export function renderAdminContactNotificationEmail(opts: {
+  topic: string;
+  senderName: string;
+  senderEmail: string;
+  message: string;
+  details?: Record<string, unknown> | null;
+  submittedAtEat: string;
+}): string {
+  const detailsRows = opts.details
+    ? Object.entries(opts.details)
+        .filter(([, v]) => v !== null && v !== undefined && String(v).trim() !== "")
+        .map(
+          ([k, v]) =>
+            `<tr><td style="padding: 6px 8px; color: #ADADAC; font-size: 12px; font-family: monospace;">${escapeHtml(k)}</td><td style="padding: 6px 8px; color: #EDECEC; font-size: 13px;">${escapeHtml(String(v))}</td></tr>`
+        )
+        .join("")
+    : "";
+
+  return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>New ${escapeHtml(opts.topic)} Submission — Afreqa Ops</title>
+  <style>${EMAIL_BASE_STYLES}</style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="container">
+      <div class="header">
+        <span class="logo-text">AFREQA OPS</span>
+      </div>
+      <div class="content">
+        <span class="badge">${escapeHtml(opts.topic)}</span>
+        <h1 class="h1">New Inbox Submission</h1>
+        <p class="p">
+          <strong>From:</strong> ${escapeHtml(opts.senderName)} (${escapeHtml(opts.senderEmail)})<br/>
+          <strong>Timestamp:</strong> ${escapeHtml(opts.submittedAtEat)}
+        </p>
+        ${
+          detailsRows
+            ? `<div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px; margin: 16px 0;">
+                <table style="width: 100%; border-collapse: collapse;">${detailsRows}</table>
+              </div>`
+            : ""
+        }
+        <div style="background: rgba(0,0,0,0.4); border-left: 3px solid #16F4D0; padding: 14px; border-radius: 8px; color: #EDECEC; font-size: 13px; white-space: pre-wrap;">${escapeHtml(opts.message)}</div>
+      </div>
+      <div class="footer">
+        <p>Afreqa Operations Console • East Africa Time (EAT UTC+3, 24h)</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+  `.trim();
+}
+

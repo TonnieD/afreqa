@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { db, logger } from "@afreqa/core";
+import { assertSameOrigin } from "@/lib/csrf";
 
 export async function POST(req: NextRequest) {
+  const originError = assertSameOrigin(req);
+  if (originError) return originError;
+
   try {
     const body = await req.json();
     const email = body.email ? String(body.email).toLowerCase().trim() : null;

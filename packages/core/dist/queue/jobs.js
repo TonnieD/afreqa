@@ -4,12 +4,14 @@ exports.QUEUE_NAMES = void 0;
 exports.enqueueVerificationEmail = enqueueVerificationEmail;
 exports.enqueueWelcomeEmail = enqueueWelcomeEmail;
 exports.enqueueCampaignEmail = enqueueCampaignEmail;
+exports.enqueueAdminContactNotification = enqueueAdminContactNotification;
 const client_js_1 = require("./client.js");
 const logger_js_1 = require("../logger.js");
 exports.QUEUE_NAMES = {
     EMAIL_VERIFICATION: "email:verification",
     EMAIL_WELCOME: "email:welcome",
     EMAIL_CAMPAIGN: "email:campaign",
+    EMAIL_CONTACT_ADMIN: "email:contact-admin",
     CLEANUP_HOURLY: "cleanup:hourly",
 };
 /**
@@ -67,6 +69,25 @@ async function enqueueCampaignEmail(payload) {
     }
     catch (error) {
         logger_js_1.logger.error("Failed to enqueue campaign email", { error, email: payload.email });
+        throw error;
+    }
+}
+/**
+ * Fallback queue for admin contact/vendor/partner notifications when direct send fails
+ */
+async function enqueueAdminContactNotification(payload) {
+    try {
+        const boss = await (0, client_js_1.getStartedBoss)();
+        const jobId = await boss.send(exports.QUEUE_NAMES.EMAIL_CONTACT_ADMIN, payload, {
+            retryLimit: 3,
+            retryDelay: 30,
+            retryBackoff: true,
+            expireInMinutes: 120,
+        });
+        return jobId;
+    }
+    catch (error) {
+        logger_js_1.logger.error("Failed to enqueue admin contact notification", { error, to: payload.to });
         throw error;
     }
 }

@@ -617,7 +617,7 @@ export default async function HomePage() {
       <SpotifySection />
 
       {/* 5. AUDIENCE CAPTURE & INNER CIRCLE */}
-      <SubscribeSection />
+      <SubscribeSection emailAllowlistActive={Boolean(process.env.EMAIL_ALLOWLIST?.trim())} />
 
       {/* 5. WHATSAPP & COMMUNITY CALLOUT (CHEAPEST FIRST) */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full">

@@ -43,23 +43,19 @@ export default function PartnersPage() {
     setSuccess(false);
 
     try {
-      const compiledMessage = `Brand / Organization: ${formData.companyName}
-Contact Representative: ${formData.contactName} (${formData.titleRole || "Representative"})
-Partnership Interest: ${formData.tierInterest}
-Estimated Activation Budget: ${formData.budgetBracket}
-
-Campaign & Strategic Objectives:
-${formData.objectives}`;
-
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: `${formData.contactName} (${formData.companyName})`,
+          formType: "PARTNER",
+          companyName: formData.companyName,
+          contactName: formData.contactName,
+          titleRole: formData.titleRole,
           email: formData.email,
           phone: formData.phone,
-          subject: "SPONSORSHIP",
-          message: compiledMessage,
+          tierInterest: formData.tierInterest,
+          budgetBracket: formData.budgetBracket,
+          objectives: formData.objectives,
           website_url: formData.website_url,
         }),
       });
@@ -438,6 +434,14 @@ ${formData.objectives}`;
                   className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/30 text-white placeholder:text-zinc-500 text-sm focus:outline-none transition-colors resize-none"
                 />
               </div>
+
+              <p className="text-[11px] text-zinc-400 leading-relaxed">
+                By submitting this partnership inquiry, you consent to AFREQA processing your corporate contact details to follow up on sponsorship opportunities in accordance with Kenya&apos;s Data Protection Act. Read our{" "}
+                <Link href="/legal/privacy" className="text-cyan-400 hover:underline font-semibold">
+                  Privacy Policy
+                </Link>
+                .
+              </p>
 
               <div>
                 <button

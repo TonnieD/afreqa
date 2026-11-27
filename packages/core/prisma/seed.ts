@@ -1,55 +1,59 @@
 import { PrismaClient, Role, EventStatus, TicketPhaseStatus, FaqCategory, PartnerTier } from "@prisma/client";
 import { hashPassword } from "../src/auth/password.js";
+import { isLocalDemoSeedAllowed } from "../src/db/seed-guard.js";
 
 const prisma = new PrismaClient();
 
-async function main() {
-  console.log("🌱 Starting Afreqa database seed...");
+/**
+ * (b) Local-development-only demo admin.
+ * Strictly refused in production or when DATABASE_URL points to a remote database (e.g., Neon).
+ */
+async function seedLocalDemoAdmin() {
+  if (!isLocalDemoSeedAllowed(process.env)) {
+    console.log(
+      "🔒 Skipping local demo admin seed (refused outside local dev/Docker DB). Use `pnpm --filter @afreqa/core create-admin` to provision deployed admins."
+    );
+    return;
+  }
 
-  const isProduction = process.env.NODE_ENV === "production";
+  const adminEmail = (process.env.SEED_ADMIN_EMAIL || "admin@afreqa.local").toLowerCase();
+  const adminPassword = process.env.SEED_ADMIN_PASSWORD || "AfreqaAdmin2026!";
+
+  const passwordHash = await hashPassword(adminPassword);
+  const superAdmin = await prisma.user.upsert({
+    where: { email: adminEmail },
+    update: {
+      role: Role.SUPER_ADMIN,
+      mustChangePassword: true,
+    },
+    create: {
+      email: adminEmail,
+      passwordHash,
+      name: "Afreqa Lead Organiser",
+      role: Role.SUPER_ADMIN,
+      mustChangePassword: true,
+    },
+  });
+  console.log(`✅ Seeded Local Dev Super Admin: ${superAdmin.email} (mustChangePassword: true)`);
+}
+
+/**
+ * (a) Operational seed data safe for any environment (settings, events, artists, FAQs, partners).
+ */
+async function seedOperationalData() {
   const demoMode = process.env.DEMO_MODE === "true";
-
-  // 1. Seed Super Admin
-  const adminEmail = process.env.SEED_ADMIN_EMAIL || (isProduction ? undefined : "admin@afreqa.local");
-  const adminPassword = process.env.SEED_ADMIN_PASSWORD || (isProduction ? undefined : "AfreqaAdmin2026!");
-
-  if (!adminEmail || !adminPassword) {
-    if (isProduction) {
-      throw new Error(
-        "FATAL: SEED_ADMIN_EMAIL and SEED_ADMIN_PASSWORD environment variables are strictly required in production.",
-      );
-    }
-  }
-
-  if (adminEmail && adminPassword) {
-    const passwordHash = await hashPassword(adminPassword);
-    const superAdmin = await prisma.user.upsert({
-      where: { email: adminEmail.toLowerCase() },
-      update: {
-        role: Role.SUPER_ADMIN,
-        mustChangePassword: true,
-      },
-      create: {
-        email: adminEmail.toLowerCase(),
-        passwordHash,
-        name: "Afreqa Lead Organiser",
-        role: Role.SUPER_ADMIN,
-        mustChangePassword: true,
-      },
-    });
-    console.log(`✅ Seeded Super Admin: ${superAdmin.email} (mustChangePassword: true)`);
-  }
+  const hustleSasaUrl = process.env.HUSTLESASA_STORE_URL || "https://afreqamusicfestival.hustlesasa.shop/";
 
   // 2. Site Settings
   const settings = [
     {
       key: "shop.enabled",
-      value: demoMode ? "true" : "false",
+      value: "false",
       description: "Controls visibility of the merchandise shop routes and navigation",
     },
     {
       key: "hustlesasa.url",
-      value: process.env.HUSTLESASA_STORE_URL || "https://afreqamusicfestival.hustlesasa.shop/",
+      value: hustleSasaUrl,
       description: "Primary external HustleSasa ticket storefront link",
     },
     {
@@ -250,7 +254,7 @@ async function main() {
       doorsClose: "06:00",
       venueName: "Parklands Road, Westlands",
       venueAddress: "Westlands, Nairobi, Kenya",
-      externalTicketUrl: "https://afreqamusicfestival.hustlesasa.shop/",
+      externalTicketUrl: hustleSasaUrl,
       status: EventStatus.PUBLISHED,
     },
     create: {
@@ -265,7 +269,7 @@ async function main() {
       doorsClose: "06:00",
       venueName: "Parklands Road, Westlands",
       venueAddress: "Westlands, Nairobi, Kenya",
-      externalTicketUrl: "https://afreqamusicfestival.hustlesasa.shop/",
+      externalTicketUrl: hustleSasaUrl,
       googleMapsUrl: "https://maps.google.com/?q=Parklands+Road+Westlands+Nairobi",
       transportInfo: "Dedicated drop-off zone on Parklands Road. Secure parking available on-site.",
       agePolicy: "Strictly 18+ with original National ID or valid passport required at gate.",
@@ -278,28 +282,28 @@ async function main() {
             priceKes: 1500,
             status: TicketPhaseStatus.ON_SALE,
             sortOrder: 1,
-            externalUrl: "https://afreqamusicfestival.hustlesasa.shop/",
+            externalUrl: hustleSasaUrl,
           },
           {
             name: "Advance Ticket",
             priceKes: 2500,
             status: TicketPhaseStatus.ON_SALE,
             sortOrder: 2,
-            externalUrl: "https://afreqamusicfestival.hustlesasa.shop/",
+            externalUrl: hustleSasaUrl,
           },
           {
             name: "VIP Festival Pass",
             priceKes: 5000,
             status: TicketPhaseStatus.ON_SALE,
             sortOrder: 3,
-            externalUrl: "https://afreqamusicfestival.hustlesasa.shop/",
+            externalUrl: hustleSasaUrl,
           },
           {
             name: "VIP Table Package",
             priceKes: 25000,
             status: TicketPhaseStatus.ON_SALE,
             sortOrder: 4,
-            externalUrl: "https://afreqamusicfestival.hustlesasa.shop/",
+            externalUrl: hustleSasaUrl,
           },
         ],
       },
@@ -402,7 +406,13 @@ async function main() {
     console.log(`✅ Seeded 2 Demo Merch Products (DEMO_MODE=true)`);
   }
 
-  console.log("✨ Seed completed successfully.");
+  console.log("✨ Operational seed completed successfully.");
+}
+
+async function main() {
+  console.log("🌱 Starting Afreqa database seed...");
+  await seedLocalDemoAdmin();
+  await seedOperationalData();
 }
 
 main()

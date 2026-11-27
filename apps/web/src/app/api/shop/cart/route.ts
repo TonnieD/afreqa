@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { db } from "@afreqa/core";
 import { isShopEnabled } from "@/lib/shop";
+import { assertSameOrigin } from "@/lib/csrf";
 
 const CART_COOKIE_NAME = "afreqa_cart_token";
 
@@ -53,6 +54,9 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const originError = assertSameOrigin(req);
+  if (originError) return originError;
+
   if (!(await isShopEnabled())) {
     return NextResponse.json({ error: "Shop is currently disabled" }, { status: 404 });
   }

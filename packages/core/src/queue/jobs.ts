@@ -5,6 +5,7 @@ export const QUEUE_NAMES = {
   EMAIL_VERIFICATION: "email:verification",
   EMAIL_WELCOME: "email:welcome",
   EMAIL_CAMPAIGN: "email:campaign",
+  EMAIL_CONTACT_ADMIN: "email:contact-admin",
   CLEANUP_HOURLY: "cleanup:hourly",
 } as const;
 
@@ -28,6 +29,12 @@ export interface CampaignEmailPayload {
   campaignId: string;
   subscriberId: string;
   email: string;
+  subject: string;
+  html: string;
+}
+
+export interface AdminContactEmailPayload {
+  to: string;
   subject: string;
   html: string;
 }
@@ -86,6 +93,25 @@ export async function enqueueCampaignEmail(payload: CampaignEmailPayload): Promi
     return jobId;
   } catch (error) {
     logger.error("Failed to enqueue campaign email", { error, email: payload.email });
+    throw error;
+  }
+}
+
+/**
+ * Fallback queue for admin contact/vendor/partner notifications when direct send fails
+ */
+export async function enqueueAdminContactNotification(payload: AdminContactEmailPayload): Promise<string | null> {
+  try {
+    const boss = await getStartedBoss();
+    const jobId = await boss.send(QUEUE_NAMES.EMAIL_CONTACT_ADMIN, payload, {
+      retryLimit: 3,
+      retryDelay: 30,
+      retryBackoff: true,
+      expireInMinutes: 120,
+    });
+    return jobId;
+  } catch (error) {
+    logger.error("Failed to enqueue admin contact notification", { error, to: payload.to });
     throw error;
   }
 }

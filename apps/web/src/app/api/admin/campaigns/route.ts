@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { assertSameOrigin } from "@/lib/csrf";
 import { getSessionUser } from "@/lib/auth";
 import { db, recordAuditLog, hasPermission, enqueueCampaignEmail } from "@afreqa/core";
 
@@ -19,6 +20,8 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  const originError = assertSameOrigin(req);
+  if (originError) return originError;
   const user = await getSessionUser();
   if (!user || !hasPermission(user.role, "campaigns:manage")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

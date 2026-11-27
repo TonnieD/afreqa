@@ -10,6 +10,8 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+const noindex = process.env.ROBOTS_NOINDEX === "true";
+
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
@@ -39,10 +41,15 @@ export const metadata: Metadata = {
   authors: [{ name: "Afreqa Nairobi" }],
   creator: "Afreqa",
   publisher: "Afreqa",
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: noindex
+    ? {
+        index: false,
+        follow: false,
+      }
+    : {
+        index: true,
+        follow: true,
+      },
   openGraph: {
     type: "website",
     locale: "en_KE",

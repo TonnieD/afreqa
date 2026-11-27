@@ -1,11 +1,15 @@
 import { requireAuth } from "@/lib/auth";
+import { requireShopEnabled } from "@/lib/shop";
 import { db } from "@afreqa/core";
 import { ShoppingBag, Tag, ToggleLeft, ToggleRight, AlertTriangle } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminShopPage() {
   await requireAuth("shop:read");
+  await requireShopEnabled();
 
-  let isShopEnabled = process.env.DEMO_MODE === "true";
+  let isShopEnabled = false;
   let productCount = 0;
   let orderCount = 0;
 

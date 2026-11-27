@@ -13,6 +13,7 @@ export default async function AdminInquiriesPage() {
     email: string;
     topic: string;
     message: string;
+    details: Record<string, unknown> | null;
     isRead: boolean;
     isReplied: boolean;
     createdAt: string;
@@ -29,6 +30,10 @@ export default async function AdminInquiriesPage() {
       email: item.email,
       topic: String(item.topic),
       message: item.message,
+      details:
+        item.details && typeof item.details === "object" && !Array.isArray(item.details)
+          ? (item.details as Record<string, unknown>)
+          : null,
       isRead: Boolean(item.isRead),
       isReplied: Boolean(item.isReplied),
       createdAt:

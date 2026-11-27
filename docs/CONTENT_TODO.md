@@ -15,23 +15,27 @@
 | **Official YouTube** | `https://youtube.com/@afreqanairobi` | Unconfirmed placeholder | **Pending Owner Confirmation** |
 | **WhatsApp Community Link** | `https://chat.whatsapp.com/sample-afreqa-community` | Unconfirmed placeholder | **Pending Owner Confirmation** |
 | **Official WhatsApp Number** | `+254 700 000 000` (for click-to-chat & vCard) | Unconfirmed placeholder | **Pending Owner Confirmation** |
-| **HustleSasa Store URL** | `https://afreqanairobi.hustlesasa.shop/` | PRD §12, Admin configurable | Configured default |
+| **HustleSasa Store URL** | `https://afreqamusicfestival.hustlesasa.shop/` | PRD §12, Admin configurable | Verified Official |
 | **Hero Video Loop** | License-free dark ambient festival laser loop (Unsplash/Pexels license) | Placeholder media | Sample placeholder |
 
 ---
 
-## 2. Event & Fictional DJ Placeholders (Demo Dataset)
+## 2. Event, Artist & Seed Dataset Audit (`packages/core/prisma/seed.ts`)
 
-*Note: All artist names and personas below are strictly fictional for showcase demonstration.*
+Every real person, real phone number, and third-party brand currently in `packages/core/prisma/seed.ts` must be confirmed with Afreqa before live launch. When `DEMO_CONTENT_UNVERIFIED=true`, the demo site displays an unverified-content notice.
 
-| Entity | Placeholder Value | Required Real Value | Notes |
+| Category | Value in `seed.ts` / `.env.example` | Location | Status |
 |---|---|---|---|
-| **Next Event Title** | "Afreqa: Resonance" | Real next event title | Labeled `[Sample Demo Event]` |
-| **Next Event Date/Time** | +30 days from launch, 18:00 – 06:00 EAT | Actual event date & doors time | Live countdown binds to this |
-| **Venue & Location** | "The Carnivore Grounds / Waterfront Karen, Nairobi" | Actual confirmed venue | Maps link & directions placeholder |
-| **Lineup (Fictional Artists)** | DJ Nova Rift (Melodic Techno), Kazi Pulse (Deep Melodic), Zuri Bass (Hardstyle/EDM), Solar Soundwave (Progressive House) | Actual booked DJ roster | Purely fictional sample DJs |
-| **Ticket Phases** | Early Bird: KES 1,500; Phase 1: KES 2,000; Final: KES 2,500; Gate: KES 3,500 | Actual phase names, prices & HustleSasa ticket links | Configured in admin; never hardcoded |
-| **Past Editions** | "Afreqa Edition 001", "Afreqa Solstice 2025" | Historical dates, lineups, attendance numbers | Gallery albums linked to these |
+| **Third-party Brand** | `"Tomorrowland"` (`tomorrowland-nye` slug, `"Nairobi's Ultimate Tomorrowland New Year's Eve Festival"`, `"Afreqa Nairobi: A Tomorrowland Halloween XP"`) | `seed.ts` lines 160–262 | **Confirm with Afreqa** |
+| **Venue Name** | `"Alloy Bar & Lounge"` | `seed.ts` lines 161–185 | **Confirm with Afreqa** |
+| **Venue Address** | `"Parklands Road, Westlands"` | `seed.ts` lines 251–269 | **Confirm with Afreqa** |
+| **Venue / Partner** | `"Carnivore Grounds"` | `seed.ts` line 353 | **Confirm with Afreqa** |
+| **Ticketing Partner** | `"HustleSasa"` (`https://afreqamusicfestival.hustlesasa.shop/`) | `seed.ts` lines 51–53, 351 | **Confirm with Afreqa** |
+| **Rideshare Brands** | `"Uber / Bolt"` | `seed.ts` lines 186, 338 | **Confirm with Afreqa** |
+| **Named DJs (`isFictional: false`)** | `"Coco Kahi"`, `"Mike Muema"`, `"Nayäkaze"`, `"Shock"`, `"Ryte"`, `"Z4V3"`, `"Alex Gvng Gvng"`, `"The Arkitekt"`, `"DJ Myth"` | `seed.ts` lines 78–141 | **Confirm with Afreqa** |
+| **Reservations Phone** | `"0702 665 665"` (VIP & Table Reservations in Halloween XP description) | `seed.ts` lines 163, 177 | **Confirm with Afreqa** |
+| **Support WhatsApp** | `"+254 700 000 000"` (`whatsapp.number` in `SiteSetting`) | `seed.ts` line 62 | **Confirm with Afreqa** |
+| **Env WhatsApp Phone** | `"+254743836164"` (`WHATSAPP_PHONE`) | `.env.example` | **Confirm with Afreqa** |
 
 ---
 

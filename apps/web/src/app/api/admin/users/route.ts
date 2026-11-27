@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { assertSameOrigin } from "@/lib/csrf";
 import { getSessionUser } from "@/lib/auth";
 import { db, hasPermission, recordAuditLog, hashPassword, type Role } from "@afreqa/core";
 
@@ -63,6 +64,8 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const originError = assertSameOrigin(req);
+  if (originError) return originError;
   const user = await getSessionUser(req);
   if (!user) {
     return NextResponse.json({ error: "Session expired or authentication missing. Please log in again." }, { status: 401 });

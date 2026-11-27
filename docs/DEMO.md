@@ -20,7 +20,7 @@
 ## 🎟️ Step 2: Non-Blocking Hybrid Ticketing (1:00 – 1:45)
 1. **Click "Get Tickets" or any Phase Strip CTA**.
 2. **Observe Instant HTTP 302 Redirect:**
-   * Raver is redirected immediately to Afreqa's official HustleSasa portal (`https://afreqanairobi.hustlesasa.shop/`) with clean UTM tracking parameters (`utm_source=afreqa_website&utm_medium=hero_cta`).
+   * Raver is redirected immediately to Afreqa's official HustleSasa portal (`https://afreqamusicfestival.hustlesasa.shop/`) with clean UTM tracking parameters (`utm_source=afreqa_website&utm_medium=hero_cta`).
 3. **Point out Behind-the-Scenes Mechanics:**
    * The redirect occurs with zero delay (non-blocking).
    * A Postgres sliding-window rate limiter prevents click bot scraping.

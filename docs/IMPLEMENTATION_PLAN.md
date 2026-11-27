@@ -489,7 +489,8 @@ afreqa-website/
 - [ ] Next event real details (title, confirmed date, venue, DJ headliners) — or keep sample fictional dataset for demo.
 - [ ] Afreqa official WhatsApp number & Community/Channel invite link (marked as placeholders in `CONTENT_TODO.md`).
 - [ ] Official social links (Instagram, TikTok, YouTube) confirmed (marked as placeholders in `CONTENT_TODO.md`).
-- [ ] HustleSasa store URL verified: `https://afreqanairobi.hustlesasa.shop/`.
+- [x] HustleSasa store URL verified: `https://afreqamusicfestival.hustlesasa.shop/`.
+- [x] Hosting policy: free-tier hosting for the first year, re-evaluated after 12 months; Vercel Hobby used for the demo only; live host chosen in Phase B for commercial-use terms. Ticketing is external (HustleSasa) and the merch shop is parked.
 - [ ] Refund policy, age policy (18+), and all FAQ facts (parking, transport, prohibited items) confirmed with Afreqa.
 
 ---

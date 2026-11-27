@@ -1,90 +1,125 @@
-import { StorageProvider } from "../storage/StorageProvider.js";
-import { getStorageProvider } from "../storage/LocalStorageProvider.js";
+import sharp from "sharp";
+import type { StorageProvider } from "../storage/StorageProvider.js";
 
 export interface ProcessedPhotoResult {
+  thumbKey: string;
+  mediumKey: string;
+  fullKey: string;
+  thumbUrl: string;
+  mediumUrl: string;
+  fullUrl: string;
+  blurDataUrl: string;
   width: number;
   height: number;
-  format: string;
-  blurDataUrl: string;
-  originalKey: string;
-  originalUrl: string;
-  responsiveUrls: {
-    thumb: string;
-    medium: string;
-    full: string;
+}
+
+export const ALLOWED_PHOTO_MIME_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/avif",
+] as const;
+
+export const MAX_PHOTO_UPLOAD_BYTES = 15 * 1024 * 1024; // 15 MB
+export const MAX_PHOTO_INPUT_PIXELS = 40_000_000; // 40 MP decompression-bomb guard
+export const TEMP_UPLOAD_KEY_REGEX = /^temp\/originals\/[a-zA-Z0-9._-]+$/;
+
+export function isValidTempUploadKey(key: string): boolean {
+  return TEMP_UPLOAD_KEY_REGEX.test(key) && !key.includes("..");
+}
+
+export interface GalleryCapStatus {
+  currentCount: number;
+  maxPhotos: number;
+  ratio: number;
+  isNearCap: boolean;
+  isAtCap: boolean;
+}
+
+export function getGalleryMaxPhotos(env: NodeJS.ProcessEnv = process.env): number {
+  const raw = env.GALLERY_MAX_PHOTOS;
+  if (!raw) return 100;
+  const parsed = Number.parseInt(raw, 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 100;
+}
+
+export function getGalleryCapStatus(
+  currentCount: number,
+  maxPhotos: number = getGalleryMaxPhotos(),
+): GalleryCapStatus {
+  const safeMax = Math.max(1, maxPhotos);
+  const ratio = currentCount / safeMax;
+  return {
+    currentCount,
+    maxPhotos: safeMax,
+    ratio,
+    isNearCap: ratio >= 0.8 && currentCount < safeMax,
+    isAtCap: currentCount >= safeMax,
   };
 }
 
+/**
+ * Processes an uploaded photo buffer into 3 WebP variants (400w, 1200w, 2400w)
+ * plus an inline LQIP blurDataUrl. Does NOT store the original buffer to stay
+ * within Vercel Blob Hobby storage and operation limits.
+ */
 export async function processPhoto(
   buffer: Buffer,
   slugPrefix: string,
-  storage: StorageProvider = getStorageProvider(),
+  storage: StorageProvider,
 ): Promise<ProcessedPhotoResult> {
-  const sharpModule = await import("sharp");
-  const sharp = sharpModule.default;
+  const baseImage = sharp(buffer, { limitInputPixels: MAX_PHOTO_INPUT_PIXELS }).rotate();
+  const metadata = await baseImage.metadata();
+  const width = metadata.width || 1200;
+  const height = metadata.height || 800;
 
-  // 1. Inspect metadata
-  const image = sharp(buffer);
-  const metadata = await image.metadata();
-
-  if (!metadata.width || !metadata.height) {
-    throw new Error("Invalid or unreadable image format.");
-  }
-
-  const timestamp = Date.now();
-  const safeSlug = slugPrefix.toLowerCase().replace(/[^a-z0-9_-]/g, "-");
-
-  // 2. Generate Base64 Low Quality Image Placeholder (LQIP, 16px wide, stripped of metadata)
-  const lqipBuffer = await sharp(buffer)
-    .rotate() // Strips EXIF and applies auto-orientation
-    .resize(16, null, { withoutEnlargement: true })
+  const lqipBuffer = await baseImage
+    .clone()
+    .resize(20, 20, { fit: "inside" })
     .webp({ quality: 20 })
     .toBuffer();
   const blurDataUrl = `data:image/webp;base64,${lqipBuffer.toString("base64")}`;
 
-  // 3. Process Responsive Renditions (WebP, EXIF GPS stripped)
-  // Thumbnail (400w)
-  const thumbBuffer = await sharp(buffer)
-    .rotate()
-    .resize(400, null, { withoutEnlargement: true })
-    .webp({ quality: 80 })
-    .toBuffer();
-  const thumbKey = `photos/${safeSlug}-${timestamp}-thumb.webp`;
-  const thumbUpload = await storage.upload(thumbBuffer, thumbKey, "image/webp");
+  const [thumbBuffer, mediumBuffer, fullBuffer] = await Promise.all([
+    baseImage.clone().resize(400, null, { withoutEnlargement: true }).webp({ quality: 80 }).toBuffer(),
+    baseImage.clone().resize(1200, null, { withoutEnlargement: true }).webp({ quality: 85 }).toBuffer(),
+    baseImage.clone().resize(2400, null, { withoutEnlargement: true }).webp({ quality: 88 }).toBuffer(),
+  ]);
 
-  // Medium (1200w)
-  const mediumBuffer = await sharp(buffer)
-    .rotate()
-    .resize(1200, null, { withoutEnlargement: true })
-    .webp({ quality: 85 })
-    .toBuffer();
-  const mediumKey = `photos/${safeSlug}-${timestamp}-medium.webp`;
-  const mediumUpload = await storage.upload(mediumBuffer, mediumKey, "image/webp");
+  const thumbKey = `photos/${slugPrefix}-400w.webp`;
+  const mediumKey = `photos/${slugPrefix}-1200w.webp`;
+  const fullKey = `photos/${slugPrefix}-2400w.webp`;
 
-  // Full HD (2400w)
-  const fullBuffer = await sharp(buffer)
-    .rotate()
-    .resize(2400, null, { withoutEnlargement: true })
-    .webp({ quality: 90 })
-    .toBuffer();
-  const fullKey = `photos/${safeSlug}-${timestamp}-full.webp`;
-  const fullUpload = await storage.upload(fullBuffer, fullKey, "image/webp");
+  const uploadedKeys: string[] = [];
+  try {
+    const [thumbRes, mediumRes, fullRes] = await Promise.all([
+      storage.upload(thumbBuffer, thumbKey, "image/webp").then((r) => {
+        uploadedKeys.push(r.key);
+        return r;
+      }),
+      storage.upload(mediumBuffer, mediumKey, "image/webp").then((r) => {
+        uploadedKeys.push(r.key);
+        return r;
+      }),
+      storage.upload(fullBuffer, fullKey, "image/webp").then((r) => {
+        uploadedKeys.push(r.key);
+        return r;
+      }),
+    ]);
 
-  // Also save the sanitized full original
-  const originalKey = `photos/${safeSlug}-${timestamp}-original.webp`;
-  const originalUpload = await storage.upload(fullBuffer, originalKey, "image/webp");
-
-  return {
-    width: metadata.width,
-    height: metadata.height,
-    format: metadata.format || "webp",
-    blurDataUrl,
-    originalKey,
-    originalUrl: originalUpload.url,
-    responsiveUrls: {
-      thumb: thumbUpload.url,
-      medium: mediumUpload.url,
-      full: fullUpload.url,
-    },
-  };
+    return {
+      thumbKey: thumbRes.key,
+      mediumKey: mediumRes.key,
+      fullKey: fullRes.key,
+      thumbUrl: thumbRes.url,
+      mediumUrl: mediumRes.url,
+      fullUrl: fullRes.url,
+      blurDataUrl,
+      width,
+      height,
+    };
+  } catch (err) {
+    await Promise.allSettled(uploadedKeys.map((k) => storage.delete(k)));
+    throw err;
+  }
 }

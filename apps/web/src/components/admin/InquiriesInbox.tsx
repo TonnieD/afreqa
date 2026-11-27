@@ -12,6 +12,7 @@ export interface InquiryItem {
   email: string;
   topic: string;
   message: string;
+  details?: Record<string, unknown> | null;
   isRead: boolean;
   isReplied: boolean;
   createdAt: Date | string;
@@ -43,7 +44,7 @@ export function InquiriesInbox({ initialInquiries }: { initialInquiries: Inquiry
   // Determine classified channel: VENDOR, PARTNER, BOOKING, PRESS, GENERAL
   const getInquiryCategory = (inq: InquiryItem): "VENDOR" | "PARTNER" | "BOOKING" | "PRESS" | "GENERAL" => {
     const msg = inq.message || "";
-    if (msg.includes("[VENDOR APPLICATION]") || inq.topic === "VENDOR") {
+    if (inq.topic === "VENDOR" || msg.includes("[VENDOR APPLICATION]")) {
       return "VENDOR";
     }
     if (inq.topic === "SPONSORSHIP" || msg.includes("Brand / Organization") || msg.includes("Partnership")) {
@@ -279,6 +280,23 @@ export function InquiriesInbox({ initialInquiries }: { initialInquiries: Inquiry
                     </span>
                   </div>
                 </div>
+
+                {/* Structured Details (if Vendor / Partner) */}
+                {inq.details && Object.keys(inq.details).length > 0 && (
+                  <div className="pl-4 my-2 flex flex-wrap gap-2">
+                    {Object.entries(inq.details).map(([k, v]) =>
+                      v ? (
+                        <span
+                          key={k}
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[11px] font-mono text-zinc-300"
+                        >
+                          <span className="text-pink-400 font-bold uppercase">{k}:</span>
+                          <span>{String(v)}</span>
+                        </span>
+                      ) : null
+                    )}
+                  </div>
+                )}
 
                 {/* Message Body */}
                 <div className="pl-4 border-l-2 border-pink-500/30 my-3 bg-white/[0.01] p-3 rounded-r-xl">

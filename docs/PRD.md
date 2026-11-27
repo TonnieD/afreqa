@@ -9,7 +9,7 @@
 
 ## 1. Overview
 
-Afreqa is a Nairobi-based EDM event brand ("Kenya's hub for Electronic Dance Music"). Today it has no official website: tickets and links live on a HustleSasa storefront (`afreqanairobi.hustlesasa.shop`) and Instagram (`@afreqa_`).
+Afreqa is a Nairobi-based EDM event brand ("Kenya's hub for Electronic Dance Music"). Today it has no official website: tickets and links live on a HustleSasa storefront (`afreqamusicfestival.hustlesasa.shop`) and Instagram (`@afreqa_`).
 
 This project builds Afreqa an official website that:
 
@@ -20,7 +20,7 @@ This project builds Afreqa an official website that:
 5. Preserves and promotes memories via a **gallery** (photos, embedded videos, uploaded after-movies).
 6. Gives non-technical staff an **admin panel** with role-based access.
 
-This is an unpaid showcase build to demonstrate possibilities to the Afreqa team. It must therefore be **demo-ready with seed data, no external accounts required to run locally**, and easy for Afreqa to take over hosting/domain decisions later.
+This build uses **free-tier hosting for the first year, re-evaluated after 12 months; Vercel Hobby is used for the demo only; the live host is chosen in Phase B for commercial-use terms**. Ticketing is external (HustleSasa) and the merch shop is parked (`shop.enabled = false`).
 
 ## 2. Goals and success metrics
 
@@ -244,8 +244,9 @@ Every table has `createdAt/updatedAt`; soft-delete where history matters (events
 
 ## 12. Assumptions and open items
 
-- Domain and production hosting will be chosen by Afreqa after approval; build must not depend on either.
-- HustleSasa store URL is `https://afreqanairobi.hustlesasa.shop/` and is configurable in settings.
+- Hosting strategy: free-tier hosting for the first year, re-evaluated after 12 months; Vercel Hobby used for the demo only; live host chosen in Phase B for commercial-use terms.
+- HustleSasa store URL is `https://afreqamusicfestival.hustlesasa.shop/` (`HUSTLESASA_STORE_URL`, configurable in settings). Ticketing is strictly external (redirect + `ClickEvent` tracking only).
+- Merch shop is parked/disabled (`shop.enabled = false`).
 - Afreqa's per-ticket HustleSasa fee is unknown; only relevant for a future native-ticketing decision (Phase 7).
 - WhatsApp approach is deliberately minimal (opt-in capture + community link + CSV export); revisit with real opt-in data.
 - Payment provider for merch is not yet chosen; `MockProvider` makes the demo work without any account.

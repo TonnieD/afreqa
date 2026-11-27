@@ -4,7 +4,11 @@ import React, { useState } from "react";
 import { Sparkles, ArrowRight, CheckCircle2, ShieldCheck } from "lucide-react";
 import { SubscribeModal } from "@/components/forms/SubscribeModal";
 
-export function SubscribeSection() {
+export function SubscribeSection({
+  emailAllowlistActive = false,
+}: {
+  emailAllowlistActive?: boolean;
+}) {
   const [modalOpen, setModalOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -113,6 +117,11 @@ export function SubscribeSection() {
                     Custom Preferences (WhatsApp & Genres)
                   </button>
                 </div>
+                {emailAllowlistActive && (
+                  <p className="text-[11px] font-mono text-amber-300/90 pt-1">
+                    Demo notice: Verification emails only go to allow-listed addresses.
+                  </p>
+                )}
               </form>
             )}
           </div>

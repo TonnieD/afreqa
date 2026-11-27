@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { assertSameOrigin } from "@/lib/csrf";
 import { revalidatePath } from "next/cache";
 import { getSessionUser } from "@/lib/auth";
 import { db, recordAuditLog, hasPermission } from "@afreqa/core";
@@ -30,6 +31,8 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
 }
 
 export async function PUT(req: NextRequest, { params }: RouteParams) {
+  const originError = assertSameOrigin(req);
+  if (originError) return originError;
   const user = await getSessionUser();
   if (!user || !hasPermission(user.role, "events:write")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -167,6 +170,8 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
 }
 
 export async function DELETE(req: NextRequest, { params }: RouteParams) {
+  const originError = assertSameOrigin(req);
+  if (originError) return originError;
   const user = await getSessionUser();
   if (!user || !hasPermission(user.role, "events:write")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

@@ -53,9 +53,9 @@ export function GalleryLightbox({
 
   const currentPhoto = photos[currentIndex]!;
   const displayUrl =
-    currentPhoto.responsiveUrls?.full ||
     currentPhoto.responsiveUrls?.medium ||
     currentPhoto.originalUrl;
+  const fullSizeUrl = currentPhoto.responsiveUrls?.full || null;
 
   const showNext = () => {
     setCurrentIndex((prev) => (prev + 1) % photos.length);
@@ -72,13 +72,20 @@ export function GalleryLightbox({
     >
       {/* Top Header Bar */}
       <div className="flex items-center justify-between z-10">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <span className="text-xs font-mono uppercase tracking-widest text-afreqa-silver-mid">
             {currentIndex + 1} / {photos.length}
           </span>
-          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-afreqa-teal">
-            Protected Deterrent Derivative
-          </span>
+          {fullSizeUrl && (
+            <a
+              href={fullSizeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[11px] font-mono px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-afreqa-teal transition"
+            >
+              View Full Size (2400w)
+            </a>
+          )}
         </div>
 
         <button
@@ -142,7 +149,7 @@ export function GalleryLightbox({
         </div>
 
         <div className="text-[10px] font-mono text-afreqa-silver-mid/60 text-right">
-          Right-click & drag deterred • KDPA Content Protection
+          1200w WebP preview • Public archive asset
         </div>
       </div>
     </div>

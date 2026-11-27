@@ -82,7 +82,7 @@ SEED_ADMIN_PASSWORD=GENERATE_TEMPORARY_ADMIN_PASSWORD_HERE
 DEMO_MODE=false
 
 # HustleSasa Production Portal
-HUSTLESASA_STORE_URL=https://afreqanairobi.hustlesasa.shop/
+HUSTLESASA_STORE_URL=https://afreqamusicfestival.hustlesasa.shop/
 
 # Production SMTP (e.g., Brevo, Resend, or AWS SES)
 SMTP_HOST=smtp-relay.brevo.com

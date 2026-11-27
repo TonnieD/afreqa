@@ -7,8 +7,13 @@ import {
   recordAuditLog,
   logger,
 } from "@afreqa/core";
+import { isShopEnabled } from "@/lib/shop";
 
 export async function POST(req: NextRequest) {
+  if (!(await isShopEnabled())) {
+    return NextResponse.json({ error: "Shop is currently disabled" }, { status: 404 });
+  }
+
   try {
     const rawBody = await req.text();
     const signature = req.headers.get("x-paystack-signature");

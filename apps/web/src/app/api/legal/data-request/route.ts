@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db, checkRateLimit, normalizeAndValidatePhone, z } from "@afreqa/core";
+import { assertSameOrigin } from "@/lib/csrf";
 
 const DataRequestSchema = z.object({
   fullName: z.string().min(2, "Full name required").max(100),
@@ -11,6 +12,9 @@ const DataRequestSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
+  const originError = assertSameOrigin(req);
+  if (originError) return originError;
+
   try {
     const ip =
       req.headers.get("x-forwarded-for")?.split(",")[0].trim() ||

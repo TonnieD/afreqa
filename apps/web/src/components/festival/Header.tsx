@@ -18,7 +18,7 @@ const NAV_LINKS = [
   { label: "Contact", href: "/contact" },
 ];
 
-export function Header() {
+export function Header({ ticketHref = "/go/tickets/store" }: { ticketHref?: string }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
@@ -93,7 +93,7 @@ export function Header() {
 
           {/* Primary "Get Tickets" CTA */}
           <a
-            href="/go/tickets/tomorrowland-nye"
+            href={ticketHref}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-extrabold text-xs tracking-wider uppercase shadow-lg shadow-pink-950/30 hover:scale-105 active:scale-95 transition-all duration-300 hidden sm:inline-flex"
@@ -137,7 +137,7 @@ export function Header() {
               ))}
 
               <a
-                href="/go/tickets/tomorrowland-nye"
+                href={ticketHref}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-4 flex items-center justify-center gap-2 w-full py-3 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-extrabold text-sm uppercase tracking-wider shadow-lg shadow-pink-950/30"

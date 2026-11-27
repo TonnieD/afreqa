@@ -11,13 +11,17 @@
     "db:generate": "prisma generate --schema=./prisma/schema.prisma",
     "db:migrate": "prisma migrate deploy --schema=./prisma/schema.prisma",
     "db:migrate:dev": "prisma migrate dev --schema=./prisma/schema.prisma",
-    "db:seed": "tsx ./prisma/seed.ts"
+    "db:seed": "tsx ./prisma/seed.ts",
+    "create-admin": "tsx ./src/cli/create-admin.ts",
+    "queue:init": "tsx ./src/cli/init-queue.ts",
+    "audit:lock": "tsx ./src/cli/audit-lock.ts",
+    "db:deploy": "pnpm db:migrate && pnpm queue:init && pnpm audit:lock",
+    "neon:verify": "tsx ./src/cli/verify-neon.ts"
   },
   "dependencies": {
     "@node-rs/argon2": "^2.0.2",
     "@prisma/client": "^6.2.1",
-    "@tus/file-store": "^2.1.1",
-    "@tus/server": "^2.4.6",
+    "@vercel/blob": "^2.9.0",
     "libphonenumber-js": "^1.11.18",
     "nodemailer": "^6.9.16",
     "pg-boss": "^10.1.3",

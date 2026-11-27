@@ -1,4 +1,5 @@
 import { getSessionUser } from "@/lib/auth";
+import { isShopEnabled } from "@/lib/shop";
 import { db } from "@afreqa/core";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { AdminInactivityTimeout } from "@/components/admin/AdminInactivityTimeout";
@@ -32,10 +33,12 @@ export default async function AdminLayout({
     // If DB is offline
   }
 
+  const shopEnabled = await isShopEnabled();
+
   return (
     <div className="min-h-screen bg-afreqa-midnight text-afreqa-chrome-high flex">
       <AdminInactivityTimeout />
-      <AdminSidebar user={user} initialUnreadCount={unreadCount} />
+      <AdminSidebar user={user} initialUnreadCount={unreadCount} shopEnabled={shopEnabled} />
       <main className="flex-1 min-w-0 overflow-y-auto p-6 sm:p-8 lg:p-10">
         <div className="max-w-7xl mx-auto">{children}</div>
       </main>
